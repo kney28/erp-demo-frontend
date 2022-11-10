@@ -91,26 +91,23 @@
   </q-layout>
 </template>
 
-
 <script>
 import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
   name: 'MainLayout',
   setup () {
-
     const left = ref(false)
     const logoutNotify = () => {
-      window.open('#/LoginUser')
+      window.open('#/login')
     }
-
     return {
-      left
+      left,
+      logoutNotify
     }
   }
 })
 </script>
-
 
 <style>
 .q-drawer {

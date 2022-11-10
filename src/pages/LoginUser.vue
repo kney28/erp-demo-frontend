@@ -73,7 +73,7 @@ export default defineComponent({
     const password = ref('Admin@CRM')
 
     const loginNotify = () => {
-      window.open('#/IndexPage')
+      window.open('#/')
     }
 
     onMounted(() => {
