@@ -37,13 +37,13 @@
           </q-card-section>
           <q-card-section>
             <q-form class="q-gutter-md" @submit="loginNotify">
-              <q-input filled v-model="username" label="Username" lazy-rules />
+              <q-input filled v-model="username" label="Usuario" lazy-rules />
 
               <q-input
                 type="password"
                 filled
                 v-model="password"
-                label="Password"
+                label="Contraseña"
                 lazy-rules
               />
 
@@ -66,14 +66,24 @@
 <script>
 
 import { defineComponent, ref, onMounted } from 'vue'
+import { useAuthStore } from 'src/stores/auth'
+import { useRouter } from 'vue-router'
+
 export default defineComponent({
   name: 'LoginUser',
   setup () {
-    const username = ref('admin')
-    const password = ref('Admin@CRM')
+    const router = useRouter()
+    const store = useAuthStore()
+    const username = ref(null)
+    const password = ref(null)
 
     const loginNotify = () => {
-      window.open('#/')
+      store.login({
+        username: username.value,
+        password: password.value
+      }).then((status) => {
+        router.push({ name: 'home' })
+      })
     }
 
     onMounted(() => {

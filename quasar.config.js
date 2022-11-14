@@ -11,7 +11,7 @@
 const { configure } = require('quasar/wrappers')
 const path = require('path')
 
-module.exports = configure(function (/* ctx */) {
+module.exports = configure(function (ctx) {
   return {
     eslint: {
       // fix: true,
@@ -30,7 +30,8 @@ module.exports = configure(function (/* ctx */) {
     // https://v2.quasar.dev/quasar-cli/boot-files
     boot: [
       'i18n',
-      'axios'
+      'axios',
+      'sweetalert2'
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
@@ -55,6 +56,16 @@ module.exports = configure(function (/* ctx */) {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#build
     build: {
+      scopeHoisting: true,
+      showProgress: true,
+      env: ctx.dev ? { // so on dev we'll have
+        API: 'http://127.0.0.1:3000/',
+        FILES: 'http://127.0.0.1:3000/'
+      }
+        : { // and on build (production):
+            API: '/',
+            FILES: '/'
+          },
       target: {
         browser: ['es2019', 'edge88', 'firefox78', 'chrome87', 'safari13.1'],
         node: 'node16'
@@ -110,7 +121,9 @@ module.exports = configure(function (/* ctx */) {
       // components: [],
       // directives: [],
       // Quasar plugins
-      plugins: []
+      plugins: [
+        'Dialog'
+      ]
     },
 
     // supportIE: true,

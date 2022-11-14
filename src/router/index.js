@@ -26,5 +26,10 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE)
   })
 
+  Router.beforeEach((to, _from, next) => {
+    if (to.name !== 'login' && !localStorage.getItem('token')) next({ name: 'login' })
+    else next()
+  })
+
   return Router
 })
