@@ -2,6 +2,7 @@ import { boot } from 'quasar/wrappers'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import { Loading, QSpinnerBall } from 'quasar'
+import { useAuthStore } from 'src/stores/auth'
 
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;
@@ -12,14 +13,15 @@ import { Loading, QSpinnerBall } from 'quasar'
 axios.defaults.baseURL = process.env.API // se obtiene de quasar.conf.js
 const api = axios.create({ baseURL: process.env.API })
 
-export default boot(({ app }) => {
+export default boot(({ app, store, router }) => {
+  const auth = useAuthStore(store)
   api.defaults.withCredentials = true
   api.defaults.headers.post['Content-Type'] = 'multipart/form-data'
   api.interceptors.request.use((config) => {
     Loading.show({
       spinner: QSpinnerBall
     })
-    config.headers.authorization = `JWT ${localStorage.getItem('token')}`
+    config.headers.authorization = `Bearer ${auth.token}`
     return config
   })
 
@@ -27,7 +29,6 @@ export default boot(({ app }) => {
     Loading.hide()
     const methodsMessages = ['post', 'put', 'delete']
     if (methodsMessages.includes(response.config.method)) {
-      Loading.hide()
       Swal.fire({
         customClass: {
           container: 'my-swal'
@@ -43,18 +44,14 @@ export default boot(({ app }) => {
   }, (error) => {
     Loading.hide()
     const errors = Object.entries(error.response.data)
-    let str = ''
     if (error.response.status === 401) errors[0][1] = 'Usuario o contraseña inválidos.'
-    for (let i = 0; i < errors.length; i += 1) {
-      str += `${errors[i][1]} <br>`
-    }
+    router.push({ name: 'login' })
     Swal.fire({
       customClass: {
         container: 'my-swal'
       },
       title: '<strong>ADVERTENCIA<u></u></strong>',
       icon: 'error',
-      html: str,
       showCloseButton: true,
       focusConfirm: false,
       confirmButtonText:
