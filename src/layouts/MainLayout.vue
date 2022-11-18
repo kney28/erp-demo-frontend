@@ -27,7 +27,7 @@
           round
           dense
           icon="fas fa-sign-out-alt"
-          @click="logoutNotify"
+          @click="logout"
         />
       </q-toolbar>
     </q-header>
@@ -94,6 +94,8 @@
 import { defineComponent, ref } from 'vue'
 import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
+import { useAuthStore } from 'src/stores/auth'
+import { storeToRefs } from 'pinia'
 
 export default defineComponent({
   name: 'MainLayout',
@@ -102,7 +104,10 @@ export default defineComponent({
     const $q = useQuasar()
     const router = useRouter()
 
-    const logoutNotify = () => {
+    const auth = useAuthStore()
+    const { token } = storeToRefs(auth)
+
+    const logout = () => {
       $q.dialog({
         title: 'Confirmación',
         message: '¿Está seguro que desea cerrar sesión?',
@@ -115,14 +120,15 @@ export default defineComponent({
           color: 'negative'
         }
       }).onOk(() => {
-        localStorage.removeItem('token')
+        token.value = null
+        $q.cookies.remove('token')
         router.push({ name: 'login' })
       })
     }
 
     return {
       left,
-      logoutNotify
+      logout
     }
   }
 })

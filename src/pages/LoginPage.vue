@@ -36,7 +36,7 @@
             </div>
           </q-card-section>
           <q-card-section>
-            <q-form class="q-gutter-md" @submit="loginNotify">
+            <q-form class="q-gutter-md" @submit="login">
               <q-input filled v-model="username" label="Usuario" lazy-rules />
 
               <q-input
@@ -68,21 +68,32 @@
 import { defineComponent, ref, onMounted } from 'vue'
 import { useAuthStore } from 'src/stores/auth'
 import { useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
+import { api } from 'boot/axios'
+import { useQuasar } from 'quasar'
 
 export default defineComponent({
-  name: 'LoginUser',
+  name: 'LoginPage',
   setup () {
-    const router = useRouter()
-    const store = useAuthStore()
+    const $router = useRouter()
+    const $q = useQuasar()
     const username = ref(null)
     const password = ref(null)
+    const auth = useAuthStore()
+    const { token } = storeToRefs(auth)
 
-    const loginNotify = () => {
-      store.login({
+    const login = () => {
+      api.post('auth/login/', {
         username: username.value,
         password: password.value
-      }).then((status) => {
-        router.push({ name: 'home' })
+      }).then(({ data }) => {
+        $q.cookies.set('token', data.access_token)
+        token.value = data.access_token
+        $router.push({ name: 'index' })
+      }).catch(e => {
+        if (e) {
+          console.log(e)
+        }
       })
     }
 
@@ -197,7 +208,7 @@ export default defineComponent({
     return {
       username,
       password,
-      loginNotify
+      login
     }
   }
 })

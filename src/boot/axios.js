@@ -11,7 +11,7 @@ import { useAuthStore } from 'src/stores/auth'
 // "export default () => {}" function below (which runs individually
 // for each client)
 axios.defaults.baseURL = process.env.API // se obtiene de quasar.conf.js
-const api = axios.create({ baseURL: process.env.API })
+const api = axios.create({ baseURL: process.env.BASEURL })
 
 export default boot(({ app, store, router }) => {
   const auth = useAuthStore(store)

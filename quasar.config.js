@@ -56,22 +56,12 @@ module.exports = configure(function (ctx) {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#build
     build: {
-      scopeHoisting: true,
-      showProgress: true,
-      env: ctx.dev ? { // so on dev we'll have
-        API: 'http://127.0.0.1:3000/',
-        FILES: 'http://127.0.0.1:3000/'
-      }
-        : { // and on build (production):
-            API: '/',
-            FILES: '/'
-          },
       target: {
         browser: ['es2019', 'edge88', 'firefox78', 'chrome87', 'safari13.1'],
         node: 'node16'
       },
 
-      vueRouterMode: 'hash', // available values: 'hash', 'history'
+      vueRouterMode: 'history', // available values: 'hash', 'history'
       // vueRouterBase,
       // vueDevtools,
       // vueOptionsAPI: false,
@@ -80,7 +70,7 @@ module.exports = configure(function (ctx) {
 
       // publicPath: '/',
       // analyze: true,
-      // env: {},
+      env: require('dotenv').config().parsed,
       // rawDefine: {}
       // ignorePublicFolder: true,
       // minify: false,
@@ -122,7 +112,8 @@ module.exports = configure(function (ctx) {
       // directives: [],
       // Quasar plugins
       plugins: [
-        'Dialog'
+        'Dialog',
+        'Cookies'
       ]
     },
 
