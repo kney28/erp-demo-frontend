@@ -11,7 +11,7 @@
 const { configure } = require('quasar/wrappers')
 const path = require('path')
 
-module.exports = configure(function (/* ctx */) {
+module.exports = configure(function (ctx) {
   return {
     eslint: {
       // fix: true,
@@ -30,7 +30,8 @@ module.exports = configure(function (/* ctx */) {
     // https://v2.quasar.dev/quasar-cli/boot-files
     boot: [
       'i18n',
-      'axios'
+      'axios',
+      'sweetalert2'
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
@@ -60,7 +61,7 @@ module.exports = configure(function (/* ctx */) {
         node: 'node16'
       },
 
-      vueRouterMode: 'hash', // available values: 'hash', 'history'
+      vueRouterMode: 'history', // available values: 'hash', 'history'
       // vueRouterBase,
       // vueDevtools,
       // vueOptionsAPI: false,
@@ -69,7 +70,7 @@ module.exports = configure(function (/* ctx */) {
 
       // publicPath: '/',
       // analyze: true,
-      // env: {},
+      env: require('dotenv').config().parsed,
       // rawDefine: {}
       // ignorePublicFolder: true,
       // minify: false,
@@ -110,7 +111,10 @@ module.exports = configure(function (/* ctx */) {
       // components: [],
       // directives: [],
       // Quasar plugins
-      plugins: []
+      plugins: [
+        'Dialog',
+        'Cookies'
+      ]
     },
 
     // supportIE: true,

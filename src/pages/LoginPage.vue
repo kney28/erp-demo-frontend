@@ -36,14 +36,14 @@
             </div>
           </q-card-section>
           <q-card-section>
-            <q-form class="q-gutter-md" @submit="loginNotify">
-              <q-input filled v-model="username" label="Username" lazy-rules />
+            <q-form class="q-gutter-md" @submit="login">
+              <q-input filled v-model="username" label="Usuario" lazy-rules />
 
               <q-input
                 type="password"
                 filled
                 v-model="password"
-                label="Password"
+                label="Contraseña"
                 lazy-rules
               />
 
@@ -66,14 +66,35 @@
 <script>
 
 import { defineComponent, ref, onMounted } from 'vue'
-export default defineComponent({
-  name: 'LoginUser',
-  setup () {
-    const username = ref('admin')
-    const password = ref('Admin@CRM')
+import { useAuthStore } from 'src/stores/auth'
+import { useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
+import { api } from 'boot/axios'
+import { useQuasar } from 'quasar'
 
-    const loginNotify = () => {
-      window.open('#/')
+export default defineComponent({
+  name: 'LoginPage',
+  setup () {
+    const $router = useRouter()
+    const $q = useQuasar()
+    const username = ref(null)
+    const password = ref(null)
+    const auth = useAuthStore()
+    const { token } = storeToRefs(auth)
+
+    const login = () => {
+      api.post('auth/login/', {
+        username: username.value,
+        password: password.value
+      }).then(({ data }) => {
+        $q.cookies.set('token', data.access_token)
+        token.value = data.access_token
+        $router.push({ name: 'index' })
+      }).catch(e => {
+        if (e) {
+          console.log(e)
+        }
+      })
     }
 
     onMounted(() => {
@@ -187,7 +208,7 @@ export default defineComponent({
     return {
       username,
       password,
-      loginNotify
+      login
     }
   }
 })
