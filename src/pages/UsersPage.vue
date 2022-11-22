@@ -101,11 +101,12 @@
             </div>
           </div>
 
-          <div class="row justify-around">
-            <div v-if="!isEditing" class="col-md-5">
+          <div v-if="!isEditing" class="row justify-around">
+            <div class="col-md-5">
               <q-input
                 white
                 color="blue"
+                type="password"
                 v-model="password"
                 label="Contraseña *"
                 stack-label
@@ -113,11 +114,18 @@
                 :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
               />
             </div>
-            <div v-else class="col-md-5">
-              <q-toggle v-model="changePassword" label="Cambiar Contraseña"/>
-            </div>
             <div class="col-md-5">
-              <q-toggle v-model="active" label="Estado usuario"/>
+              <q-input
+                white
+                color="blue"
+                type="password"
+                v-model="confirmationPassword"
+                label="Repetir contraseña *"
+                stack-label
+                v-on:change="validatePassword()"
+                lazy-rules
+                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
+              />
             </div>
           </div>
 
@@ -125,6 +133,7 @@
             <div class="col-md-5">
               <q-input
                 white
+                type="password"
                 color="blue"
                 v-model="newPassword"
                 label="Contraseña *"
@@ -134,6 +143,28 @@
               />
             </div>
             <div class="col-md-5">
+              <q-input
+                white
+                type="password"
+                color="blue"
+                v-model="confirmationPassword"
+                label="Repetir contraseña *"
+                stack-label
+                v-on:change="validatePassword()"
+                lazy-rules
+                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
+              />
+            </div>
+          </div>
+
+          <div class="row justify-around">
+            <div class="col-md-5">
+              <q-toggle v-model="active" label="Estado usuario"/>
+            </div>
+            <div v-if="isEditing" class="col-md-5">
+              <q-toggle v-model="changePassword" label="Cambiar Contraseña"/>
+            </div>
+            <div v-else class="col-md-5">
             </div>
           </div>
         </q-form>
@@ -180,6 +211,7 @@ export default defineComponent({
     const username = ref(null)
     const password = ref(null)
     const name = ref(null)
+    const confirmationPassword = ref(null)
     const role = ref(null)
     const active = ref(false)
     const changePassword = ref(false)
@@ -224,9 +256,12 @@ export default defineComponent({
       newPassword.value = null
       role.value = null
       changePassword.value = false
+      confirmationPassword.value = null
+      isEditing.value = false
     }
 
     const onSubmit = () => {
+      validatePassword()
       myForm.value.validate().then(async success => {
         if (success) {
           api.post(path, {
@@ -256,6 +291,7 @@ export default defineComponent({
     }
 
     const onEditing = () => {
+      validatePassword()
       myForm.value.validate().then(async success => {
         if (success) {
           api.patch(path + '/' + id.value, {
@@ -292,6 +328,28 @@ export default defineComponent({
       })
     }
 
+    const validatePassword = () => {
+      if (isEditing.value) {
+        if (confirmationPassword.value !== newPassword.value) {
+          messagePassword()
+          newPassword.value = null
+        }
+      } else {
+        if (confirmationPassword.value !== password.value) {
+          messagePassword()
+          password.value = null
+        }
+      }
+    }
+
+    const messagePassword = () => {
+      $q.dialog({
+        title: 'Notificación',
+        message: '¡El campo de confirmación de contraseña no coincide!'
+      })
+      confirmationPassword.value = null
+    }
+
     return {
       username,
       dialog,
@@ -314,7 +372,10 @@ export default defineComponent({
       onEditing,
       id,
       newPassword,
-      onDelete
+      onDelete,
+      confirmationPassword,
+      validatePassword,
+      messagePassword
     }
   }
 })
