@@ -37,7 +37,12 @@
                   {{ props.row.legalnature }}
                 </q-td>
                 <q-td key="status" :props="props">
-                  {{ (props.row.status) ? 'Activo' : 'Inactivo' }}
+                  <template v-if="props.row.status === ACTIVE">
+                    {{ 'Activo' }}
+                  </template>
+                  <template v-else>
+                    {{ 'Inactivo' }}
+                  </template>
                 </q-td>
                 <q-td key="edit" :props="props">
                   <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
@@ -55,7 +60,7 @@
       </q-inner-loading>
     </div>
     <q-dialog v-model="dialog" persistent>
-    <q-card style="width: 700px; max-width: 80vw;">
+    <q-card style="width: 800px; max-width: 80vw;">
       <q-linear-progress :value="10" color="blue" />
 
       <q-card-section class="row items-center">
@@ -74,22 +79,67 @@
       <q-card-section>
         <q-form ref="myForm" @submit.prevent="">
           <div class="row justify-around">
-            <div class="col-md-5">
+            <div class="col-md-3">
+              <q-select
+                white
+                color="blue"
+                v-model="documenttype"
+                label="Tipo documento *"
+                lazy-rules
+                :options="documentsTypes"
+                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
+              />
+            </div>
+            <div class="col-md-3">
               <q-input
                 white
                 color="blue"
-                v-model="username"
-                label="Usuario *"
+                v-model="document"
+                label="Documento *"
+                stack-label
                 lazy-rules
                 :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
               />
             </div>
-            <div class="col-md-5">
+            <div class="col-md-3">
+              <q-select
+                white
+                color="blue"
+                v-model="legalnature"
+                label="Naturaleza *"
+                lazy-rules
+                :options="naturals"
+                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
+              />
+            </div>
+          </div>
+
+          <div class="row justify-around">
+            <div class="col-md-3">
               <q-input
                 white
                 color="blue"
-                v-model="role"
-                label="Rol *"
+                v-model="firstname"
+                label="Primer nombre *"
+                lazy-rules
+                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
+              />
+            </div>
+            <div class="col-md-3">
+              <q-input
+                white
+                color="blue"
+                v-model="secondname"
+                label="Segundo nombre"
+                stack-label
+              />
+            </div>
+            <div class="col-md-3">
+              <q-input
+                white
+                color="blue"
+                v-model="firstsurname"
+                label="Primer apellido *"
                 stack-label
                 lazy-rules
                 :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
@@ -98,82 +148,35 @@
           </div>
 
           <div class="row justify-around">
-            <div class="col-md-11">
+            <div class="col-md-3">
               <q-input
                 white
                 color="blue"
-                v-model="name"
-                label="Nombre completo *"
-                lazy-rules
-                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
+                v-model="secondsurname"
+                label="Segundo apellido"
+                stack-label
               />
             </div>
-          </div>
-
-          <div v-if="!isEditing" class="row justify-around">
-            <div class="col-md-5">
+            <div v-if="documenttype === 'NIT'" class="col-md-7">
               <q-input
                 white
                 color="blue"
-                type="password"
-                v-model="password"
-                label="Contraseña *"
+                v-model="socialreason"
+                label="Razón social"
                 stack-label
-                lazy-rules
-                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
               />
             </div>
-            <div class="col-md-5">
-              <q-input
-                white
-                color="blue"
-                type="password"
-                v-model="confirmationPassword"
-                label="Repetir contraseña *"
-                stack-label
-                v-on:change="validatePassword()"
-                lazy-rules
-                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
-              />
-            </div>
-          </div>
-
-          <div v-if="changePassword" class="row justify-around">
-            <div class="col-md-5">
-              <q-input
-                white
-                type="password"
-                color="blue"
-                v-model="newPassword"
-                label="Contraseña *"
-                stack-label
-                lazy-rules
-                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
-              />
-            </div>
-            <div class="col-md-5">
-              <q-input
-                white
-                type="password"
-                color="blue"
-                v-model="confirmationPassword"
-                label="Repetir contraseña *"
-                stack-label
-                v-on:change="validatePassword()"
-                lazy-rules
-                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
-              />
+            <div v-else class="col-md-7">
             </div>
           </div>
 
           <div class="row justify-around">
-            <div class="col-md-5">
-              <q-toggle v-model="active" label="Estado usuario"/>
+            <div class="col-md-3">
             </div>
-            <div v-if="isEditing" class="col-md-5">
-              <q-toggle v-model="changePassword" label="Cambiar Contraseña"/>
+            <div class="col-md-3">
+              <q-toggle v-model="active" label="Estado tercero"/>
             </div>
-            <div v-else class="col-md-5">
+            <div class="col-md-3">
             </div>
           </div>
         </q-form>
@@ -207,6 +210,7 @@
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
+import { ACTIVE, INACTIVE, DOCUMENTTYPE, NATURAL } from '../constants/Constants'
 
 export default defineComponent({
   name: 'ThirdsPage',
@@ -223,9 +227,12 @@ export default defineComponent({
     const secondsurname = ref(null)
     const dialog = ref(false)
     const visible = ref(false)
+    const active = ref(false)
     const id = ref(null)
     const filter = ref(null)
     const dataThird = ref([])
+    const documentsTypes = ref(DOCUMENTTYPE)
+    const naturals = ref(NATURAL)
     const myForm = ref(null)
     const $q = useQuasar()
     const pagination = ref({
@@ -261,16 +268,33 @@ export default defineComponent({
     }
 
     const onReset = () => {
-      // active.value = false
+      active.value = false
       isEditing.value = false
+      documenttype.value = null
+      document.value = null
+      firstname.value = null
+      secondname.value = null
+      firstsurname.value = null
+      secondsurname.value = null
+      legalnature.value = null
+      socialreason.value = null
+      status.value = null
     }
 
     const onSubmit = () => {
       myForm.value.validate().then(async success => {
         if (success) {
           api.post(path, {
-            // password: password.value,
-            // active: active.value
+            documenttype: documenttype.value,
+            document: document.value,
+            firstname: firstname.value,
+            secondname: secondname.value,
+            firstsurname: firstsurname.value,
+            secondsurname: secondsurname.value,
+            legalnature: legalnature.value,
+            socialreason: socialreason.value,
+            status: active.value ? ACTIVE : INACTIVE,
+            verificationcode: 0
           }).then(() => {
             dialog.value = false
             getThirds()
@@ -284,13 +308,32 @@ export default defineComponent({
       dialog.value = true
       isEditing.value = true
       id.value = row.id
+      documenttype.value = row.documenttype
+      document.value = row.document
+      firstname.value = row.firstname
+      secondname.value = row.secondname
+      firstsurname.value = row.firstsurname
+      secondsurname.value = row.secondsurname
+      legalnature.value = row.legalnature
+      socialreason.value = row.socialreason
+      if (row.status === ACTIVE) {
+        active.value = true
+      }
     }
 
     const onEditing = () => {
       myForm.value.validate().then(async success => {
         if (success) {
           api.patch(path + '/' + id.value, {
-            // active: active.value
+            documenttype: documenttype.value,
+            document: document.value,
+            firstname: firstname.value,
+            secondname: secondname.value,
+            firstsurname: firstsurname.value,
+            secondsurname: secondsurname.value,
+            legalnature: legalnature.value,
+            socialreason: socialreason.value,
+            status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
             getThirds()
@@ -343,7 +386,10 @@ export default defineComponent({
       firstname,
       secondname,
       firstsurname,
-      secondsurname
+      secondsurname,
+      active,
+      naturals,
+      documentsTypes
     }
   }
 })
