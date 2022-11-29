@@ -4,6 +4,7 @@ export const NIT = 'NIT'
 export const DOCUMENTTYPE = [
   'Cédula de ciudadanía',
   'Cédula de extranjería',
+  'Tarjeta de extranjería',
   'Tarjeta de identidad',
   'Pasaporte',
   'NIT'

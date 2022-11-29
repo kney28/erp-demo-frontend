@@ -94,6 +94,7 @@
               <q-input
                 white
                 color="blue"
+                :readonly="isEditing"
                 v-model="document"
                 label="Documento *"
                 stack-label
