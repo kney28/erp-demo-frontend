@@ -56,7 +56,7 @@
             <q-list padding>
               <q-item
                 active-class="tab-active"
-                to="/home"
+                to="/"
                 exact
                 class="q-ma-sm navigation-item"
                 clickable
@@ -68,6 +68,22 @@
 
                 <q-item-section>
                   Inicio
+                </q-item-section>
+              </q-item>
+              <q-item
+                active-class="tab-active"
+                to="/users"
+                exact
+                class="q-ma-sm navigation-item"
+                clickable
+                v-ripple
+              >
+                <q-item-section avatar>
+                  <q-icon name="person" />
+                </q-item-section>
+
+                <q-item-section>
+                  Usuarios
                 </q-item-section>
               </q-item>
             </q-list>
