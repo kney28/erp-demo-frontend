@@ -2,14 +2,14 @@ export const ACTIVE = 'active'
 export const INACTIVE = 'inactive'
 export const NIT = 'NIT'
 export const DOCUMENTTYPE = [
-  'Cédula de ciudadanía',
-  'Cédula de extranjería',
-  'Tarjeta de extranjería',
-  'Tarjeta de identidad',
-  'Pasaporte',
-  'NIT'
+  { id: 'citizenship_card', description: 'Cédula de ciudadanía' },
+  { id: 'foregner_ID', description: 'Cédula de extranjería' },
+  { id: 'foreign_card', description: 'Tarjeta de extranjería' },
+  { id: 'identity_card', description: 'Tarjeta de identidad' },
+  { id: 'passport', description: 'Pasaporte' },
+  { id: 'NIT', description: 'NIT' }
 ]
 export const NATURAL = [
-  'Legal',
-  'Natural'
+  { id: 'legal', description: 'Legal' },
+  { id: 'natural', description: 'Natural' }
 ]

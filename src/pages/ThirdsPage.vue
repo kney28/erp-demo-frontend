@@ -85,9 +85,16 @@
                 color="blue"
                 v-model="documenttype"
                 label="Tipo documento *"
-                lazy-rules
+                option-label="description"
+                option-value="id"
                 :options="documentsTypes"
-                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
+                stack-label
+                use-input
+                input-debounce="0"
+                emit-value
+                map-options
+                lazy-rules
+                :rules="[ val => !!val || 'El campo es obligatorio']"
               />
             </div>
             <div class="col-md-3">
@@ -98,8 +105,7 @@
                 v-model="document"
                 label="Documento *"
                 stack-label
-                lazy-rules
-                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
+                :rules="[ val => !!val || 'El campo es obligatorio']"
               />
             </div>
             <div class="col-md-3">
@@ -109,16 +115,24 @@
                 v-model="legalnature"
                 label="Naturaleza *"
                 lazy-rules
+                option-label="description"
+                option-value="id"
                 :options="naturals"
-                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
+                use-input
+                input-debounce="0"
+                emit-value
+                stack-label
+                map-options
+                :rules="[ val => !!val || 'El campo es obligatorio']"
               />
             </div>
           </div>
 
           <div class="row justify-around">
-            <div class="col-md-3">
+            <div v-if="documenttype !== 'NIT'" class="col-md-3">
               <q-input
                 white
+                stack-label
                 color="blue"
                 v-model="firstname"
                 label="Primer nombre *"
@@ -126,7 +140,7 @@
                 :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
               />
             </div>
-            <div class="col-md-3">
+            <div v-if="documenttype !== 'NIT'" class="col-md-3">
               <q-input
                 white
                 color="blue"
@@ -135,7 +149,7 @@
                 stack-label
               />
             </div>
-            <div class="col-md-3">
+            <div v-if="documenttype !== 'NIT'" class="col-md-3">
               <q-input
                 white
                 color="blue"
@@ -149,7 +163,7 @@
           </div>
 
           <div class="row justify-around">
-            <div class="col-md-3">
+            <div v-if="documenttype !== 'NIT'" class="col-md-3">
               <q-input
                 white
                 color="blue"
@@ -165,11 +179,32 @@
                 v-model="socialreason"
                 label="Razón social"
                 stack-label
+                lazy-rules
+                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
               />
             </div>
             <div v-else class="col-md-7">
+              <label style="color: gray" class="q-mr-xs q-mb-md">Nombre completo:</label>
+              <br>
+              <div style="display: inline-block;">
+                {{firstname ? firstname + ' ' : ''}}{{secondname ? secondname + ' ' : ''}}
+                {{firstsurname ? firstsurname + ' ' : ''}}{{secondsurname ? secondsurname : ''}}
+              </div>
             </div>
           </div>
+          <br>
+
+          <div v-if="documenttype === 'NIT'" class="row justify-around">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-2">
+              <label style="color: gray" class="q-mr-xs q-mb-md">Nombre completo:</label>
+            </div>
+            <div class="col-md-6">
+              <div style="display: inline-block;">{{socialreason}}</div>
+            </div>
+          </div>
+          <br>
 
           <div class="row justify-around">
             <div class="col-md-3">
@@ -346,7 +381,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar al usuario: ' + row.username + '?',
+        message: '¿Está seguro que desea eliminar el tercero con documento: ' + row.document + '?',
         ok: {
           label: 'Si',
           color: 'positive'
