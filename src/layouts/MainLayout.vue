@@ -70,38 +70,80 @@
                   Inicio
                 </q-item-section>
               </q-item>
-              <q-item
+              <q-expansion-item
+                expand-separator
+                icon="settings"
+                label="Configuración">
+                <q-item
                 active-class="tab-active"
                 to="/users"
                 exact
                 class="q-ma-sm navigation-item"
                 clickable
                 v-ripple
-              >
-                <q-item-section avatar>
-                  <q-icon name="person" />
-                </q-item-section>
+                >
+                  <q-item-section avatar>
+                    <q-icon name="person" />
+                  </q-item-section>
 
-                <q-item-section>
-                  Usuarios
-                </q-item-section>
-              </q-item>
-              <q-item
+                  <q-item-section>
+                    Usuarios
+                  </q-item-section>
+                </q-item>
+                <q-item
+                  active-class="tab-active"
+                  to="/thirds"
+                  exact
+                  class="q-ma-sm navigation-item"
+                  clickable
+                  v-ripple
+                >
+                  <q-item-section avatar>
+                    <q-icon name="group" />
+                  </q-item-section>
+
+                  <q-item-section>
+                    Terceros
+                  </q-item-section>
+                </q-item>
+              </q-expansion-item>
+              <q-expansion-item
+                expand-separator
+                icon="settings"
+                label="Contabilidad">
+                <q-item
                 active-class="tab-active"
-                to="/thirds"
+                to="/users"
                 exact
                 class="q-ma-sm navigation-item"
                 clickable
                 v-ripple
-              >
-                <q-item-section avatar>
-                  <q-icon name="group" />
-                </q-item-section>
+                >
+                  <q-item-section avatar>
+                    <q-icon name="person" />
+                  </q-item-section>
 
-                <q-item-section>
-                  Terceros
-                </q-item-section>
-              </q-item>
+                  <q-item-section>
+                    Usuarios
+                  </q-item-section>
+                </q-item>
+                <q-item
+                  active-class="tab-active"
+                  to="/thirds"
+                  exact
+                  class="q-ma-sm navigation-item"
+                  clickable
+                  v-ripple
+                >
+                  <q-item-section avatar>
+                    <q-icon name="group" />
+                  </q-item-section>
+
+                  <q-item-section>
+                    Terceros
+                  </q-item-section>
+                </q-item>
+              </q-expansion-item>
             </q-list>
           </q-scroll-area>
         </div>
