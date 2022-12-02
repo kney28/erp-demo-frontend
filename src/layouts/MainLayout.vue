@@ -31,42 +31,25 @@
         />
       </q-toolbar>
       <br>
-      <!-- <q-separator /> -->
-      <!-- <q-toolbar class="bg-grey-3">
+      <q-separator />
+      <q-toolbar class="bg-grey-3">
         <q-tabs class="text-grey"
           active-color="primary"
           indicator-color="grey"
-          v-model="tabs"
           shrink
           stretch
           align="justify"
           shadow-2
           narrow-indicator
           >
-          <q-route-tab v-for="tab in tabs" :key="tab.name" v-bind="tab"
-            label:tab.label
-            to:tab.url
+          <q-route-tab v-for="(tab, id) in tabsDefinition" :label="tab.title" :key="id" v-bind="tab"
+            :to="tab.url"
             exact
           >
-            <q-btn icon="close" size="xs" flat round dense @click="onClose()" />
+            <q-btn icon="close" size="xs" flat round dense @click="onClose(id)" />
           </q-route-tab>
-            <q-route-tab
-              label="Terceros"
-              to="/thirds"
-              exact
-            >
-              <q-btn icon="close" size="xs" flat round dense @click="onClose()" />
-            </q-route-tab>
-
-            <q-route-tab
-              label="Usuarios"
-              to="/users"
-              exact
-            >
-              <q-btn icon="close" size="xs" flat round dense @click="onClose()" />
-            </q-route-tab>
         </q-tabs>
-      </q-toolbar> -->
+      </q-toolbar>
     </q-header>
     <q-drawer
       class="left-navigation text-white"
@@ -83,7 +66,7 @@
         <div style="height: calc(100% - 117px);padding:10px;">
           <q-toolbar>
             <q-avatar>
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+              <img src="https://cdn.quasar.dev/img/boy-avatar.png" alt="icon"/>
             </q-avatar>
 
             <q-toolbar-title>Menú Principal</q-toolbar-title>
@@ -92,6 +75,7 @@
           <q-scroll-area style="height:100%;">
             <q-list padding>
               <q-item
+                @click="setTabSelected('/', 'Inicio')"
                 active-class="tab-active"
                 to="/"
                 exact
@@ -112,6 +96,7 @@
                 icon="settings"
                 label="Configuración general">
                 <q-item
+                  @click="setTabSelected('/profiles', 'Perfiles')"
                   active-class="tab-active"
                   to="/profiles"
                   exact
@@ -128,8 +113,9 @@
                   </q-item-section>
                 </q-item>
                 <q-item
-                  active-class="tab-active"
+                  @click="setTabSelected('/users', 'Usuarios')"
                   to="/users"
+                  active-class="tab-active"
                   exact
                   class="q-ma-sm navigation-item"
                   clickable
@@ -144,6 +130,7 @@
                   </q-item-section>
                 </q-item>
                 <q-item
+                  @click="setTabSelected('/countries', 'Países')"
                   active-class="tab-active"
                   to="/countries"
                   exact
@@ -160,6 +147,7 @@
                   </q-item-section>
                 </q-item>
                 <q-item
+                  @click="setTabSelected('/departments', 'Departamentos')"
                   active-class="tab-active"
                   to="/departments"
                   exact
@@ -176,6 +164,7 @@
                   </q-item-section>
                 </q-item>
                 <q-item
+                  @click="setTabSelected('/municipalities', 'Municipios')"
                   active-class="tab-active"
                   to="/municipalities"
                   exact
@@ -192,6 +181,7 @@
                   </q-item-section>
                 </q-item>
                 <q-item
+                  @click="setTabSelected('/neighborhoods', 'Barrios')"
                   active-class="tab-active"
                   to="/neighborhoods"
                   exact
@@ -208,6 +198,7 @@
                   </q-item-section>
                 </q-item>
                 <q-item
+                  @click="setTabSelected('/thirds', 'Terceros')"
                   active-class="tab-active"
                   to="/thirds"
                   exact
@@ -224,6 +215,7 @@
                   </q-item-section>
                 </q-item>
                 <q-item
+                  @click="setTabSelected('/validities', 'Vigencias')"
                   active-class="tab-active"
                   to="/validities"
                   exact
@@ -240,6 +232,7 @@
                   </q-item-section>
                 </q-item>
                 <q-item
+                  @click="setTabSelected('/companies', 'Compañias')"
                   active-class="tab-active"
                   to="/companies"
                   exact
@@ -256,6 +249,7 @@
                   </q-item-section>
                 </q-item>
                 <q-item
+                  @click="setTabSelected('/changePasswords', 'Cambiar de contraseña')"
                   active-class="tab-active"
                   to="/changePasswords"
                   exact
@@ -277,6 +271,7 @@
                 icon="sync_alt"
                 label="Log de auditoría">
                 <q-item
+                  @click="setTabSelected('/logsChangePasswords', 'Cambios de contraseña')"
                   active-class="tab-active"
                   to="/logsChangePasswords"
                   exact
@@ -292,7 +287,9 @@
                     Cambios de contraseña
                   </q-item-section>
                 </q-item>
+
                 <q-item
+                  @click="setTabSelected('/logsAudits', 'Logs de auditoría')"
                   active-class="tab-active"
                   to="/logsAudits"
                   exact
@@ -308,6 +305,7 @@
                     Logs de auditoria
                   </q-item-section>
                 </q-item>
+
                 </q-expansion-item>
               </q-expansion-item>
 
@@ -428,8 +426,7 @@ export default defineComponent({
     const left = ref(false)
     const $q = useQuasar()
     const router = useRouter()
-    // const tabsDefinition = []
-    // const tabs = ref(tabsDefinition.slice(0, 1))
+    const tabsDefinition = ref([])
 
     const auth = useAuthStore()
     const { token } = storeToRefs(auth)
@@ -453,24 +450,23 @@ export default defineComponent({
       })
     }
 
-    // const onClose = () => {
-    //   console.log('Prueba')
-    // }
+    const setTabSelected = (urls, titles) => {
+      tabsDefinition.value.push({
+        url: urls,
+        title: titles
+      })
+    }
 
-    // const setTabSelected = (url, title) => {
-    //   console.log(url)
-    //   console.log(title)
-    //   tabs.value.push({ to: url, label: title, name: title })
-    //   console.log(tabs.value)
-    // }
+    const onClose = (id) => {
+      tabsDefinition.value.splice(id, 1)
+    }
 
     return {
       left,
-      logout
-      // tabs,
-      // onClose,
-      // tabsDefinition.
-      // setTabSelected
+      logout,
+      onClose,
+      tabsDefinition,
+      setTabSelected
     }
   }
 })
@@ -478,7 +474,7 @@ export default defineComponent({
 
 <style>
 .q-drawer {
-  /*background-image: url(https://demos.creative-tim.com/vue-material-dashboard/img/sidebar-2.32103624.jpg) !important;*/
+  /* background-image: url(https://demos.creative-tim.com/vue-material-dashboard/img/sidebar-2.32103624.jpg) !important; */
   background-image: url("/images/lake.jpg") !important;
   background-size: cover !important;
 }
