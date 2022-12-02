@@ -193,39 +193,18 @@
                 </q-item>
                 <q-item
                   active-class="tab-active"
-                  to="/thirds"
+                  to="/neighborhoods"
                   exact
                   class="q-ma-sm navigation-item"
                   clickable
                   v-ripple
                 >
                   <q-item-section avatar>
-                    <q-icon name="group" />
+                    <q-icon name="home_work" />
                   </q-item-section>
 
                   <q-item-section>
-                    Terceros
-                  </q-item-section>
-                </q-item>
-              </q-expansion-item>
-              <q-expansion-item
-                expand-separator
-                icon="settings"
-                label="Contabilidad">
-                <q-item
-                active-class="tab-active"
-                to="/users"
-                exact
-                class="q-ma-sm navigation-item"
-                clickable
-                v-ripple
-                >
-                  <q-item-section avatar>
-                    <q-icon name="person" />
-                  </q-item-section>
-
-                  <q-item-section>
-                    Usuarios
+                    Barrios
                   </q-item-section>
                 </q-item>
                 <q-item
@@ -244,7 +223,178 @@
                     Terceros
                   </q-item-section>
                 </q-item>
+                <q-item
+                  active-class="tab-active"
+                  to="/validities"
+                  exact
+                  class="q-ma-sm navigation-item"
+                  clickable
+                  v-ripple
+                >
+                  <q-item-section avatar>
+                    <q-icon name="verified_user" />
+                  </q-item-section>
+
+                  <q-item-section>
+                    Vigencias
+                  </q-item-section>
+                </q-item>
+                <q-item
+                  active-class="tab-active"
+                  to="/companies"
+                  exact
+                  class="q-ma-sm navigation-item"
+                  clickable
+                  v-ripple
+                >
+                  <q-item-section avatar>
+                    <q-icon name="store" />
+                  </q-item-section>
+
+                  <q-item-section>
+                    Compañias
+                  </q-item-section>
+                </q-item>
+                <q-item
+                  active-class="tab-active"
+                  to="/changePasswords"
+                  exact
+                  class="q-ma-sm navigation-item"
+                  clickable
+                  v-ripple
+                >
+                  <q-item-section avatar>
+                    <q-icon name="change_circle" />
+                  </q-item-section>
+
+                  <q-item-section>
+                    Cambiar de contraseña
+                  </q-item-section>
+                </q-item>
+
+                <q-expansion-item
+                expand-separator
+                icon="sync_alt"
+                label="Log de auditoría">
+                <q-item
+                  active-class="tab-active"
+                  to="/logsChangePasswords"
+                  exact
+                  class="q-ma-sm navigation-item"
+                  clickable
+                  v-ripple
+                >
+                  <q-item-section avatar>
+                    <q-icon name="published_with_changes" />
+                  </q-item-section>
+
+                  <q-item-section>
+                    Cambios de contraseña
+                  </q-item-section>
+                </q-item>
+                <q-item
+                  active-class="tab-active"
+                  to="/logsAudits"
+                  exact
+                  class="q-ma-sm navigation-item"
+                  clickable
+                  v-ripple
+                >
+                  <q-item-section avatar>
+                    <q-icon name="history" />
+                  </q-item-section>
+
+                  <q-item-section>
+                    Logs de auditoria
+                  </q-item-section>
+                </q-item>
+                </q-expansion-item>
               </q-expansion-item>
+
+              <q-expansion-item
+                expand-separator
+                icon="receipt_long"
+                label="Contabilidad">
+              </q-expansion-item>
+
+              <q-expansion-item
+                expand-separator
+                icon="real_estate_agent"
+                label="Bienes">
+              </q-expansion-item>
+
+              <q-expansion-item
+                expand-separator
+                icon="price_check"
+                label="Ingresos">
+              </q-expansion-item>
+
+              <q-expansion-item
+                expand-separator
+                icon="medical_services"
+                label="Citas médicas">
+              </q-expansion-item>
+
+              <q-expansion-item
+                expand-separator
+                icon="contact_mail"
+                label="Contratación">
+              </q-expansion-item>
+
+              <q-expansion-item
+                expand-separator
+                icon="credit_card"
+                label="Facturación">
+              </q-expansion-item>
+
+              <q-expansion-item
+                expand-separator
+                icon="description"
+                label="Historias clínicas">
+              </q-expansion-item>
+
+              <q-expansion-item
+                expand-separator
+                icon="medication_liquid"
+                label="Hospitalización">
+              </q-expansion-item>
+
+              <q-expansion-item
+                expand-separator
+                icon="calculate"
+                label="Nómina">
+              </q-expansion-item>
+
+              <q-expansion-item
+                expand-separator
+                icon="shopping_cart"
+                label="Presupuesto">
+              </q-expansion-item>
+
+              <q-expansion-item
+                expand-separator
+                icon="checklist"
+                label="Tesorería">
+              </q-expansion-item>
+
+              <q-expansion-item
+                expand-separator
+                icon="inventory"
+                label="Inventarios">
+              </q-expansion-item>
+
+              <q-expansion-item
+                expand-separator
+                icon="work"
+                label="Cuentas por cobrar">
+              </q-expansion-item>
+
+              <q-expansion-item
+                expand-separator
+                icon="payments"
+                label="Cuentas por pagar">
+              </q-expansion-item>
+
             </q-list>
           </q-scroll-area>
         </div>
@@ -304,11 +454,10 @@ export default defineComponent({
     }
 
     // const onClose = () => {
-    //   console.log('Holiii')
+    //   console.log('Prueba')
     // }
 
     // const setTabSelected = (url, title) => {
-    //   console.log('Holass')
     //   console.log(url)
     //   console.log(title)
     //   tabs.value.push({ to: url, label: title, name: title })

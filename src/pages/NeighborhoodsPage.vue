@@ -4,7 +4,7 @@
       <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
         <div>
           <q-space />
-          <q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Usuarios" :rows="dataCountry" :filter="filter" :columns="columns" row-key="name" >
+          <q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Usuarios" :rows="dataNeighborhoods" :filter="filter" :columns="columns" row-key="name" >
             <template v-slot:top-left>
               <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
               <q-space />
@@ -21,11 +21,19 @@
                 <q-td key="code" :props="props">
                   {{ props.row.code }}
                 </q-td>
-                <q-td key="departments" :props="props">
-                  {{ props.row.departments }}
-                </q-td>
                 <q-td key="description" :props="props">
                   {{ props.row.description }}
+                </q-td>
+                <q-td key="municipality" :props="props">
+                  {{ props.row.municipality }}
+                </q-td>
+                <q-td key="status" :props="props">
+                  <template v-if="props.row.status === ACTIVE">
+                    {{ 'Activo' }}
+                  </template>
+                  <template v-else>
+                    {{ 'Inactivo' }}
+                  </template>
                 </q-td>
                 <q-td key="edit" :props="props">
                   <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
@@ -43,7 +51,7 @@
       </q-inner-loading>
     </div>
     <q-dialog v-model="dialog" persistent>
-    <q-card style="width: 700px; max-width: 80vw;">
+    <q-card style="width: 800px; max-width: 80vw;">
       <q-linear-progress :value="10" color="blue" />
 
       <q-card-section class="row items-center">
@@ -62,49 +70,48 @@
       <q-card-section>
         <q-form ref="myForm" @submit.prevent="">
           <div class="row justify-around">
-            <div class="col-md-5">
+            <div class="col-md-3">
               <q-input
                 white
                 color="blue"
                 v-model="code"
                 label="Código *"
+                stack-label
                 lazy-rules
                 :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
               />
             </div>
-            <div class="col-md-5">
+            <div class="col-md-3">
               <q-input
                 white
                 color="blue"
                 v-model="description"
-                label="País *"
+                label="Descripción *"
                 stack-label
                 lazy-rules
+                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
+              />
+            </div>
+            <div class="col-md-3">
+              <q-select
+                white
+                color="blue"
+                v-model="municipality"
+                label="Municipio *"
+                lazy-rules
+                :options="municipalities"
                 :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
               />
             </div>
           </div>
 
           <div class="row justify-around">
-            <div class="col-md-5">
-              <q-input
-                white
-                color="blue"
-                v-model="code"
-                label="Departamento *"
-                lazy-rules
-                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
-              />
+            <div class="col-md-3">
             </div>
-            <div class="col-md-5">
-              <q-input
-                white
-                color="blue"
-                v-model="code"
-                label="Municipio *"
-                lazy-rules
-                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
-              />
+            <div class="col-md-3">
+              <q-toggle v-model="active" label="Estado barrio"/>
+            </div>
+            <div class="col-md-3">
             </div>
           </div>
         </q-form>
@@ -138,21 +145,23 @@
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
+import { ACTIVE, INACTIVE, NATURAL } from '../constants/Constants'
 
 export default defineComponent({
-  name: 'MunicipalityPage',
+  name: 'NeighborhoodsPage',
   setup () {
-    const path = '/users'
-    const dialog = ref(false)
-    const visible = ref(false)
-    const id = ref(null)
-    const filter = ref(null)
-    const dataCountry = ref([])
+    const path = '/neighborhoods'
     const description = ref(null)
     const code = ref(null)
-    const name = ref(null)
-    const role = ref(null)
+    const municipality = ref(null)
+    const status = ref(null)
+    const dialog = ref(false)
+    const visible = ref(false)
     const active = ref(false)
+    const id = ref(null)
+    const filter = ref(null)
+    const dataNeighborhoods = ref([])
+    const municipalities = ref(NATURAL)
     const myForm = ref(null)
     const $q = useQuasar()
     const pagination = ref({
@@ -162,32 +171,37 @@ export default defineComponent({
     const isEditing = ref(false)
     const columns = ref([
       { name: 'code', align: 'center', label: 'Código', field: 'code', sortable: true },
-      { name: 'departments', align: 'center', label: 'Departamento', field: 'departments', sortable: true },
-      { name: 'description', align: 'center', label: 'Municipio', field: 'description', sortable: true },
+      { name: 'description', align: 'center', label: 'Descripción', field: 'description', sortable: true },
+      { name: 'fullname', align: 'center', label: 'Municipio', field: 'fullname', sortable: true },
+      { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
 
     onMounted(() => {
-      getCountries()
+      getNeighborhoods()
     })
 
-    const getCountries = async () => {
+    const getNeighborhoods = async () => {
       visible.value = true
       const { data } = await api.get(path)
-      dataCountry.value = data
+      dataNeighborhoods.value = data
       visible.value = false
     }
 
     const creating = () => {
       onReset()
       dialog.value = true
+      active.value = true
     }
 
     const onReset = () => {
-      description.value = null
-      code.value = null
+      active.value = false
       isEditing.value = false
+      code.value = null
+      description.value = null
+      municipality.value = null
+      status.value = null
     }
 
     const onSubmit = () => {
@@ -195,10 +209,13 @@ export default defineComponent({
         if (success) {
           api.post(path, {
             code: code.value,
-            description: description.value
+            description: description.value,
+            municipality: municipality.value,
+            status: active.value ? ACTIVE : INACTIVE,
+            verificationcode: 0
           }).then(() => {
             dialog.value = false
-            getCountries()
+            getNeighborhoods()
           })
         }
       })
@@ -210,7 +227,11 @@ export default defineComponent({
       isEditing.value = true
       id.value = row.id
       code.value = row.code
-      description.value = row.role
+      description.value = row.description
+      municipality.value = row.municipality
+      if (row.status === ACTIVE) {
+        active.value = true
+      }
     }
 
     const onEditing = () => {
@@ -218,10 +239,12 @@ export default defineComponent({
         if (success) {
           api.patch(path + '/' + id.value, {
             code: code.value,
-            description: description.value
+            description: description.value,
+            municipality: municipality.value,
+            status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getCountries()
+            getNeighborhoods()
           })
         }
       })
@@ -230,7 +253,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar este registro: ' + row.description + '?',
+        message: '¿Está seguro que desea eliminar al usuario: ' + row.username + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -242,31 +265,33 @@ export default defineComponent({
       }).onOk(() => {
         api.delete(path + '/' + row.id).then(response => {
           dialog.value = false
-          getCountries()
+          getNeighborhoods()
         })
       })
     }
 
     return {
       dialog,
-      dataCountry,
+      dataNeighborhoods,
       isEditing,
-      name,
-      role,
-      active,
       myForm,
       pagination,
       creating,
       columns,
       visible,
       filter,
-      code,
       onReset,
       onSubmit,
       editing,
       onEditing,
       id,
-      onDelete
+      onDelete,
+      description,
+      code,
+      municipality,
+      status,
+      active,
+      municipalities
     }
   }
 })

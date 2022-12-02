@@ -18,14 +18,8 @@
             </template>
             <template v-slot:body="props">
               <q-tr :props="props">
-                <q-td key="code" :props="props">
-                  {{ props.row.code }}
-                </q-td>
-                <q-td key="departments" :props="props">
-                  {{ props.row.departments }}
-                </q-td>
-                <q-td key="description" :props="props">
-                  {{ props.row.description }}
+                <q-td key="company" :props="props">
+                  {{ props.row.company }}
                 </q-td>
                 <q-td key="edit" :props="props">
                   <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
@@ -67,44 +61,12 @@
                 white
                 color="blue"
                 v-model="code"
-                label="Código *"
+                label="Compañía *"
                 lazy-rules
                 :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
               />
             </div>
             <div class="col-md-5">
-              <q-input
-                white
-                color="blue"
-                v-model="description"
-                label="País *"
-                stack-label
-                lazy-rules
-                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
-              />
-            </div>
-          </div>
-
-          <div class="row justify-around">
-            <div class="col-md-5">
-              <q-input
-                white
-                color="blue"
-                v-model="code"
-                label="Departamento *"
-                lazy-rules
-                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
-              />
-            </div>
-            <div class="col-md-5">
-              <q-input
-                white
-                color="blue"
-                v-model="code"
-                label="Municipio *"
-                lazy-rules
-                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
-              />
             </div>
           </div>
         </q-form>
@@ -140,7 +102,7 @@ import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
 
 export default defineComponent({
-  name: 'MunicipalityPage',
+  name: 'CompanyPage',
   setup () {
     const path = '/users'
     const dialog = ref(false)
@@ -161,9 +123,7 @@ export default defineComponent({
     })
     const isEditing = ref(false)
     const columns = ref([
-      { name: 'code', align: 'center', label: 'Código', field: 'code', sortable: true },
-      { name: 'departments', align: 'center', label: 'Departamento', field: 'departments', sortable: true },
-      { name: 'description', align: 'center', label: 'Municipio', field: 'description', sortable: true },
+      { name: 'company', align: 'center', label: 'Vigencia', field: 'company', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
