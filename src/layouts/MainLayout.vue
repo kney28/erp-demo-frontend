@@ -30,6 +30,43 @@
           @click="logout"
         />
       </q-toolbar>
+      <br>
+      <!-- <q-separator /> -->
+      <!-- <q-toolbar class="bg-grey-3">
+        <q-tabs class="text-grey"
+          active-color="primary"
+          indicator-color="grey"
+          v-model="tabs"
+          shrink
+          stretch
+          align="justify"
+          shadow-2
+          narrow-indicator
+          >
+          <q-route-tab v-for="tab in tabs" :key="tab.name" v-bind="tab"
+            label:tab.label
+            to:tab.url
+            exact
+          >
+            <q-btn icon="close" size="xs" flat round dense @click="onClose()" />
+          </q-route-tab>
+            <q-route-tab
+              label="Terceros"
+              to="/thirds"
+              exact
+            >
+              <q-btn icon="close" size="xs" flat round dense @click="onClose()" />
+            </q-route-tab>
+
+            <q-route-tab
+              label="Usuarios"
+              to="/users"
+              exact
+            >
+              <q-btn icon="close" size="xs" flat round dense @click="onClose()" />
+            </q-route-tab>
+        </q-tabs>
+      </q-toolbar> -->
     </q-header>
     <q-drawer
       class="left-navigation text-white"
@@ -73,14 +110,30 @@
               <q-expansion-item
                 expand-separator
                 icon="settings"
-                label="Configuración">
+                label="Configuración general">
                 <q-item
-                active-class="tab-active"
-                to="/users"
-                exact
-                class="q-ma-sm navigation-item"
-                clickable
-                v-ripple
+                  active-class="tab-active"
+                  to="/profiles"
+                  exact
+                  class="q-ma-sm navigation-item"
+                  clickable
+                  v-ripple
+                >
+                  <q-item-section avatar>
+                    <q-icon name="account_circle" />
+                  </q-item-section>
+
+                  <q-item-section>
+                    Perfiles
+                  </q-item-section>
+                </q-item>
+                <q-item
+                  active-class="tab-active"
+                  to="/users"
+                  exact
+                  class="q-ma-sm navigation-item"
+                  clickable
+                  v-ripple
                 >
                   <q-item-section avatar>
                     <q-icon name="person" />
@@ -88,6 +141,54 @@
 
                   <q-item-section>
                     Usuarios
+                  </q-item-section>
+                </q-item>
+                <q-item
+                  active-class="tab-active"
+                  to="/countries"
+                  exact
+                  class="q-ma-sm navigation-item"
+                  clickable
+                  v-ripple
+                >
+                  <q-item-section avatar>
+                    <q-icon name="domain_add" />
+                  </q-item-section>
+
+                  <q-item-section>
+                    Países
+                  </q-item-section>
+                </q-item>
+                <q-item
+                  active-class="tab-active"
+                  to="/departments"
+                  exact
+                  class="q-ma-sm navigation-item"
+                  clickable
+                  v-ripple
+                >
+                  <q-item-section avatar>
+                    <q-icon name="location_city" />
+                  </q-item-section>
+
+                  <q-item-section>
+                    Departamentos
+                  </q-item-section>
+                </q-item>
+                <q-item
+                  active-class="tab-active"
+                  to="/municipalities"
+                  exact
+                  class="q-ma-sm navigation-item"
+                  clickable
+                  v-ripple
+                >
+                  <q-item-section avatar>
+                    <q-icon name="corporate_fare" />
+                  </q-item-section>
+
+                  <q-item-section>
+                    Municipios
                   </q-item-section>
                 </q-item>
                 <q-item
@@ -177,6 +278,8 @@ export default defineComponent({
     const left = ref(false)
     const $q = useQuasar()
     const router = useRouter()
+    // const tabsDefinition = []
+    // const tabs = ref(tabsDefinition.slice(0, 1))
 
     const auth = useAuthStore()
     const { token } = storeToRefs(auth)
@@ -200,9 +303,25 @@ export default defineComponent({
       })
     }
 
+    // const onClose = () => {
+    //   console.log('Holiii')
+    // }
+
+    // const setTabSelected = (url, title) => {
+    //   console.log('Holass')
+    //   console.log(url)
+    //   console.log(title)
+    //   tabs.value.push({ to: url, label: title, name: title })
+    //   console.log(tabs.value)
+    // }
+
     return {
       left,
       logout
+      // tabs,
+      // onClose,
+      // tabsDefinition.
+      // setTabSelected
     }
   }
 })
