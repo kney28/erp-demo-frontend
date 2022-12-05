@@ -31,42 +31,25 @@
         />
       </q-toolbar>
       <br>
-      <!-- <q-separator /> -->
-      <!-- <q-toolbar class="bg-grey-3">
+      <q-separator />
+      <q-toolbar class="bg-grey-3">
         <q-tabs class="text-grey"
           active-color="primary"
           indicator-color="grey"
-          v-model="tabs"
           shrink
           stretch
           align="justify"
           shadow-2
           narrow-indicator
           >
-          <q-route-tab v-for="tab in tabs" :key="tab.name" v-bind="tab"
-            label:tab.label
-            to:tab.url
+          <q-route-tab v-for="(tab, id) in tabsDefinition" :label="tab.title" :key="id" v-bind="tab"
+            :to="tab.url"
             exact
           >
-            <q-btn icon="close" size="xs" flat round dense @click="onClose()" />
+            <q-btn icon="close" size="xs" flat round dense @click="onClose(id)" />
           </q-route-tab>
-            <q-route-tab
-              label="Terceros"
-              to="/thirds"
-              exact
-            >
-              <q-btn icon="close" size="xs" flat round dense @click="onClose()" />
-            </q-route-tab>
-
-            <q-route-tab
-              label="Usuarios"
-              to="/users"
-              exact
-            >
-              <q-btn icon="close" size="xs" flat round dense @click="onClose()" />
-            </q-route-tab>
         </q-tabs>
-      </q-toolbar> -->
+      </q-toolbar>
     </q-header>
     <q-drawer
       class="left-navigation text-white"
@@ -83,7 +66,7 @@
         <div style="height: calc(100% - 117px);padding:10px;">
           <q-toolbar>
             <q-avatar>
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+              <img src="https://cdn.quasar.dev/img/boy-avatar.png" alt="icon"/>
             </q-avatar>
 
             <q-toolbar-title>Menú Principal</q-toolbar-title>
@@ -92,6 +75,7 @@
           <q-scroll-area style="height:100%;">
             <q-list padding>
               <q-item
+                @click="setTabSelected('/', 'Inicio')"
                 active-class="tab-active"
                 to="/"
                 exact
@@ -110,8 +94,9 @@
               <q-expansion-item
                 expand-separator
                 icon="settings"
-                label="Configuración general">
+                label="Configuración">
                 <q-item
+                  @click="setTabSelected('/profiles', 'Perfiles')"
                   active-class="tab-active"
                   to="/profiles"
                   exact
@@ -128,8 +113,9 @@
                   </q-item-section>
                 </q-item>
                 <q-item
-                  active-class="tab-active"
+                  @click="setTabSelected('/users', 'Usuarios')"
                   to="/users"
+                  active-class="tab-active"
                   exact
                   class="q-ma-sm navigation-item"
                   clickable
@@ -144,6 +130,7 @@
                   </q-item-section>
                 </q-item>
                 <q-item
+                  @click="setTabSelected('/countries', 'Países')"
                   active-class="tab-active"
                   to="/countries"
                   exact
@@ -160,6 +147,7 @@
                   </q-item-section>
                 </q-item>
                 <q-item
+                  @click="setTabSelected('/departments', 'Departamentos')"
                   active-class="tab-active"
                   to="/departments"
                   exact
@@ -176,6 +164,7 @@
                   </q-item-section>
                 </q-item>
                 <q-item
+                  @click="setTabSelected('/municipalities', 'Municipios')"
                   active-class="tab-active"
                   to="/municipalities"
                   exact
@@ -192,6 +181,7 @@
                   </q-item-section>
                 </q-item>
                 <q-item
+                  @click="setTabSelected('/neighborhoods', 'Barrios')"
                   active-class="tab-active"
                   to="/neighborhoods"
                   exact
@@ -208,6 +198,7 @@
                   </q-item-section>
                 </q-item>
                 <q-item
+                  @click="setTabSelected('/thirds', 'Terceros')"
                   active-class="tab-active"
                   to="/thirds"
                   exact
@@ -224,6 +215,7 @@
                   </q-item-section>
                 </q-item>
                 <q-item
+                  @click="setTabSelected('/validities', 'Vigencias')"
                   active-class="tab-active"
                   to="/validities"
                   exact
@@ -240,6 +232,7 @@
                   </q-item-section>
                 </q-item>
                 <q-item
+                  @click="setTabSelected('/companies', 'Compañias')"
                   active-class="tab-active"
                   to="/companies"
                   exact
@@ -256,6 +249,7 @@
                   </q-item-section>
                 </q-item>
                 <q-item
+                  @click="setTabSelected('/changePasswords', 'Cambiar de contraseña')"
                   active-class="tab-active"
                   to="/changePasswords"
                   exact
@@ -273,41 +267,54 @@
                 </q-item>
 
                 <q-expansion-item
-                expand-separator
-                icon="sync_alt"
-                label="Log de auditoría">
-                <q-item
-                  active-class="tab-active"
-                  to="/logsChangePasswords"
-                  exact
-                  class="q-ma-sm navigation-item"
-                  clickable
-                  v-ripple
-                >
-                  <q-item-section avatar>
-                    <q-icon name="published_with_changes" />
-                  </q-item-section>
+                  expand-separator
+                  icon="sync_alt"
+                  label="Log de auditoría">
+                    <q-expansion-item
+                      expand-separator
+                      icon="account_tree"
+                      label="Procedimientos">
+                        <q-item
+                          @click="setTabSelected('/logsChangePasswords', 'Cambios de contraseña')"
+                          active-class="tab-active"
+                          to="/logsChangePasswords"
+                          exact
+                          class="q-ma-sm navigation-item"
+                          clickable
+                          v-ripple
+                        >
+                          <q-item-section avatar>
+                            <q-icon name="published_with_changes" />
+                          </q-item-section>
 
-                  <q-item-section>
-                    Cambios de contraseña
-                  </q-item-section>
-                </q-item>
-                <q-item
-                  active-class="tab-active"
-                  to="/logsAudits"
-                  exact
-                  class="q-ma-sm navigation-item"
-                  clickable
-                  v-ripple
-                >
-                  <q-item-section avatar>
-                    <q-icon name="history" />
-                  </q-item-section>
+                          <q-item-section>
+                            Cambios de contraseña
+                          </q-item-section>
+                        </q-item>
+                    </q-expansion-item>
 
-                  <q-item-section>
-                    Logs de auditoria
-                  </q-item-section>
-                </q-item>
+                    <q-expansion-item
+                      expand-separator
+                      icon="report"
+                      label="Reportes">
+                      <q-item
+                        @click="setTabSelected('/logsAudits', 'Logs de auditoría')"
+                        active-class="tab-active"
+                        to="/logsAudits"
+                        exact
+                        class="q-ma-sm navigation-item"
+                        clickable
+                        v-ripple
+                      >
+                        <q-item-section avatar>
+                          <q-icon name="history" />
+                        </q-item-section>
+
+                        <q-item-section>
+                          Logs de auditoria
+                        </q-item-section>
+                      </q-item>
+                    </q-expansion-item>
                 </q-expansion-item>
               </q-expansion-item>
 
@@ -315,6 +322,250 @@
                 expand-separator
                 icon="receipt_long"
                 label="Contabilidad">
+                <q-item
+                  @click="setTabSelected('/accountingSettings', 'Configuración general')"
+                  active-class="tab-active"
+                  to="/accountingSettings"
+                  exact
+                  class="q-ma-sm navigation-item"
+                  clickable
+                  v-ripple
+                >
+                  <q-item-section avatar>
+                    <q-icon name="settings_applications" />
+                  </q-item-section>
+
+                  <q-item-section>
+                    Configuración general
+                  </q-item-section>
+                </q-item>
+
+                <q-item
+                  @click="setTabSelected('/thirdsAccountants', 'Terceros contables')"
+                  active-class="tab-active"
+                  to="/thirdsAccountants"
+                  exact
+                  class="q-ma-sm navigation-item"
+                  clickable
+                  v-ripple
+                >
+                  <q-item-section avatar>
+                    <q-icon name="groups" />
+                  </q-item-section>
+
+                  <q-item-section>
+                    Terceros contables
+                  </q-item-section>
+                </q-item>
+
+                <q-item
+                  @click="setTabSelected('/accountingTerms', 'Vigencias contables')"
+                  active-class="tab-active"
+                  to="/accountingTerms"
+                  exact
+                  class="q-ma-sm navigation-item"
+                  clickable
+                  v-ripple
+                >
+                  <q-item-section avatar>
+                    <q-icon name="fact_check" />
+                  </q-item-section>
+
+                  <q-item-section>
+                    Vigencias contables
+                  </q-item-section>
+                </q-item>
+
+                <q-item
+                  @click="setTabSelected('/typeSeats', 'Tipos de asientos')"
+                  active-class="tab-active"
+                  to="/typeSeats"
+                  exact
+                  class="q-ma-sm navigation-item"
+                  clickable
+                  v-ripple
+                >
+                  <q-item-section avatar>
+                    <q-icon name="collections_bookmark" />
+                  </q-item-section>
+
+                  <q-item-section>
+                    Tipos de asientos
+                  </q-item-section>
+                </q-item>
+
+                <q-item
+                  @click="setTabSelected('/retentionConcept', 'Conceptos de retención')"
+                  active-class="tab-active"
+                  to="/retentionConcept"
+                  exact
+                  class="q-ma-sm navigation-item"
+                  clickable
+                  v-ripple
+                >
+                  <q-item-section avatar>
+                    <q-icon name="format_list_numbered" />
+                  </q-item-section>
+
+                  <q-item-section>
+                    Conceptos de retención
+                  </q-item-section>
+                </q-item>
+
+                <q-item
+                  @click="setTabSelected('/costCenter', 'Centros de costo')"
+                  active-class="tab-active"
+                  to="/costCenter"
+                  exact
+                  class="q-ma-sm navigation-item"
+                  clickable
+                  v-ripple
+                >
+                  <q-item-section avatar>
+                    <q-icon name="vertical_align_center" />
+                  </q-item-section>
+
+                  <q-item-section>
+                    Centros de costo
+                  </q-item-section>
+                </q-item>
+
+                <q-item
+                  @click="setTabSelected('/accountBalance', 'Saldo de cuentas')"
+                  active-class="tab-active"
+                  to="/accountBalance"
+                  exact
+                  class="q-ma-sm navigation-item"
+                  clickable
+                  v-ripple
+                >
+                  <q-item-section avatar>
+                    <q-icon name="account_balance" />
+                  </q-item-section>
+
+                  <q-item-section>
+                    Saldo de cuentas
+                  </q-item-section>
+                </q-item>
+
+                <q-item
+                  @click="setTabSelected('/openingBalances', 'Saldos iniciales')"
+                  active-class="tab-active"
+                  to="/openingBalances"
+                  exact
+                  class="q-ma-sm navigation-item"
+                  clickable
+                  v-ripple
+                >
+                  <q-item-section avatar>
+                    <q-icon name="balance" />
+                  </q-item-section>
+
+                  <q-item-section>
+                    Saldos iniciales
+                  </q-item-section>
+                </q-item>
+                <q-expansion-item
+                  expand-separator
+                  icon="account_tree"
+                  label="Procedimientos">
+                    <q-item
+                      @click="setTabSelected('/accountingEntries', 'Asientos contables')"
+                      active-class="tab-active"
+                      to="/accountingEntries"
+                      exact
+                      class="q-ma-sm navigation-item"
+                      clickable
+                      v-ripple
+                    >
+                      <q-item-section avatar>
+                        <q-icon name="account_balance_wallet" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        Asientos contables
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item
+                      @click="setTabSelected('/monthlyClosure', 'Cierres mensuales')"
+                      active-class="tab-active"
+                      to="/monthlyClosure"
+                      exact
+                      class="q-ma-sm navigation-item"
+                      clickable
+                      v-ripple
+                    >
+                      <q-item-section avatar>
+                        <q-icon name="lock" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        Cierres mensuales
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item
+                      @click="setTabSelected('/monthlyOpening', 'Apertura mensual')"
+                      active-class="tab-active"
+                      to="/monthlyOpening"
+                      exact
+                      class="q-ma-sm navigation-item"
+                      clickable
+                      v-ripple
+                    >
+                      <q-item-section avatar>
+                        <q-icon name="lock_open" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        Apertura mensual
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item
+                      @click="setTabSelected('/yearSeatClosure', 'Asiento cierre anual')"
+                      active-class="tab-active"
+                      to="/yearSeatClosure"
+                      exact
+                      class="q-ma-sm navigation-item"
+                      clickable
+                      v-ripple
+                    >
+                      <q-item-section avatar>
+                        <q-icon name="lock" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        Asiento cierre anual
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item
+                      @click="setTabSelected('/yearClosure', 'Cierre anual')"
+                      active-class="tab-active"
+                      to="/yearClosure"
+                      exact
+                      class="q-ma-sm navigation-item"
+                      clickable
+                      v-ripple
+                    >
+                      <q-item-section avatar>
+                        <q-icon name="lock" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        Cierre anual
+                      </q-item-section>
+                    </q-item>
+
+                </q-expansion-item>
+
+                <q-expansion-item
+                  expand-separator
+                  icon="report"
+                  label="Reportes">
+                </q-expansion-item>
               </q-expansion-item>
 
               <q-expansion-item
@@ -428,8 +679,7 @@ export default defineComponent({
     const left = ref(false)
     const $q = useQuasar()
     const router = useRouter()
-    // const tabsDefinition = []
-    // const tabs = ref(tabsDefinition.slice(0, 1))
+    const tabsDefinition = ref([])
 
     const auth = useAuthStore()
     const { token } = storeToRefs(auth)
@@ -453,24 +703,23 @@ export default defineComponent({
       })
     }
 
-    // const onClose = () => {
-    //   console.log('Prueba')
-    // }
+    const setTabSelected = (urls, titles) => {
+      tabsDefinition.value.push({
+        url: urls,
+        title: titles
+      })
+    }
 
-    // const setTabSelected = (url, title) => {
-    //   console.log(url)
-    //   console.log(title)
-    //   tabs.value.push({ to: url, label: title, name: title })
-    //   console.log(tabs.value)
-    // }
+    const onClose = (id) => {
+      tabsDefinition.value.splice(id, 1)
+    }
 
     return {
       left,
-      logout
-      // tabs,
-      // onClose,
-      // tabsDefinition.
-      // setTabSelected
+      logout,
+      onClose,
+      tabsDefinition,
+      setTabSelected
     }
   }
 })
