@@ -33,7 +33,6 @@ export default boot(({ app, store, router }) => {
         customClass: {
           container: 'my-swal'
         },
-        position: 'bottom-center',
         icon: 'success',
         title: 'Proceso exitoso',
         showConfirmButton: false,
@@ -44,14 +43,17 @@ export default boot(({ app, store, router }) => {
   }, (error) => {
     Loading.hide()
     const errors = Object.entries(error.response.data)
-    if (error.response.status === 401) errors[0][1] = 'Usuario o contraseña inválidos.'
+    if (error.response.status === 401) errors[0][1] = 'Acceso no autorizado, por favor validar credenciales.'
     router.push({ name: 'login' })
+    if (error.response.status === 500) errors[0][1] = 'Error de servidor, por favor intente de nuevo.'
+    router.push({ name: 'index' })
     Swal.fire({
       customClass: {
         container: 'my-swal'
       },
       title: '<strong>ADVERTENCIA<u></u></strong>',
       icon: 'error',
+      html: errors[0][1],
       showCloseButton: true,
       focusConfirm: false,
       confirmButtonText:

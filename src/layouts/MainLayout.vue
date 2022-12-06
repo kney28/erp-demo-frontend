@@ -91,230 +91,162 @@
                   Inicio
                 </q-item-section>
               </q-item>
+
               <q-expansion-item
                 expand-separator
                 icon="settings"
                 label="Configuración">
-                <q-item
-                  @click="setTabSelected('/profiles', 'Perfiles')"
-                  active-class="tab-active"
-                  to="/profiles"
-                  exact
-                  class="q-ma-sm navigation-item"
-                  clickable
-                  v-ripple
-                >
-                  <q-item-section avatar>
-                    <q-icon name="account_circle" />
-                  </q-item-section>
+                <q-expansion-item
+                  expand-separator
+                  icon="engineering"
+                  label="Maestros">
+                  <q-item
+                    @click="setTabSelected('/profiles', 'Perfiles')"
+                    active-class="tab-active"
+                    to="/profiles"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="account_circle" />
+                    </q-item-section>
 
-                  <q-item-section>
-                    Perfiles
-                  </q-item-section>
-                </q-item>
-                <q-item
-                  @click="setTabSelected('/users', 'Usuarios')"
-                  to="/users"
-                  active-class="tab-active"
-                  exact
-                  class="q-ma-sm navigation-item"
-                  clickable
-                  v-ripple
-                >
-                  <q-item-section avatar>
-                    <q-icon name="person" />
-                  </q-item-section>
+                    <q-item-section>
+                      Perfiles
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/users', 'Usuarios')"
+                    to="/users"
+                    active-class="tab-active"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="person" />
+                    </q-item-section>
 
-                  <q-item-section>
-                    Usuarios
-                  </q-item-section>
-                </q-item>
-                <q-item
-                  @click="setTabSelected('/countries', 'Países')"
-                  active-class="tab-active"
-                  to="/countries"
-                  exact
-                  class="q-ma-sm navigation-item"
-                  clickable
-                  v-ripple
-                >
-                  <q-item-section avatar>
-                    <q-icon name="domain_add" />
-                  </q-item-section>
+                    <q-item-section>
+                      Usuarios
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/neighborhoods', 'Barrios')"
+                    active-class="tab-active"
+                    to="/neighborhoods"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="home_work" />
+                    </q-item-section>
 
-                  <q-item-section>
-                    Países
-                  </q-item-section>
-                </q-item>
-                <q-item
-                  @click="setTabSelected('/departments', 'Departamentos')"
-                  active-class="tab-active"
-                  to="/departments"
-                  exact
-                  class="q-ma-sm navigation-item"
-                  clickable
-                  v-ripple
-                >
-                  <q-item-section avatar>
-                    <q-icon name="location_city" />
-                  </q-item-section>
+                    <q-item-section>
+                      Barrios
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/thirds', 'Terceros')"
+                    active-class="tab-active"
+                    to="/thirds"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="group" />
+                    </q-item-section>
 
-                  <q-item-section>
-                    Departamentos
-                  </q-item-section>
-                </q-item>
-                <q-item
-                  @click="setTabSelected('/municipalities', 'Municipios')"
-                  active-class="tab-active"
-                  to="/municipalities"
-                  exact
-                  class="q-ma-sm navigation-item"
-                  clickable
-                  v-ripple
-                >
-                  <q-item-section avatar>
-                    <q-icon name="corporate_fare" />
-                  </q-item-section>
+                    <q-item-section>
+                      Terceros
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/validities', 'Vigencias')"
+                    active-class="tab-active"
+                    to="/validities"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="verified_user" />
+                    </q-item-section>
 
-                  <q-item-section>
-                    Municipios
-                  </q-item-section>
-                </q-item>
-                <q-item
-                  @click="setTabSelected('/neighborhoods', 'Barrios')"
-                  active-class="tab-active"
-                  to="/neighborhoods"
-                  exact
-                  class="q-ma-sm navigation-item"
-                  clickable
-                  v-ripple
-                >
-                  <q-item-section avatar>
-                    <q-icon name="home_work" />
-                  </q-item-section>
+                    <q-item-section>
+                      Vigencias
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/companies', 'Compañias')"
+                    active-class="tab-active"
+                    to="/companies"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="store" />
+                    </q-item-section>
 
-                  <q-item-section>
-                    Barrios
-                  </q-item-section>
-                </q-item>
-                <q-item
-                  @click="setTabSelected('/thirds', 'Terceros')"
-                  active-class="tab-active"
-                  to="/thirds"
-                  exact
-                  class="q-ma-sm navigation-item"
-                  clickable
-                  v-ripple
-                >
-                  <q-item-section avatar>
-                    <q-icon name="group" />
-                  </q-item-section>
-
-                  <q-item-section>
-                    Terceros
-                  </q-item-section>
-                </q-item>
-                <q-item
-                  @click="setTabSelected('/validities', 'Vigencias')"
-                  active-class="tab-active"
-                  to="/validities"
-                  exact
-                  class="q-ma-sm navigation-item"
-                  clickable
-                  v-ripple
-                >
-                  <q-item-section avatar>
-                    <q-icon name="verified_user" />
-                  </q-item-section>
-
-                  <q-item-section>
-                    Vigencias
-                  </q-item-section>
-                </q-item>
-                <q-item
-                  @click="setTabSelected('/companies', 'Compañias')"
-                  active-class="tab-active"
-                  to="/companies"
-                  exact
-                  class="q-ma-sm navigation-item"
-                  clickable
-                  v-ripple
-                >
-                  <q-item-section avatar>
-                    <q-icon name="store" />
-                  </q-item-section>
-
-                  <q-item-section>
-                    Compañias
-                  </q-item-section>
-                </q-item>
-                <q-item
-                  @click="setTabSelected('/changePasswords', 'Cambiar de contraseña')"
-                  active-class="tab-active"
-                  to="/changePasswords"
-                  exact
-                  class="q-ma-sm navigation-item"
-                  clickable
-                  v-ripple
-                >
-                  <q-item-section avatar>
-                    <q-icon name="change_circle" />
-                  </q-item-section>
-
-                  <q-item-section>
-                    Cambiar de contraseña
-                  </q-item-section>
-                </q-item>
+                    <q-item-section>
+                      Compañias
+                    </q-item-section>
+                  </q-item>
+                </q-expansion-item>
 
                 <q-expansion-item
                   expand-separator
-                  icon="sync_alt"
-                  label="Log de auditoría">
-                    <q-expansion-item
-                      expand-separator
-                      icon="account_tree"
-                      label="Procedimientos">
-                        <q-item
-                          @click="setTabSelected('/logsChangePasswords', 'Cambios de contraseña')"
-                          active-class="tab-active"
-                          to="/logsChangePasswords"
-                          exact
-                          class="q-ma-sm navigation-item"
-                          clickable
-                          v-ripple
-                        >
-                          <q-item-section avatar>
-                            <q-icon name="published_with_changes" />
-                          </q-item-section>
+                  icon="account_tree"
+                  label="Procedimientos">
+                  <q-item
+                    @click="setTabSelected('/changePasswords', 'Cambiar de contraseña')"
+                    active-class="tab-active"
+                    to="/changePasswords"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="change_circle" />
+                    </q-item-section>
 
-                          <q-item-section>
-                            Cambios de contraseña
-                          </q-item-section>
-                        </q-item>
-                    </q-expansion-item>
+                    <q-item-section>
+                      Cambiar de contraseña
+                    </q-item-section>
+                  </q-item>
+                </q-expansion-item>
+                <q-expansion-item
+                  expand-separator
+                  icon="analytics"
+                  label="Reportes">
+                  <q-item
+                    @click="setTabSelected('/logsAudits', 'Logs de auditoría')"
+                    active-class="tab-active"
+                    to="/logsAudits"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="history" />
+                    </q-item-section>
 
-                    <q-expansion-item
-                      expand-separator
-                      icon="report"
-                      label="Reportes">
-                      <q-item
-                        @click="setTabSelected('/logsAudits', 'Logs de auditoría')"
-                        active-class="tab-active"
-                        to="/logsAudits"
-                        exact
-                        class="q-ma-sm navigation-item"
-                        clickable
-                        v-ripple
-                      >
-                        <q-item-section avatar>
-                          <q-icon name="history" />
-                        </q-item-section>
-
-                        <q-item-section>
-                          Logs de auditoria
-                        </q-item-section>
-                      </q-item>
-                    </q-expansion-item>
+                    <q-item-section>
+                      Logs de auditoria
+                    </q-item-section>
+                  </q-item>
                 </q-expansion-item>
               </q-expansion-item>
 
@@ -322,149 +254,155 @@
                 expand-separator
                 icon="receipt_long"
                 label="Contabilidad">
-                <q-item
-                  @click="setTabSelected('/accountingSettings', 'Configuración general')"
-                  active-class="tab-active"
-                  to="/accountingSettings"
-                  exact
-                  class="q-ma-sm navigation-item"
-                  clickable
-                  v-ripple
-                >
-                  <q-item-section avatar>
-                    <q-icon name="settings_applications" />
-                  </q-item-section>
+                <q-expansion-item
+                  expand-separator
+                  icon="engineering"
+                  label="Maestros">
 
-                  <q-item-section>
-                    Configuración general
-                  </q-item-section>
-                </q-item>
+                  <q-item
+                    @click="setTabSelected('/accountingSettings', 'Configuración general')"
+                    active-class="tab-active"
+                    to="/accountingSettings"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="settings_applications" />
+                    </q-item-section>
 
-                <q-item
-                  @click="setTabSelected('/thirdsAccountants', 'Terceros contables')"
-                  active-class="tab-active"
-                  to="/thirdsAccountants"
-                  exact
-                  class="q-ma-sm navigation-item"
-                  clickable
-                  v-ripple
-                >
-                  <q-item-section avatar>
-                    <q-icon name="groups" />
-                  </q-item-section>
+                    <q-item-section>
+                      Configuración general
+                    </q-item-section>
+                  </q-item>
 
-                  <q-item-section>
-                    Terceros contables
-                  </q-item-section>
-                </q-item>
+                  <q-item
+                    @click="setTabSelected('/thirdsAccountants', 'Terceros contables')"
+                    active-class="tab-active"
+                    to="/thirdsAccountants"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="groups" />
+                    </q-item-section>
 
-                <q-item
-                  @click="setTabSelected('/accountingTerms', 'Vigencias contables')"
-                  active-class="tab-active"
-                  to="/accountingTerms"
-                  exact
-                  class="q-ma-sm navigation-item"
-                  clickable
-                  v-ripple
-                >
-                  <q-item-section avatar>
-                    <q-icon name="fact_check" />
-                  </q-item-section>
+                    <q-item-section>
+                      Terceros contables
+                    </q-item-section>
+                  </q-item>
 
-                  <q-item-section>
-                    Vigencias contables
-                  </q-item-section>
-                </q-item>
+                  <q-item
+                    @click="setTabSelected('/accountingTerms', 'Vigencias contables')"
+                    active-class="tab-active"
+                    to="/accountingTerms"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fact_check" />
+                    </q-item-section>
 
-                <q-item
-                  @click="setTabSelected('/typeSeats', 'Tipos de asientos')"
-                  active-class="tab-active"
-                  to="/typeSeats"
-                  exact
-                  class="q-ma-sm navigation-item"
-                  clickable
-                  v-ripple
-                >
-                  <q-item-section avatar>
-                    <q-icon name="collections_bookmark" />
-                  </q-item-section>
+                    <q-item-section>
+                      Vigencias contables
+                    </q-item-section>
+                  </q-item>
 
-                  <q-item-section>
-                    Tipos de asientos
-                  </q-item-section>
-                </q-item>
+                  <q-item
+                    @click="setTabSelected('/typeSeats', 'Tipos de asientos')"
+                    active-class="tab-active"
+                    to="/typeSeats"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="collections_bookmark" />
+                    </q-item-section>
 
-                <q-item
-                  @click="setTabSelected('/retentionConcept', 'Conceptos de retención')"
-                  active-class="tab-active"
-                  to="/retentionConcept"
-                  exact
-                  class="q-ma-sm navigation-item"
-                  clickable
-                  v-ripple
-                >
-                  <q-item-section avatar>
-                    <q-icon name="format_list_numbered" />
-                  </q-item-section>
+                    <q-item-section>
+                      Tipos de asientos
+                    </q-item-section>
+                  </q-item>
 
-                  <q-item-section>
-                    Conceptos de retención
-                  </q-item-section>
-                </q-item>
+                  <q-item
+                    @click="setTabSelected('/retentionConcept', 'Conceptos de retención')"
+                    active-class="tab-active"
+                    to="/retentionConcept"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="format_list_numbered" />
+                    </q-item-section>
 
-                <q-item
-                  @click="setTabSelected('/costCenter', 'Centros de costo')"
-                  active-class="tab-active"
-                  to="/costCenter"
-                  exact
-                  class="q-ma-sm navigation-item"
-                  clickable
-                  v-ripple
-                >
-                  <q-item-section avatar>
-                    <q-icon name="vertical_align_center" />
-                  </q-item-section>
+                    <q-item-section>
+                      Conceptos de retención
+                    </q-item-section>
+                  </q-item>
 
-                  <q-item-section>
-                    Centros de costo
-                  </q-item-section>
-                </q-item>
+                  <q-item
+                    @click="setTabSelected('/costCenter', 'Centros de costo')"
+                    active-class="tab-active"
+                    to="/costCenter"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="vertical_align_center" />
+                    </q-item-section>
 
-                <q-item
-                  @click="setTabSelected('/accountBalance', 'Saldo de cuentas')"
-                  active-class="tab-active"
-                  to="/accountBalance"
-                  exact
-                  class="q-ma-sm navigation-item"
-                  clickable
-                  v-ripple
-                >
-                  <q-item-section avatar>
-                    <q-icon name="account_balance" />
-                  </q-item-section>
+                    <q-item-section>
+                      Centros de costo
+                    </q-item-section>
+                  </q-item>
 
-                  <q-item-section>
-                    Saldo de cuentas
-                  </q-item-section>
-                </q-item>
+                  <q-item
+                    @click="setTabSelected('/accountBalance', 'Saldo de cuentas')"
+                    active-class="tab-active"
+                    to="/accountBalance"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="account_balance" />
+                    </q-item-section>
 
-                <q-item
-                  @click="setTabSelected('/openingBalances', 'Saldos iniciales')"
-                  active-class="tab-active"
-                  to="/openingBalances"
-                  exact
-                  class="q-ma-sm navigation-item"
-                  clickable
-                  v-ripple
-                >
-                  <q-item-section avatar>
-                    <q-icon name="balance" />
-                  </q-item-section>
+                    <q-item-section>
+                      Saldo de cuentas
+                    </q-item-section>
+                  </q-item>
 
-                  <q-item-section>
-                    Saldos iniciales
-                  </q-item-section>
-                </q-item>
+                  <q-item
+                    @click="setTabSelected('/openingBalances', 'Saldos iniciales')"
+                    active-class="tab-active"
+                    to="/openingBalances"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="balance" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Saldos iniciales
+                    </q-item-section>
+                  </q-item>
+                </q-expansion-item>
                 <q-expansion-item
                   expand-separator
                   icon="account_tree"
@@ -563,7 +501,7 @@
 
                 <q-expansion-item
                   expand-separator
-                  icon="report"
+                  icon="analytics"
                   label="Reportes">
                 </q-expansion-item>
               </q-expansion-item>
