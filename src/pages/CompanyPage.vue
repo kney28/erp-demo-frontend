@@ -4,7 +4,7 @@
       <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
         <div>
           <q-space />
-          <q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Usuarios" :rows="dataCountry" :filter="filter" :columns="columns" row-key="name" >
+          <q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Usuarios" :rows="dataCompany" :filter="filter" :columns="columns" row-key="name" >
             <template v-slot:top-left>
               <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
               <q-space />
@@ -18,8 +18,8 @@
             </template>
             <template v-slot:body="props">
               <q-tr :props="props">
-                <q-td key="validity" :props="props">
-                  {{ props.row.validity }}
+                <q-td key="name" :props="props">
+                  {{ props.row.name }}
                 </q-td>
                 <q-td key="edit" :props="props">
                   <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
@@ -60,7 +60,7 @@
               <q-input
                 white
                 color="blue"
-                v-model="code"
+                v-model="name"
                 label="Compañía *"
                 lazy-rules
                 :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
@@ -102,19 +102,15 @@ import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
 
 export default defineComponent({
-  name: 'ValidityPage',
+  name: 'CompanyPage',
   setup () {
-    const path = '/users'
+    const path = '/socials'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)
     const filter = ref(null)
-    const dataCountry = ref([])
-    const description = ref(null)
-    const code = ref(null)
+    const dataCompany = ref([])
     const name = ref(null)
-    const role = ref(null)
-    const active = ref(false)
     const myForm = ref(null)
     const $q = useQuasar()
     const pagination = ref({
@@ -123,19 +119,19 @@ export default defineComponent({
     })
     const isEditing = ref(false)
     const columns = ref([
-      { name: 'validity', align: 'center', label: 'Compañía', field: 'validity', sortable: true },
+      { name: 'name', align: 'center', label: 'Compañía', field: 'name', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
 
     onMounted(() => {
-      getCountries()
+      getCompanies()
     })
 
-    const getCountries = async () => {
+    const getCompanies = async () => {
       visible.value = true
       const { data } = await api.get(path)
-      dataCountry.value = data
+      dataCompany.value = data
       visible.value = false
     }
 
@@ -145,20 +141,19 @@ export default defineComponent({
     }
 
     const onReset = () => {
-      description.value = null
-      code.value = null
+      name.value = null
       isEditing.value = false
     }
 
     const onSubmit = () => {
+      console.log(name.value)
       myForm.value.validate().then(async success => {
         if (success) {
           api.post(path, {
-            code: code.value,
-            description: description.value
+            name: name.value
           }).then(() => {
             dialog.value = false
-            getCountries()
+            getCompanies()
           })
         }
       })
@@ -169,19 +164,17 @@ export default defineComponent({
       dialog.value = true
       isEditing.value = true
       id.value = row.id
-      code.value = row.code
-      description.value = row.role
+      name.value = row.name
     }
 
     const onEditing = () => {
       myForm.value.validate().then(async success => {
         if (success) {
           api.patch(path + '/' + id.value, {
-            code: code.value,
-            description: description.value
+            name: name.value
           }).then(() => {
             dialog.value = false
-            getCountries()
+            getCompanies()
           })
         }
       })
@@ -190,7 +183,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar este registro: ' + row.description + '?',
+        message: '¿Está seguro que desea eliminar este registro: ' + row.name + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -202,25 +195,22 @@ export default defineComponent({
       }).onOk(() => {
         api.delete(path + '/' + row.id).then(response => {
           dialog.value = false
-          getCountries()
+          getCompanies()
         })
       })
     }
 
     return {
       dialog,
-      dataCountry,
+      dataCompany,
       isEditing,
       name,
-      role,
-      active,
       myForm,
       pagination,
       creating,
       columns,
       visible,
       filter,
-      code,
       onReset,
       onSubmit,
       editing,

@@ -28,10 +28,10 @@
                   {{ props.row.municipality }}
                 </q-td>
                 <q-td key="status" :props="props">
-                  <template v-if="props.row.status === ACTIVE">
+                  <template v-if="(props.row.status === 'active')">
                     {{ 'Activo' }}
                   </template>
-                  <template v-else>
+                  <template v-if="(props.row.status === 'inactive')">
                     {{ 'Inactivo' }}
                   </template>
                 </q-td>
@@ -98,9 +98,14 @@
                 color="blue"
                 v-model="municipality"
                 label="Municipio *"
+                @filter="filterFnMunicipalities"
+                :options="filterOptionsMunicipalities"
+                option-value="id"
+                option-label="description"
+                emit-value
+                map-options
                 lazy-rules
-                :options="municipalities"
-                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
+                :rules="[ val => !!val || 'El campo es obligatorio']"
               />
             </div>
           </div>
@@ -145,7 +150,7 @@
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-import { ACTIVE, INACTIVE, NATURAL } from '../constants/Constants'
+import { ACTIVE, INACTIVE } from '../constants/Constants'
 
 export default defineComponent({
   name: 'NeighborhoodsPage',
@@ -157,11 +162,12 @@ export default defineComponent({
     const status = ref(null)
     const dialog = ref(false)
     const visible = ref(false)
-    const active = ref(false)
+    const active = ref(ACTIVE)
     const id = ref(null)
     const filter = ref(null)
     const dataNeighborhoods = ref([])
-    const municipalities = ref(NATURAL)
+    const dataMunicipalities = ref([])
+    const filterOptionsMunicipalities = ref(dataMunicipalities)
     const myForm = ref(null)
     const $q = useQuasar()
     const pagination = ref({
@@ -172,7 +178,7 @@ export default defineComponent({
     const columns = ref([
       { name: 'code', align: 'center', label: 'Código', field: 'code', sortable: true },
       { name: 'description', align: 'center', label: 'Descripción', field: 'description', sortable: true },
-      { name: 'fullname', align: 'center', label: 'Municipio', field: 'fullname', sortable: true },
+      { name: 'municipality', align: 'center', label: 'Municipio', field: 'municipality', sortable: true },
       { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
@@ -180,12 +186,20 @@ export default defineComponent({
 
     onMounted(() => {
       getNeighborhoods()
+      getMunicipalities()
     })
 
     const getNeighborhoods = async () => {
       visible.value = true
       const { data } = await api.get(path)
       dataNeighborhoods.value = data
+      visible.value = false
+    }
+
+    const getMunicipalities = async () => {
+      visible.value = true
+      const { data } = await api.get('/municipalities')
+      dataMunicipalities.value = data
       visible.value = false
     }
 
@@ -253,7 +267,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar al usuario: ' + row.username + '?',
+        message: '¿Está seguro que desea eliminar al usuario: ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -270,9 +284,24 @@ export default defineComponent({
       })
     }
 
+    const filterFnMunicipalities = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsMunicipalities.value = dataMunicipalities.value
+        })
+        return
+      }
+
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsMunicipalities.value = dataMunicipalities.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+      })
+    }
+
     return {
       dialog,
       dataNeighborhoods,
+      dataMunicipalities,
       isEditing,
       myForm,
       pagination,
@@ -291,7 +320,8 @@ export default defineComponent({
       municipality,
       status,
       active,
-      municipalities
+      filterOptionsMunicipalities,
+      filterFnMunicipalities
     }
   }
 })
