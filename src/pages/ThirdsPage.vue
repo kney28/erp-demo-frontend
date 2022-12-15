@@ -37,10 +37,10 @@
                   {{ props.row.legalnature }}
                 </q-td>
                 <q-td key="status" :props="props">
-                  <template v-if="props.row.status === 'active'">
+                  <template v-if="props.row.status === 1">
                     {{ 'Activo' }}
                   </template>
-                  <template v-if="props.row.status === 'inactive'">
+                  <template v-if="props.row.status === 2">
                     {{ 'Inactivo' }}
                   </template>
                 </q-td>
