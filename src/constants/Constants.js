@@ -1,5 +1,5 @@
-export const ACTIVE = 'active'
-export const INACTIVE = 'inactive'
+export const ACTIVE = 1
+export const INACTIVE = 2
 export const NIT = 'NIT'
 export const DOCUMENTTYPE = [
   { id: 'citizenship_card', description: 'Cédula de ciudadanía' },
