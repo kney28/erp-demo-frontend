@@ -97,6 +97,8 @@
                 icon="settings"
                 label="Configuración">
                 <q-expansion-item
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
                   expand-separator
                   icon="engineering"
                   label="Maestros">
@@ -206,6 +208,8 @@
 
                 <q-expansion-item
                   expand-separator
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
                   icon="account_tree"
                   label="Procedimientos">
                   <q-item
@@ -229,6 +233,8 @@
                 <q-expansion-item
                   expand-separator
                   icon="analytics"
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
                   label="Reportes">
                   <q-item
                     @click="setTabSelected('/logsAudits', 'Logs de auditoría')"
@@ -255,6 +261,8 @@
                 icon="receipt_long"
                 label="Contabilidad">
                 <q-expansion-item
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
                   expand-separator
                   icon="engineering"
                   label="Maestros">
@@ -406,6 +414,8 @@
                 <q-expansion-item
                   expand-separator
                   icon="account_tree"
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
                   label="Procedimientos">
                     <q-item
                       @click="setTabSelected('/accountingEntries', 'Asientos contables')"
@@ -501,6 +511,8 @@
 
                 <q-expansion-item
                   expand-separator
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
                   icon="analytics"
                   label="Reportes">
                 </q-expansion-item>
