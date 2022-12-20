@@ -25,6 +25,7 @@ const routes = [
       { path: '/monthlyOpening', name: 'monthlyOpening', component: () => import('pages/MonthlyOpeningPage.vue') },
       { path: '/yearSeatClosure', name: 'yearSeatClosure', component: () => import('pages/YearSeatClosurePage.vue') },
       { path: '/yearClosure', name: 'yearClosure', component: () => import('pages/YearClosurePage.vue') },
+      { path: '/accountCatalog', name: 'accountCatalog', component: () => import('pages/AccountCatalogPage.vue') },
       { path: '/thirds', name: 'thirds', component: () => import('pages/ThirdsPage.vue') }
     ]
   },

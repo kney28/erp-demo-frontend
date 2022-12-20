@@ -340,6 +340,24 @@
                   </q-item>
 
                   <q-item
+                    @click="setTabSelected('/accountCatalog', 'Catálogo de cuentas')"
+                    active-class="tab-active"
+                    to="/accountCatalog"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="receipt_long" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Catálogo de cuentas
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
                     @click="setTabSelected('/retentionConcept', 'Conceptos de retención')"
                     active-class="tab-active"
                     to="/retentionConcept"
