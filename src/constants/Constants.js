@@ -40,7 +40,7 @@ export const NATURECATALOG = [
 ]
 
 export const AVAILABILITYTYPECATALOG = [
-  { id: 1, description: 'Cutenta corriente' },
+  { id: 1, description: 'Cuenta corriente' },
   { id: 2, description: 'Cuenta no corriente' },
   { id: 3, description: 'Ambas' }
 ]

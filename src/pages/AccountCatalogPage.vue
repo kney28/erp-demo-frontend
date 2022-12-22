@@ -78,7 +78,7 @@
       </q-inner-loading>
     </div>
     <q-dialog v-model="dialog" persistent>
-    <q-card style="width: 800px; max-width: 80vw;">
+    <q-card style="width: 900px; max-width: 80vw;">
       <q-linear-progress :value="10" color="blue" />
 
       <q-card-section class="row items-center">
@@ -108,6 +108,7 @@
                 :rules="[ val => !!val || 'El campo es obligatorio']"
               />
             </div>
+
             <div class="col-md-2">
               <q-input
                 white
@@ -120,6 +121,7 @@
                 :rules="[ val => !!val || 'El campo es obligatorio']"
               />
             </div>
+
             <div class="col-md-2">
               <q-input
                 white
@@ -131,14 +133,16 @@
                 :rules="[ val => !!val || 'El campo es obligatorio']"
               />
             </div>
-            <div class="col-md-2">
+
+            <div class="col-md-3">
               <q-select
                 white
                 color="blue"
+                stack-label
                 v-model="level"
                 label="Nivel contable *"
-                @filter="filterFNAccountCatalog"
-                :options="filterOptionsMunicipalities"
+                @filter="filterFNAccountingLevel"
+                :options="levels"
                 option-value="id"
                 option-label="description"
                 emit-value
@@ -150,10 +154,121 @@
           </div>
 
           <div class="row justify-around">
+            <div class="col-md-2">
+              <q-select
+                white
+                color="blue"
+                stack-label
+                v-model="sort"
+                label="Clase *"
+                @filter="filterFNAccountingSort"
+                :options="sorts"
+                option-value="id"
+                option-label="description"
+                emit-value
+                map-options
+                lazy-rules
+                :rules="[ val => !!val || 'El campo es obligatorio']"
+              />
+            </div>
+
+            <div class="col-md-2">
+              <q-select
+                white
+                color="blue"
+                stack-label
+                v-model="availabilityType"
+                label="Tipo disponibilidad *"
+                @filter="filterFNAccountingTypes"
+                :options="availabilitiesTypes"
+                option-value="id"
+                option-label="description"
+                emit-value
+                map-options
+                lazy-rules
+                :rules="[ val => !!val || 'El campo es obligatorio']"
+              />
+            </div>
+
+            <div class="col-md-2">
+              <q-select
+                white
+                color="blue"
+                stack-label
+                v-model="affectsThirdParties"
+                label="Afecta terceros *"
+                :options="selectionCatalog"
+                option-value="id"
+                option-label="description"
+                emit-value
+                map-options
+                lazy-rules
+                :rules="[ val => !!val || 'El campo es obligatorio']"
+              />
+            </div>
+
+            <div class="col-md-3">
+              <q-select
+                white
+                color="blue"
+                stack-label
+                v-model="affectsCostCenters"
+                label="Afecta centro de costos *"
+                :options="selectionCatalog"
+                option-value="id"
+                option-label="description"
+                emit-value
+                map-options
+                lazy-rules
+                :rules="[ val => !!val || 'El campo es obligatorio']"
+              />
+            </div>
+          </div>
+
+          <div class="row justify-around">
+            <div class="col-md-2">
+              <q-select
+                white
+                color="blue"
+                stack-label
+                v-model="transferThirdParties"
+                label="Transferir terceros *"
+                :options="selectionCatalog"
+                option-value="id"
+                option-label="description"
+                emit-value
+                map-options
+                lazy-rules
+                :rules="[ val => !!val || 'El campo es obligatorio']"
+              />
+            </div>
+            <div v-if="transferThirdParties === 1" class="col-md-2">
+              <q-select
+                white
+                color="blue"
+                stack-label
+                v-model="thirdId"
+                label="Seleccionar tercero *"
+                :options="selectionCatalog"
+                option-value="id"
+                option-label="description"
+                emit-value
+                map-options
+                lazy-rules
+                :rules="[ val => !!val || 'El campo es obligatorio']"
+              />
+            </div>
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-3">
+            </div>
+          </div>
+
+          <div class="row justify-around">
             <div class="col-md-3">
             </div>
             <div class="col-md-3">
-              <q-toggle v-model="active" label="Estado barrio"/>
+              <q-toggle v-model="active" label="Estado cuenta"/>
             </div>
             <div class="col-md-3">
             </div>
@@ -189,7 +304,10 @@
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-import { ACTIVE, INACTIVE, LEVELCATALOG } from '../constants/Constants'
+import {
+  ACTIVE, INACTIVE, LEVELCATALOG, CLASSCATALOG, NATURECATALOG, AVAILABILITYTYPECATALOG,
+  SELECTIONCATALOG
+} from '../constants/Constants'
 
 export default defineComponent({
   name: 'AccountCatalogPage',
@@ -203,7 +321,6 @@ export default defineComponent({
     const filter = ref(null)
     const dataAccountCatalog = ref([])
     const dataThirdsAccount = ref([])
-    const filterOptionsMunicipalities = ref(dataThirdsAccount)
     const myForm = ref(null)
     const code = ref(null)
     const accountCatalogId = ref(null)
@@ -211,9 +328,13 @@ export default defineComponent({
     const level = ref(null)
     const levels = ref(LEVELCATALOG)
     const sort = ref(null)
+    const sorts = ref(CLASSCATALOG)
     const nature = ref(null)
+    const natures = ref(NATURECATALOG)
     const availabilityType = ref(null)
+    const availabilitiesTypes = ref(AVAILABILITYTYPECATALOG)
     const affectsThirdParties = ref(null)
+    const selectionCatalog = ref(SELECTIONCATALOG)
     const affectsCostCenters = ref(null)
     const transferThirdParties = ref(null)
     const thirdId = ref(null)
@@ -243,6 +364,7 @@ export default defineComponent({
     ])
 
     onMounted(() => {
+      console.log(SELECTIONCATALOG)
       getAccountCatalog()
       getThirdAcount()
     })
@@ -273,6 +395,16 @@ export default defineComponent({
       code.value = null
       description.value = null
       status.value = null
+      accountCatalogId.value = null
+      level.value = null
+      sort.value = null
+      nature.value = null
+      availabilityType.value = null
+      affectsThirdParties.value = null
+      affectsCostCenters.value = null
+      transferThirdParties.value = null
+      thirdId.value = null
+      affectsRetention.value = null
     }
 
     const onSubmit = () => {
@@ -321,7 +453,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar al usuario: ' + row.description + '?',
+        message: '¿Está seguro que desea eliminar el registro: ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -338,17 +470,59 @@ export default defineComponent({
       })
     }
 
-    const filterFNAccountCatalog = (val, update) => {
+    const filterFNAccountingLevel = (val, update) => {
       if (val === '') {
         update(() => {
-          filterOptionsMunicipalities.value = dataThirdsAccount.value
+          levels.value = LEVELCATALOG
         })
         return
       }
 
       update(() => {
         const needle = val.toLowerCase()
-        filterOptionsMunicipalities.value = dataThirdsAccount.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+        levels.value = LEVELCATALOG.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+      })
+    }
+
+    const filterFNAccountingSort = (val, update) => {
+      if (val === '') {
+        update(() => {
+          sorts.value = CLASSCATALOG
+        })
+        return
+      }
+
+      update(() => {
+        const needle = val.toLowerCase()
+        sorts.value = CLASSCATALOG.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+      })
+    }
+
+    const filterFNAccountingNature = (val, update) => {
+      if (val === '') {
+        update(() => {
+          natures.value = NATURECATALOG
+        })
+        return
+      }
+
+      update(() => {
+        const needle = val.toLowerCase()
+        natures.value = NATURECATALOG.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+      })
+    }
+
+    const filterFNAccountingTypes = (val, update) => {
+      if (val === '') {
+        update(() => {
+          availabilitiesTypes.value = AVAILABILITYTYPECATALOG
+        })
+        return
+      }
+
+      update(() => {
+        const needle = val.toLowerCase()
+        availabilitiesTypes.value = AVAILABILITYTYPECATALOG.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
       })
     }
 
@@ -373,8 +547,7 @@ export default defineComponent({
       code,
       status,
       active,
-      filterOptionsMunicipalities,
-      filterFNAccountCatalog,
+      filterFNAccountingLevel,
       accountCatalogId,
       level,
       sort,
@@ -385,7 +558,14 @@ export default defineComponent({
       transferThirdParties,
       thirdId,
       affectsRetention,
-      levels
+      levels,
+      sorts,
+      natures,
+      availabilitiesTypes,
+      selectionCatalog,
+      filterFNAccountingSort,
+      filterFNAccountingNature,
+      filterFNAccountingTypes
     }
   }
 })
