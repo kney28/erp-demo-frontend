@@ -25,13 +25,13 @@
                   {{ props.row.description }}
                 </q-td>
                 <q-td key="municipality" :props="props">
-                  {{ props.row.municipality }}
+                  {{ props.row.municipality.description }}
                 </q-td>
                 <q-td key="status" :props="props">
-                  <template v-if="(props.row.status === 1)">
+                  <template v-if="(props.row.status === states[1])">
                     {{ 'Activo' }}
                   </template>
-                  <template v-if="(props.row.status === 2)">
+                  <template v-if="(props.row.status === states[2])">
                     {{ 'Inactivo' }}
                   </template>
                 </q-td>
@@ -150,7 +150,7 @@
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-import { ACTIVE, INACTIVE } from '../constants/Constants'
+import { STATUSNB } from '../constants/Constants'
 
 export default defineComponent({
   name: 'NeighborhoodsPage',
@@ -160,9 +160,10 @@ export default defineComponent({
     const code = ref(null)
     const municipality = ref(null)
     const status = ref(null)
+    const states = ref(STATUSNB)
     const dialog = ref(false)
     const visible = ref(false)
-    const active = ref(ACTIVE)
+    const active = ref(null)
     const id = ref(null)
     const filter = ref(null)
     const dataNeighborhoods = ref([])
@@ -225,8 +226,7 @@ export default defineComponent({
             code: code.value,
             description: description.value,
             municipality: municipality.value,
-            status: active.value ? ACTIVE : INACTIVE,
-            verificationcode: 0
+            status: active.value ? STATUSNB[1] : STATUSNB[2]
           }).then(() => {
             dialog.value = false
             getNeighborhoods()
@@ -243,7 +243,7 @@ export default defineComponent({
       code.value = row.code
       description.value = row.description
       municipality.value = row.municipality
-      if (row.status === ACTIVE) {
+      if (row.status === STATUSNB[1]) {
         active.value = true
       }
     }
@@ -254,8 +254,8 @@ export default defineComponent({
           api.patch(path + '/' + id.value, {
             code: code.value,
             description: description.value,
-            municipality: municipality.value,
-            status: active.value ? ACTIVE : INACTIVE
+            municipality: municipality.value.id ? municipality.value.id : municipality.value,
+            status: active.value ? STATUSNB[1] : STATUSNB[2]
           }).then(() => {
             dialog.value = false
             getNeighborhoods()
@@ -321,7 +321,8 @@ export default defineComponent({
       status,
       active,
       filterOptionsMunicipalities,
-      filterFnMunicipalities
+      filterFnMunicipalities,
+      states
     }
   }
 })

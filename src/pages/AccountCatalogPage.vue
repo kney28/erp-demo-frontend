@@ -28,39 +28,31 @@
                   {{ props.row.description }}
                 </q-td>
                 <q-td key="level" :props="props">
-                  {{ props.row.level }}
+                  {{ listLevel[props.row.level] }}
                 </q-td>
                 <q-td key="sort" :props="props">
-                  {{ props.row.class }}
-                </q-td>
-                <q-td key="nature" :props="props">
-                  {{ props.row.nature }}
+                  {{ listClass[props.row.class] }}
                 </q-td>
                 <q-td key="availabilityType" :props="props">
-                  {{ props.row.availabilityType }}
+                  {{ listAvailabilitiesType[props.row.availabilityType] }}
                 </q-td>
                 <q-td key="affectsThirdParties" :props="props">
-                  {{ props.row.affectsThirdParties }}
+                  {{ listSelectionCatalog[props.row.affectsThirdParties] }}
                 </q-td>
                 <q-td key="affectsCostCenters" :props="props">
-                  {{ props.row.affectsCostCenters }}
+                  {{ listSelectionCatalog[props.row.affectsCostCenters] }}
                 </q-td>
                 <q-td key="transferThirdParties" :props="props">
-                  {{ props.row.transferThirdParties }}
+                  {{ listSelectionCatalog[props.row.transferThirdParties] }}
                 </q-td>
                 <q-td key="thirdId" :props="props">
                   {{ props.row.thirdId }}
                 </q-td>
                 <q-td key="affectsRetention" :props="props">
-                  {{ props.row.affectsRetention }}
+                  {{ listSelectionCatalog[props.row.affectsRetention] }}
                 </q-td>
                 <q-td key="status" :props="props">
-                  <template v-if="(props.row.status === 1)">
-                    {{ 'Activo' }}
-                  </template>
-                  <template v-if="(props.row.status === 2)">
-                    {{ 'Inactivo' }}
-                  </template>
+                  {{ states[props.row.status] }}
                 </q-td>
                 <q-td key="edit" :props="props">
                   <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
@@ -231,6 +223,23 @@
                 white
                 color="blue"
                 stack-label
+                v-model="affectsRetention"
+                label="Afecta retention *"
+                :options="selectionRetention"
+                option-value="id"
+                option-label="description"
+                emit-value
+                map-options
+                lazy-rules
+                :rules="[ val => !!val || 'El campo es obligatorio']"
+              />
+            </div>
+            <div class="col-md-2">
+              <q-select
+                :@input="cleanThird()"
+                white
+                color="blue"
+                stack-label
                 v-model="transferThirdParties"
                 label="Transferir terceros *"
                 :options="selectionCatalog"
@@ -242,14 +251,14 @@
                 :rules="[ val => !!val || 'El campo es obligatorio']"
               />
             </div>
-            <div v-if="transferThirdParties === 1" class="col-md-2">
+            <div v-if="transferThirdParties === 1" class="col-md-5">
               <q-select
                 white
                 color="blue"
                 stack-label
                 v-model="thirdId"
                 label="Seleccionar tercero *"
-                :options="selectionCatalog"
+                :options="filterOptionsThirdsAccount"
                 option-value="id"
                 option-label="description"
                 emit-value
@@ -258,9 +267,7 @@
                 :rules="[ val => !!val || 'El campo es obligatorio']"
               />
             </div>
-            <div class="col-md-2">
-            </div>
-            <div class="col-md-3">
+            <div v-else class="col-md-6">
             </div>
           </div>
 
@@ -305,8 +312,8 @@ import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
 import {
-  ACTIVE, INACTIVE, LEVELCATALOG, CLASSCATALOG, NATURECATALOG, AVAILABILITYTYPECATALOG,
-  SELECTIONCATALOG
+  ACTIVE, INACTIVE, LEVELCATALOG, CLASSCATALOG, AVAILABILITYTYPECATALOG, SELECTIONCATALOG, AFFECTSRETENTIONCATALOG, STATUS, LISTLEVELCATALOG,
+  LISTCLASSCATALOG, LISTAVAILABILITYTYPECATALOG, LISTSELECTIONCATALOG
 } from '../constants/Constants'
 
 export default defineComponent({
@@ -317,6 +324,7 @@ export default defineComponent({
     const dialog = ref(false)
     const visible = ref(false)
     const active = ref(ACTIVE)
+    const states = ref(STATUS)
     const id = ref(null)
     const filter = ref(null)
     const dataAccountCatalog = ref([])
@@ -326,15 +334,19 @@ export default defineComponent({
     const accountCatalogId = ref(null)
     const description = ref(null)
     const level = ref(null)
+    const listLevel = ref(LISTLEVELCATALOG)
     const levels = ref(LEVELCATALOG)
     const sort = ref(null)
     const sorts = ref(CLASSCATALOG)
-    const nature = ref(null)
-    const natures = ref(NATURECATALOG)
+    const listClass = ref(LISTCLASSCATALOG)
     const availabilityType = ref(null)
     const availabilitiesTypes = ref(AVAILABILITYTYPECATALOG)
+    const listAvailabilitiesType = ref(LISTAVAILABILITYTYPECATALOG)
     const affectsThirdParties = ref(null)
     const selectionCatalog = ref(SELECTIONCATALOG)
+    const listSelectionCatalog = ref(LISTSELECTIONCATALOG)
+    const selectionRetention = ref(AFFECTSRETENTIONCATALOG)
+    const filterOptionsThirdsAccount = ref(dataThirdsAccount)
     const affectsCostCenters = ref(null)
     const transferThirdParties = ref(null)
     const thirdId = ref(null)
@@ -351,7 +363,6 @@ export default defineComponent({
       { name: 'description', align: 'center', label: 'Descripción', field: 'description', sortable: true },
       { name: 'level', align: 'center', label: 'Nivel', field: 'level', sortable: true },
       { name: 'sort', align: 'center', label: 'Clase', field: 'sort', sortable: true },
-      { name: 'nature', align: 'center', label: 'Natualeza', field: 'nature', sortable: true },
       { name: 'availabilityType', align: 'center', label: 'Tipo disponibilidad', field: 'availabilityType', sortable: true },
       { name: 'affectsThirdParties', align: 'center', label: 'Afecta terceros', field: 'affectsThirdParties', sortable: true },
       { name: 'affectsCostCenters', align: 'center', label: 'Afecta centro de costos', field: 'affectsCostCenters', sortable: true },
@@ -364,7 +375,6 @@ export default defineComponent({
     ])
 
     onMounted(() => {
-      console.log(SELECTIONCATALOG)
       getAccountCatalog()
       getThirdAcount()
     })
@@ -379,14 +389,21 @@ export default defineComponent({
     const getThirdAcount = async () => {
       visible.value = true
       const { data } = await api.get('/third-party-accountants')
-      dataThirdsAccount.value = data
+      const loadListThirds = []
+      data.forEach(function (value, key) {
+        loadListThirds.push({
+          id: value.third.id,
+          description: value.third.firstname ? value.third.document + ' ' + value.third.firstname + ' ' + value.third.firstsurname : value.third.document + ' ' + value.third.socialreason
+        })
+      })
+      dataThirdsAccount.value = loadListThirds
       visible.value = false
     }
 
     const creating = () => {
       onReset()
       dialog.value = true
-      active.value = true
+      active.value = false
     }
 
     const onReset = () => {
@@ -398,7 +415,6 @@ export default defineComponent({
       accountCatalogId.value = null
       level.value = null
       sort.value = null
-      nature.value = null
       availabilityType.value = null
       affectsThirdParties.value = null
       affectsCostCenters.value = null
@@ -413,8 +429,16 @@ export default defineComponent({
           api.post(path, {
             code: code.value,
             description: description.value,
-            status: active.value ? ACTIVE : INACTIVE,
-            verificationcode: 0
+            accountCatalogId: accountCatalogId.value,
+            level: level.value,
+            class: sort.value,
+            availabilityType: availabilityType.value,
+            affectsThirdParties: affectsThirdParties.value,
+            affectsCostCenters: affectsCostCenters.value,
+            transferThirdParties: transferThirdParties.value,
+            thirdId: thirdId.value,
+            affectsRetention: affectsRetention.value,
+            status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
             getAccountCatalog()
@@ -430,6 +454,15 @@ export default defineComponent({
       id.value = row.id
       code.value = row.code
       description.value = row.description
+      accountCatalogId.value = row.accountCatalogId
+      level.value = row.level
+      sort.value = row.class
+      availabilityType.value = row.availabilityType
+      affectsThirdParties.value = row.affectsThirdParties
+      affectsCostCenters.value = row.affectsCostCenters
+      transferThirdParties.value = row.transferThirdParties
+      thirdId.value = row.thirdId
+      affectsRetention.value = row.affectsRetention
       if (row.status === ACTIVE) {
         active.value = true
       }
@@ -441,6 +474,15 @@ export default defineComponent({
           api.patch(path + '/' + id.value, {
             code: code.value,
             description: description.value,
+            accountCatalogId: accountCatalogId.value,
+            level: level.value,
+            class: sort.value,
+            availabilityType: availabilityType.value,
+            affectsThirdParties: affectsThirdParties.value,
+            affectsCostCenters: affectsCostCenters.value,
+            transferThirdParties: transferThirdParties.value,
+            thirdId: thirdId.value,
+            affectsRetention: affectsRetention.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
@@ -453,7 +495,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar el registro: ' + row.description + '?',
+        message: '¿Está seguro que desea eliminar el registro con código: ' + row.code + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -498,20 +540,6 @@ export default defineComponent({
       })
     }
 
-    const filterFNAccountingNature = (val, update) => {
-      if (val === '') {
-        update(() => {
-          natures.value = NATURECATALOG
-        })
-        return
-      }
-
-      update(() => {
-        const needle = val.toLowerCase()
-        natures.value = NATURECATALOG.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
-      })
-    }
-
     const filterFNAccountingTypes = (val, update) => {
       if (val === '') {
         update(() => {
@@ -524,6 +552,26 @@ export default defineComponent({
         const needle = val.toLowerCase()
         availabilitiesTypes.value = AVAILABILITYTYPECATALOG.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
       })
+    }
+
+    const filterFnAccountingThirds = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsThirdsAccount.value = dataThirdsAccount.value
+        })
+        return
+      }
+
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsThirdsAccount.value = dataThirdsAccount.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+      })
+    }
+
+    const cleanThird = () => {
+      if (transferThirdParties.value === SELECTIONCATALOG[1].id) {
+        thirdId.value = null
+      }
     }
 
     return {
@@ -551,7 +599,6 @@ export default defineComponent({
       accountCatalogId,
       level,
       sort,
-      nature,
       availabilityType,
       affectsThirdParties,
       affectsCostCenters,
@@ -560,12 +607,19 @@ export default defineComponent({
       affectsRetention,
       levels,
       sorts,
-      natures,
       availabilitiesTypes,
       selectionCatalog,
+      selectionRetention,
+      states,
+      listLevel,
+      listClass,
+      listAvailabilitiesType,
+      listSelectionCatalog,
       filterFNAccountingSort,
-      filterFNAccountingNature,
-      filterFNAccountingTypes
+      filterFNAccountingTypes,
+      filterFnAccountingThirds,
+      filterOptionsThirdsAccount,
+      cleanThird
     }
   }
 })
