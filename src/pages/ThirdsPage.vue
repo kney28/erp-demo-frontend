@@ -37,10 +37,10 @@
                   {{ props.row.legalnature }}
                 </q-td>
                 <q-td key="status" :props="props">
-                  <template v-if="props.row.status === 1">
+                  <template v-if="props.row.status === states[1]">
                     {{ 'Activo' }}
                   </template>
-                  <template v-if="props.row.status === 2">
+                  <template v-if="props.row.status === states[2]">
                     {{ 'Inactivo' }}
                   </template>
                 </q-td>
@@ -246,7 +246,7 @@
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-import { ACTIVE, INACTIVE, DOCUMENTTYPE, NATURAL } from '../constants/Constants'
+import { STATUSNB, DOCUMENTTYPE, NATURAL } from '../constants/Constants'
 
 export default defineComponent({
   name: 'ThirdsPage',
@@ -257,6 +257,7 @@ export default defineComponent({
     const documenttype = ref(null)
     const legalnature = ref(null)
     const status = ref(null)
+    const states = ref(STATUSNB)
     const firstname = ref(null)
     const secondname = ref(null)
     const firstsurname = ref(null)
@@ -329,7 +330,7 @@ export default defineComponent({
             secondsurname: secondsurname.value,
             legalnature: legalnature.value,
             socialreason: socialreason.value,
-            status: active.value ? ACTIVE : INACTIVE,
+            status: active.value ? STATUSNB[1] : STATUSNB[2],
             verificationcode: 0
           }).then(() => {
             dialog.value = false
@@ -352,7 +353,7 @@ export default defineComponent({
       secondsurname.value = row.secondsurname
       legalnature.value = row.legalnature
       socialreason.value = row.socialreason
-      if (row.status === ACTIVE) {
+      if (row.status === STATUSNB[1]) {
         active.value = true
       }
     }
@@ -369,7 +370,7 @@ export default defineComponent({
             secondsurname: secondsurname.value,
             legalnature: legalnature.value,
             socialreason: socialreason.value,
-            status: active.value ? ACTIVE : INACTIVE
+            status: active.value ? STATUSNB[1] : STATUSNB[2]
           }).then(() => {
             dialog.value = false
             getThirds()
@@ -425,7 +426,8 @@ export default defineComponent({
       secondsurname,
       active,
       naturals,
-      documentsTypes
+      documentsTypes,
+      states
     }
   }
 })

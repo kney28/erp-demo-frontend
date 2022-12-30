@@ -340,6 +340,24 @@
                   </q-item>
 
                   <q-item
+                    @click="setTabSelected('/accountCatalog', 'Catálogo de cuentas')"
+                    active-class="tab-active"
+                    to="/accountCatalog"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="receipt_long" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Catálogo de cuentas
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
                     @click="setTabSelected('/retentionConcept', 'Conceptos de retención')"
                     active-class="tab-active"
                     to="/retentionConcept"
@@ -528,6 +546,30 @@
                 expand-separator
                 icon="price_check"
                 label="Ingresos">
+                <q-expansion-item
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  expand-separator
+                  icon="engineering"
+                  label="Maestros">
+                  <q-item
+                    @click="setTabSelected('/occupations', 'Ocupaciones')"
+                    active-class="tab-active"
+                    to="/occupations"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="diversity_3" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Ocupaciones
+                    </q-item-section>
+                  </q-item>
+                </q-expansion-item>
               </q-expansion-item>
 
               <q-expansion-item

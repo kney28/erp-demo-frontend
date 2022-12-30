@@ -146,7 +146,6 @@ export default defineComponent({
     }
 
     const onSubmit = () => {
-      console.log(name.value)
       myForm.value.validate().then(async success => {
         if (success) {
           api.post(path, {
