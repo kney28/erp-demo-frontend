@@ -27,7 +27,8 @@ const routes = [
       { path: '/yearClosure', name: 'yearClosure', component: () => import('pages/YearClosurePage.vue') },
       { path: '/accountCatalog', name: 'accountCatalog', component: () => import('pages/AccountCatalogPage.vue') },
       { path: '/occupations', name: 'occupations', component: () => import('pages/OccupationsPage.vue') },
-      { path: '/thirds', name: 'thirds', component: () => import('pages/ThirdsPage.vue') }
+      { path: '/occupations', name: 'occupations', component: () => import('pages/OccupationsPage.vue') },
+      { path: '/groupsCUPS', name: 'groupsCUPS', component: () => import('pages/GroupsCUPSPage.vue') }
     ]
   },
   { path: '/login', name: 'login', component: () => import('src/pages/LoginPage.vue') },
