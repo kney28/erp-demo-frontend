@@ -582,6 +582,30 @@
                 expand-separator
                 icon="contact_mail"
                 label="Contratación">
+                <q-expansion-item
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  expand-separator
+                  icon="engineering"
+                  label="Maestros">
+                  <q-item
+                    @click="setTabSelected('/groupsCUPS', 'Grupos CUPS')"
+                    active-class="tab-active"
+                    to="/groupsCUPS"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="medical_services" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Grupos CUPS
+                    </q-item-section>
+                  </q-item>
+                </q-expansion-item>
               </q-expansion-item>
 
               <q-expansion-item
