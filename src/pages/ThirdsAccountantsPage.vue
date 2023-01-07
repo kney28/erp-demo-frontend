@@ -19,7 +19,24 @@
             <template v-slot:body="props">
               <q-tr :props="props">
                 <q-td key="documenttype" :props="props">
-                  {{ props.row.documenttype }}
+                  <template v-if="props.row.documenttype === documentsTypes[0].id">
+                    {{ documentsTypes[0].description }}
+                  </template>
+                  <template v-if="props.row.documenttype === documentsTypes[1].id">
+                    {{ documentsTypes[1].description }}
+                  </template>
+                  <template v-if="props.row.documenttype === documentsTypes[2].id">
+                    {{ documentsTypes[2].description }}
+                  </template>
+                  <template v-if="props.row.documenttype === documentsTypes[3].id">
+                    {{ documentsTypes[3].description }}
+                  </template>
+                  <template v-if="props.row.documenttype === documentsTypes[4].id">
+                    {{ documentsTypes[4].description }}
+                  </template>
+                  <template v-if="props.row.documenttype === documentsTypes[5].id">
+                    {{ documentsTypes[5].description }}
+                  </template>
                 </q-td>
                 <q-td key="document" :props="props">
                   {{ props.row.document }}
@@ -37,12 +54,7 @@
                   {{ props.row.legalnature }}
                 </q-td>
                 <q-td key="status" :props="props">
-                  <template v-if="props.row.status === ACTIVE">
-                    {{ 'Activo' }}
-                  </template>
-                  <template v-else>
-                    {{ 'Inactivo' }}
-                  </template>
+                  {{ states[props.row.status] }}
                 </q-td>
                 <q-td key="edit" :props="props">
                   <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
@@ -83,11 +95,13 @@
               <q-select
                 white
                 color="blue"
-                v-model="documenttype"
-                label="Tipo documento *"
-                option-label="description"
+                v-model="document"
+                label="Tercero *"
+                option-label="document"
                 option-value="id"
-                :options="documentsTypes"
+                @filter="filterFNThird"
+                :options="filterOptionsThirds"
+                :v-on:change="loadThirdFields()"
                 stack-label
                 use-input
                 input-debounce="0"
@@ -98,15 +112,6 @@
               />
             </div>
             <div class="col-md-3">
-              <q-input
-                white
-                color="blue"
-                :readonly="isEditing"
-                v-model="document"
-                label="Documento *"
-                stack-label
-                :rules="[ val => !!val || 'El campo es obligatorio']"
-              />
             </div>
             <div class="col-md-3">
               <q-select
@@ -129,79 +134,25 @@
           </div>
 
           <div class="row justify-around">
-            <div v-if="documenttype !== 'NIT'" class="col-md-3">
-              <q-input
-                white
-                stack-label
-                color="blue"
-                v-model="firstname"
-                label="Primer nombre *"
-                lazy-rules
-                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
-              />
-            </div>
-            <div v-if="documenttype !== 'NIT'" class="col-md-3">
+            <div v-if="document" class="col-md-3">
               <q-input
                 white
                 color="blue"
-                v-model="secondname"
-                label="Segundo nombre"
+                :readonly="isEditing"
+                v-model="documenttype"
+                label="Tipo documento *"
                 stack-label
+                :rules="[ val => !!val || 'El campo es obligatorio']"
               />
             </div>
-            <div v-if="documenttype !== 'NIT'" class="col-md-3">
-              <q-input
-                white
-                color="blue"
-                v-model="firstsurname"
-                label="Primer apellido *"
-                stack-label
-                lazy-rules
-                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
-              />
-            </div>
-          </div>
 
-          <div class="row justify-around">
-            <div v-if="documenttype !== 'NIT'" class="col-md-3">
-              <q-input
-                white
-                color="blue"
-                v-model="secondsurname"
-                label="Segundo apellido"
-                stack-label
-              />
-            </div>
-            <div v-if="documenttype === 'NIT'" class="col-md-7">
-              <q-input
-                white
-                color="blue"
-                v-model="socialreason"
-                label="Razón social"
-                stack-label
-                lazy-rules
-                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
-              />
-            </div>
-            <div v-else class="col-md-7">
+            <div v-if="document" class="col-md-7">
               <label style="color: gray" class="q-mr-xs q-mb-md">Nombre completo:</label>
               <br>
               <div style="display: inline-block;">
-                {{firstname ? firstname + ' ' : ''}}{{secondname ? secondname + ' ' : ''}}
+                {{firstname ? firstname + ' ' : socialreason}}{{secondname ? secondname + ' ' : ''}}
                 {{firstsurname ? firstsurname + ' ' : ''}}{{secondsurname ? secondsurname : ''}}
               </div>
-            </div>
-          </div>
-          <br>
-
-          <div v-if="documenttype === 'NIT'" class="row justify-around">
-            <div class="col-md-2">
-            </div>
-            <div class="col-md-2">
-              <label style="color: gray" class="q-mr-xs q-mb-md">Nombre completo:</label>
-            </div>
-            <div class="col-md-6">
-              <div style="display: inline-block;">{{socialreason}}</div>
             </div>
           </div>
           <br>
@@ -246,17 +197,18 @@
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-import { ACTIVE, INACTIVE, DOCUMENTTYPE, NATURAL } from '../constants/Constants'
+import { ACTIVE, INACTIVE, DOCUMENTTYPE, NATURAL, STATUS } from '../constants/Constants'
 
 export default defineComponent({
-  name: 'ThirdsPage',
+  name: 'AccountThirdsPage',
   setup () {
-    const path = '/thirdpersons'
+    const path = '/third-party-accountants'
     const socialreason = ref(null)
     const document = ref(null)
     const documenttype = ref(null)
     const legalnature = ref(null)
     const status = ref(null)
+    const states = ref(STATUS)
     const firstname = ref(null)
     const secondname = ref(null)
     const firstsurname = ref(null)
@@ -268,6 +220,7 @@ export default defineComponent({
     const filter = ref(null)
     const dataThird = ref([])
     const documentsTypes = ref(DOCUMENTTYPE)
+    const filterOptionsThirds = ref([])
     const naturals = ref(NATURAL)
     const myForm = ref(null)
     const $q = useQuasar()
@@ -293,8 +246,26 @@ export default defineComponent({
 
     const getThirds = async () => {
       visible.value = true
-      const { data } = await api.get(path)
-      dataThird.value = data
+      const { data } = await api.get('thirdperson')
+      const loadListThirds = []
+      data.forEach(function (value, key) {
+        loadListThirds.push({
+          id: value.id,
+          document: value.document,
+          documenttype: value.documenttype === documentsTypes.value[0].id ? documentsTypes.value[0].description
+            : value.documenttype === documentsTypes.value[1].id ? documentsTypes.value[1].description
+              : value.documenttype === documentsTypes.value[2].id ? documentsTypes.value[2].description
+                : value.documenttype === documentsTypes.value[3].id ? documentsTypes.value[3].description
+                  : value.documenttype === documentsTypes.value[4].id ? documentsTypes.value[4].description : documentsTypes.value[5].description,
+          firstname: value.firstname,
+          secondname: value.secondname,
+          firstsurname: value.firstsurname,
+          secondsurname: value.secondsurname,
+          socialreason: value.socialreason,
+          description: value.firstname ? value.document + ' ' + value.firstname + ' ' + value.firstsurname : value.document + ' ' + value.socialreason
+        })
+      })
+      dataThird.value = loadListThirds
       visible.value = false
     }
 
@@ -315,6 +286,7 @@ export default defineComponent({
       legalnature.value = null
       socialreason.value = null
       status.value = null
+      filterOptionsThirds.value = []
     }
 
     const onSubmit = () => {
@@ -398,6 +370,33 @@ export default defineComponent({
       })
     }
 
+    const filterFNThird = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsThirds.value = dataThird.value
+        })
+        return
+      }
+
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsThirds.value = dataThird.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+      })
+    }
+
+    const loadThirdFields = () => {
+      console.log('ENrta?')
+      if (filterOptionsThirds.value[0]) {
+        console.log('Entra?')
+        documenttype.value = filterOptionsThirds.value[0].documenttype
+        firstname.value = filterOptionsThirds.value[0].firstname
+        secondname.value = filterOptionsThirds.value[0].secondname
+        firstsurname.value = filterOptionsThirds.value[0].firstsurname
+        secondsurname.value = filterOptionsThirds.value[0].secondsurname
+        socialreason.value = filterOptionsThirds.value[0].socialreason
+      }
+    }
+
     return {
       dialog,
       dataThird,
@@ -425,7 +424,11 @@ export default defineComponent({
       secondsurname,
       active,
       naturals,
-      documentsTypes
+      documentsTypes,
+      filterFNThird,
+      filterOptionsThirds,
+      loadThirdFields,
+      states
     }
   }
 })

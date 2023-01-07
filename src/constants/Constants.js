@@ -3,7 +3,7 @@ export const INACTIVE = 2
 export const NIT = 'NIT'
 
 export const DOCUMENTTYPE = [
-  { id: 'citizenship_card', description: 'Cédula de ciudadanía' },
+  { id: 'identification_card', description: 'Cédula de ciudadanía' },
   { id: 'foregner_ID', description: 'Cédula de extranjería' },
   { id: 'foreign_card', description: 'Tarjeta de extranjería' },
   { id: 'identity_card', description: 'Tarjeta de identidad' },
