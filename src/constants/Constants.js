@@ -3,7 +3,7 @@ export const INACTIVE = 2
 export const NIT = 'NIT'
 
 export const DOCUMENTTYPE = [
-  { id: 'citizenship_card', description: 'Cédula de ciudadanía' },
+  { id: 'identification_card', description: 'Cédula de ciudadanía' },
   { id: 'foregner_ID', description: 'Cédula de extranjería' },
   { id: 'foreign_card', description: 'Tarjeta de extranjería' },
   { id: 'identity_card', description: 'Tarjeta de identidad' },
@@ -68,6 +68,19 @@ export const AFFECTSRETENTIONCATALOG = [
   { id: 4, description: 'Rete ICA' }
 ]
 
+export const TAXPAYERTYPECATALOG = [
+  { id: 1, description: 'Régimen Simplificado' },
+  { id: 2, description: 'Régimen Común' },
+  { id: 3, description: 'Gran Contribuyente' },
+  { id: 4, description: 'Compañía del Estado' }
+]
+
+export const WITHHOLDINGTYPECATALOG = [
+  { id: 1, description: 'Aplicar Retención' },
+  { id: 2, description: 'Auto Retención' },
+  { id: 3, description: 'Exento' }
+]
+
 export const LISTDOCUMENTTYPE = {
   1: 'Cédula de ciudadanía',
   2: 'Cédula de extranjería',
@@ -127,4 +140,17 @@ export const LISTAFFECTSRETENTIONCATALOG = {
   2: 'Rete Fuente',
   3: 'Rete IVA',
   4: 'Rete ICA'
+}
+
+export const LISTTAXPAYERTYPECATALOG = {
+  1: 'Régimen Simplificado',
+  2: 'Régimen Común',
+  3: 'Gran Contribuyente',
+  4: 'Compañía del Estado'
+}
+
+export const LISTWITHHOLDINGTYPECATALOG = {
+  1: 'Aplicar Retención',
+  2: 'Auto Retención',
+  3: 'Exento'
 }
