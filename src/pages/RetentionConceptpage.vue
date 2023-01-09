@@ -4,7 +4,7 @@
       <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
         <div>
           <q-space />
-          <q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Usuarios" :rows="dataCountry" :filter="filter" :columns="columns" row-key="name" >
+          <q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Usuarios" :rows="dataRetentionConcepts" :filter="filter" :columns="columns" row-key="name" >
             <template v-slot:top-left>
               <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
               <q-space />
@@ -23,6 +23,14 @@
                 </q-td>
                 <q-td key="description" :props="props">
                   {{ props.row.description }}
+                </q-td>
+                <q-td key="base" :props="props">
+                  {{ props.row.base }}
+                </q-td><q-td key="percentage" :props="props">
+                  {{ props.row.percentage }}
+                </q-td>
+                <q-td key="status" :props="props">
+                  {{ status[props.row.status] }}
                 </q-td>
                 <q-td key="edit" :props="props">
                   <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
@@ -64,21 +72,61 @@
                 white
                 color="blue"
                 v-model="code"
+                stack-label
                 label="Código *"
+                :readonly="isEditing"
                 lazy-rules
-                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
+                :rules="[ val => !!val || 'El campo es obligatorio']"
+              />
+            </div>
+
+            <div class="col-md-5">
+              <q-input
+                white
+                color="blue"
+                v-model="description"
+                label="Descripción *"
+                stack-label
+                lazy-rules
+                :rules="[ val => !!val || 'El campo es obligatorio']"
+              />
+            </div>
+          </div>
+
+          <div class="row justify-around">
+            <div class="col-md-5">
+              <q-input
+                white
+                color="blue"
+                stack-label
+                v-model="base"
+                type="number"
+                label="Base  *"
+                lazy-rules
+                :rules="[ val => !!val || 'El campo es obligatorio']"
               />
             </div>
             <div class="col-md-5">
               <q-input
                 white
                 color="blue"
-                v-model="description"
-                label="País *"
+                v-model="percentage"
+                label="Porcentaje *"
+                mask="#.##"
                 stack-label
                 lazy-rules
-                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
+                :rules="[ val => !!val || 'El campo es obligatorio']"
               />
+            </div>
+
+            <div class="row justify-around">
+              <div class="col-md-2">
+              </div>
+              <div class="col-md-6">
+                <q-toggle v-model="active" label="Estado concepto"/>
+              </div>
+              <div class="col-md-2">
+              </div>
             </div>
           </div>
         </q-form>
@@ -112,20 +160,23 @@
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
+import {
+  ACTIVE, INACTIVE, STATUS
+} from '../constants/Constants'
 
 export default defineComponent({
   name: 'CountryPage',
   setup () {
-    const path = '/users'
+    const path = '/retention-concepts'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)
     const filter = ref(null)
-    const dataCountry = ref([])
+    const dataRetentionConcepts = ref([])
     const description = ref(null)
     const code = ref(null)
-    const name = ref(null)
-    const role = ref(null)
+    const base = ref(null)
+    const percentage = ref(null)
     const active = ref(false)
     const myForm = ref(null)
     const $q = useQuasar()
@@ -137,18 +188,22 @@ export default defineComponent({
     const columns = ref([
       { name: 'code', align: 'center', label: 'Código', field: 'code', sortable: true },
       { name: 'description', align: 'center', label: 'Cóncepto de retención', field: 'description', sortable: true },
+      { name: 'base', align: 'center', label: 'Base', field: 'base', sortable: true },
+      { name: 'percentage', align: 'center', label: 'Porcentaje', field: 'percentage', sortable: true },
+      { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
+    const status = ref(STATUS)
 
     onMounted(() => {
-      getCountries()
+      getRetentionConcepts()
     })
 
-    const getCountries = async () => {
+    const getRetentionConcepts = async () => {
       visible.value = true
       const { data } = await api.get(path)
-      dataCountry.value = data
+      dataRetentionConcepts.value = data
       visible.value = false
     }
 
@@ -160,7 +215,10 @@ export default defineComponent({
     const onReset = () => {
       description.value = null
       code.value = null
+      base.value = 0
+      percentage.value = 0
       isEditing.value = false
+      active.value = false
     }
 
     const onSubmit = () => {
@@ -168,10 +226,13 @@ export default defineComponent({
         if (success) {
           api.post(path, {
             code: code.value,
-            description: description.value
+            description: description.value,
+            base: base.value,
+            percentage: percentage.value,
+            status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getCountries()
+            getRetentionConcepts()
           })
         }
       })
@@ -183,7 +244,12 @@ export default defineComponent({
       isEditing.value = true
       id.value = row.id
       code.value = row.code
-      description.value = row.role
+      description.value = row.description
+      base.value = String(row.base)
+      percentage.value = row.percentage
+      if (row.status === ACTIVE) {
+        active.value = true
+      }
     }
 
     const onEditing = () => {
@@ -191,10 +257,13 @@ export default defineComponent({
         if (success) {
           api.patch(path + '/' + id.value, {
             code: code.value,
-            description: description.value
+            description: description.value,
+            base: base.value,
+            percentage: percentage.value,
+            status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getCountries()
+            getRetentionConcepts()
           })
         }
       })
@@ -203,7 +272,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar este registro: ' + row.description + '?',
+        message: '¿Está seguro que desea eliminar este concepto: ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -213,19 +282,19 @@ export default defineComponent({
           color: 'negative'
         }
       }).onOk(() => {
-        api.delete(path + '/' + row.id).then(response => {
+        api.delete(path + '/' + row.id).then(_response => {
           dialog.value = false
-          getCountries()
+          getRetentionConcepts()
         })
       })
     }
 
     return {
       dialog,
-      dataCountry,
+      dataRetentionConcepts,
       isEditing,
-      name,
-      role,
+      base,
+      percentage,
       active,
       myForm,
       pagination,
@@ -234,12 +303,14 @@ export default defineComponent({
       visible,
       filter,
       code,
+      description,
       onReset,
       onSubmit,
       editing,
       onEditing,
       id,
-      onDelete
+      onDelete,
+      status
     }
   }
 })
