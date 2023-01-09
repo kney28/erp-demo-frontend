@@ -19,7 +19,24 @@
             <template v-slot:body="props">
               <q-tr :props="props">
                 <q-td key="documenttype" :props="props">
-                  {{ props.row.documenttype }}
+                  <template v-if="props.row.documenttype === documentsTypes[0].id">
+                    {{ documentsTypes[0].description }}
+                  </template>
+                  <template v-if="props.row.documenttype === documentsTypes[1].id">
+                    {{ documentsTypes[1].description }}
+                  </template>
+                  <template v-if="props.row.documenttype === documentsTypes[2].id">
+                    {{ documentsTypes[2].description }}
+                  </template>
+                  <template v-if="props.row.documenttype === documentsTypes[3].id">
+                    {{ documentsTypes[3].description }}
+                  </template>
+                  <template v-if="props.row.documenttype === documentsTypes[4].id">
+                    {{ documentsTypes[4].description }}
+                  </template>
+                  <template v-if="props.row.documenttype === documentsTypes[5].id">
+                    {{ documentsTypes[5].description }}
+                  </template>
                 </q-td>
                 <q-td key="document" :props="props">
                   {{ props.row.document }}
@@ -251,7 +268,7 @@ import { STATUSNB, DOCUMENTTYPE, NATURAL } from '../constants/Constants'
 export default defineComponent({
   name: 'ThirdsPage',
   setup () {
-    const path = '/thirdpersons'
+    const path = '/thirdperson'
     const socialreason = ref(null)
     const document = ref(null)
     const documenttype = ref(null)
