@@ -81,6 +81,13 @@ export const WITHHOLDINGTYPECATALOG = [
   { id: 3, description: 'Exento' }
 ]
 
+export const ACCOUNTINGVALIDITYSTATUS = [
+  { id: 1, description: 'Abierta' },
+  { id: 2, description: 'Activa' },
+  { id: 3, description: 'En cierre' },
+  { id: 4, description: 'Cerrada' }
+]
+
 export const LISTDOCUMENTTYPE = {
   1: 'Cédula de ciudadanía',
   2: 'Tarjeta de identidad',
@@ -153,4 +160,11 @@ export const LISTWITHHOLDINGTYPECATALOG = {
   1: 'Aplicar Retención',
   2: 'Auto Retención',
   3: 'Exento'
+}
+
+export const LISTACCOUNTINGVALIDITYSTATUS = {
+  1: 'Abierta',
+  2: 'Activa',
+  3: 'En cierre',
+  4: 'Cerrada'
 }
