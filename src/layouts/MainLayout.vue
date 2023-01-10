@@ -16,13 +16,6 @@
 
         <q-toolbar-title>ERP HOSPITALARIO</q-toolbar-title>
         <q-btn
-          class="q-mr-xs"
-          flat
-          round
-          @click="$q.dark.toggle()"
-          :icon="$q.dark.isActive ? 'nights_stay' : 'wb_sunny'"
-        />
-        <q-btn
           flat
           round
           dense
@@ -52,10 +45,9 @@
       </q-toolbar>
     </q-header>
     <q-drawer
-      class="left-navigation text-white"
+      class="left-navigation"
       show-if-above
       v-model="left"
-      style="background-image: url(https://demos.creative-tim.com/vue-material-dashboard/img/sidebar-2.32103624.jpg) !important;"
       side="left"
       elevated
     >
@@ -69,7 +61,7 @@
               <img src="https://cdn.quasar.dev/img/boy-avatar.png" alt="icon"/>
             </q-avatar>
 
-            <q-toolbar-title>Menú Principal</q-toolbar-title>
+            <q-toolbar-title>Hospital XYZ</q-toolbar-title>
           </q-toolbar>
           <hr />
           <q-scroll-area style="height:100%;">
@@ -744,12 +736,11 @@ export default defineComponent({
 <style>
 .q-drawer {
   /*background-image: url(https://demos.creative-tim.com/vue-material-dashboard/img/sidebar-2.32103624.jpg) !important;*/
-  background-image: url("/images/lake.jpg") !important;
   background-size: cover !important;
 }
 
 .drawer_normal {
-  background-color: rgba(1, 1, 1, 0.75);
+  background-color: rgba(255, 255, 255, 0);
 }
 
 .drawer_dark {
@@ -761,7 +752,7 @@ export default defineComponent({
 }
 
 .tab-active {
-  background-color: green;
+  background-color: #3BA3BC;
 }
 
 body {
@@ -771,8 +762,8 @@ body {
 .header_normal {
   background: linear-gradient(
     145deg,
-    rgb(32, 106, 80) 15%,
-    rgb(21, 57, 102) 70%
+    rgb(21, 57, 102) 15%,
+    rgb(00, 128, 128) 70%
   );
 }
 
