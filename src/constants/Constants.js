@@ -3,16 +3,16 @@ export const INACTIVE = 2
 export const NIT = 'NIT'
 
 export const DOCUMENTTYPE = [
-  { id: 'identification_card', description: 'Cédula de ciudadanía' },
-  { id: 'foregner_ID', description: 'Cédula de extranjería' },
-  { id: 'foreign_card', description: 'Tarjeta de extranjería' },
-  { id: 'identity_card', description: 'Tarjeta de identidad' },
-  { id: 'passport', description: 'Pasaporte' },
-  { id: 'NIT', description: 'NIT' }
+  { id: 1, description: 'Cédula de ciudadanía' },
+  { id: 2, description: 'Tarjeta de identidad' },
+  { id: 3, description: 'Tarjeta de extranjería' },
+  { id: 4, description: 'Cédula de extranjería' },
+  { id: 5, description: 'NIT' },
+  { id: 6, description: 'Pasaporte' }
 ]
 export const NATURAL = [
-  { id: 'legal', description: 'Legal' },
-  { id: 'natural', description: 'Natural' }
+  { id: 1, description: 'Natural' },
+  { id: 2, description: 'Legal' }
 ]
 
 export const STATUS = {
@@ -83,15 +83,15 @@ export const WITHHOLDINGTYPECATALOG = [
 
 export const LISTDOCUMENTTYPE = {
   1: 'Cédula de ciudadanía',
-  2: 'Cédula de extranjería',
+  2: 'Tarjeta de identidad',
   3: 'Tarjeta de extranjería',
-  4: 'Tarjeta de identidad',
-  5: 'Pasaporte',
-  6: 'NIT'
+  4: 'Cédula de extranjería',
+  5: 'NIT',
+  6: 'Pasaporte'
 }
 export const LISTNATURAL = {
-  1: 'Legal',
-  2: 'Natural'
+  1: 'Natural',
+  2: 'Legal'
 }
 
 export const LISTSTATUS = {
