@@ -4,7 +4,7 @@
       <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
         <div>
           <q-space />
-          <q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Usuarios" :rows="dataCountry" :filter="filter" :columns="columns" row-key="name" >
+          <q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Usuarios" :rows="dataValidity" :filter="filter" :columns="columns" row-key="name" >
             <template v-slot:top-left>
               <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
               <q-space />
@@ -18,8 +18,17 @@
             </template>
             <template v-slot:body="props">
               <q-tr :props="props">
-                <q-td key="company" :props="props">
-                  {{ props.row.company }}
+                <q-td key="year" :props="props">
+                  {{ props.row.year }}
+                </q-td>
+                <q-td key="minimunsalary" :props="props">
+                  {{ formatNumbers(props.row.minimumsalary) }}
+                </q-td>
+                <q-td key="uvtvalue" :props="props">
+                  {{ formatNumbers(props.row.uvtvalue) }}
+                </q-td>
+                <q-td key="status" :props="props">
+                  {{ status[props.row.status] }}
                 </q-td>
                 <q-td key="edit" :props="props">
                   <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
@@ -56,19 +65,47 @@
       <q-card-section>
         <q-form ref="myForm" @submit.prevent="">
           <div class="row justify-around">
-            <div class="col-md-5">
+            <div class="col-md-3">
               <q-input
                 white
                 color="blue"
-                v-model="code"
-                label="Compañía *"
+                v-model="year"
+                label="Vigencia *"
+                :readonly="isEditing"
+                mask="####"
                 lazy-rules
-                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
+                :rules="[ val => !!val || 'El campo es obligatorio']"
               />
             </div>
-            <div class="col-md-5">
+            <div class="col-md-3">
+              <q-input
+                white
+                color="blue"
+                v-model="minimumSalary"
+                label="Salario mínimo"
+                type="number"
+              />
+            </div>
+            <div class="col-md-3">
+              <q-input
+                white
+                color="blue"
+                v-model="uvtValue"
+                type="number"
+                label="UVT"
+              />
             </div>
           </div>
+
+          <div class="row justify-around">
+              <div class="col-md-3">
+              </div>
+              <div class="col-md-3">
+                <q-toggle v-model="active" label="Estado Vigencia"/>
+              </div>
+              <div class="col-md-3">
+              </div>
+            </div>
         </q-form>
       </q-card-section>
 
@@ -100,20 +137,23 @@
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
+import {
+  ACTIVE, INACTIVE, STATUS
+} from '../constants/Constants'
 
 export default defineComponent({
-  name: 'CompanyPage',
+  name: 'ValidityPage',
   setup () {
-    const path = '/users'
+    const formatNumber = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
+    const path = '/validity'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)
     const filter = ref(null)
-    const dataCountry = ref([])
-    const description = ref(null)
-    const code = ref(null)
-    const name = ref(null)
-    const role = ref(null)
+    const dataValidity = ref([])
+    const uvtValue = ref(null)
+    const year = ref(null)
+    const minimumSalary = ref(null)
     const active = ref(false)
     const myForm = ref(null)
     const $q = useQuasar()
@@ -123,30 +163,37 @@ export default defineComponent({
     })
     const isEditing = ref(false)
     const columns = ref([
-      { name: 'company', align: 'center', label: 'Vigencia', field: 'company', sortable: true },
+      { name: 'year', align: 'center', label: 'Vigencia', field: 'year', sortable: true },
+      { name: 'minimunsalary', align: 'center', label: 'Salario mínimo', field: 'minimunsalary', sortable: true },
+      { name: 'uvtvalue', align: 'center', label: 'UVT', field: 'uvtvalue', sortable: true },
+      { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
+    const status = ref(STATUS)
 
     onMounted(() => {
-      getCountries()
+      getValidity()
     })
 
-    const getCountries = async () => {
+    const getValidity = async () => {
       visible.value = true
       const { data } = await api.get(path)
-      dataCountry.value = data
+      dataValidity.value = data
       visible.value = false
     }
 
     const creating = () => {
       onReset()
       dialog.value = true
+      active.value = false
     }
 
     const onReset = () => {
-      description.value = null
-      code.value = null
+      year.value = null
+      minimumSalary.value = null
+      uvtValue.value = null
+      active.value = null
       isEditing.value = false
     }
 
@@ -154,11 +201,13 @@ export default defineComponent({
       myForm.value.validate().then(async success => {
         if (success) {
           api.post(path, {
-            code: code.value,
-            description: description.value
+            year: year.value,
+            minimumsalary: parseInt(minimumSalary.value),
+            uvtvalue: parseInt(uvtValue.value),
+            status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getCountries()
+            getValidity()
           })
         }
       })
@@ -169,19 +218,25 @@ export default defineComponent({
       dialog.value = true
       isEditing.value = true
       id.value = row.id
-      code.value = row.code
-      description.value = row.role
+      year.value = row.year
+      uvtValue.value = row.uvtvalue
+      minimumSalary.value = row.minimumsalary
+      if (row.status === ACTIVE) {
+        active.value = true
+      }
     }
 
     const onEditing = () => {
       myForm.value.validate().then(async success => {
         if (success) {
           api.patch(path + '/' + id.value, {
-            code: code.value,
-            description: description.value
+            year: year.value,
+            minimumsalary: minimumSalary.value,
+            uvtvalue: uvtValue.value,
+            status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getCountries()
+            getValidity()
           })
         }
       })
@@ -190,7 +245,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar este registro: ' + row.description + '?',
+        message: '¿Está seguro que desea eliminar esta vigencia: ' + row.year + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -202,17 +257,20 @@ export default defineComponent({
       }).onOk(() => {
         api.delete(path + '/' + row.id).then(response => {
           dialog.value = false
-          getCountries()
+          getValidity()
         })
       })
     }
 
+    const formatNumbers = (valor) => {
+      return formatNumber.format(valor)
+    }
+
     return {
       dialog,
-      dataCountry,
+      dataValidity,
       isEditing,
-      name,
-      role,
+      minimumSalary,
       active,
       myForm,
       pagination,
@@ -220,13 +278,17 @@ export default defineComponent({
       columns,
       visible,
       filter,
-      code,
+      year,
       onReset,
       onSubmit,
       editing,
       onEditing,
       id,
-      onDelete
+      onDelete,
+      status,
+      uvtValue,
+      formatNumber,
+      formatNumbers
     }
   }
 })

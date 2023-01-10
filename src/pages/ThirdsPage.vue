@@ -50,16 +50,11 @@
                 <q-td key="socialreason" :props="props">
                   {{ props.row.socialreason }}
                 </q-td>
-                <q-td key="legalnature" :props="props">
-                  {{ props.row.legalnature }}
+                <q-td key="nature" :props="props">
+                  {{ listNaturals[props.row.nature] }}
                 </q-td>
                 <q-td key="status" :props="props">
-                  <template v-if="props.row.status === states[1]">
-                    {{ 'Activo' }}
-                  </template>
-                  <template v-if="props.row.status === states[2]">
-                    {{ 'Inactivo' }}
-                  </template>
+                  {{ states[props.row.status] }}
                 </q-td>
                 <q-td key="edit" :props="props">
                   <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
@@ -129,7 +124,7 @@
               <q-select
                 white
                 color="blue"
-                v-model="legalnature"
+                v-model="nature"
                 label="Naturaleza *"
                 lazy-rules
                 option-label="description"
@@ -146,7 +141,7 @@
           </div>
 
           <div class="row justify-around">
-            <div v-if="documenttype !== 'NIT'" class="col-md-3">
+            <div v-if="documenttype !== documentsTypes[4].id" class="col-md-3">
               <q-input
                 white
                 stack-label
@@ -157,7 +152,7 @@
                 :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
               />
             </div>
-            <div v-if="documenttype !== 'NIT'" class="col-md-3">
+            <div v-if="documenttype !== documentsTypes[4].id" class="col-md-3">
               <q-input
                 white
                 color="blue"
@@ -166,7 +161,7 @@
                 stack-label
               />
             </div>
-            <div v-if="documenttype !== 'NIT'" class="col-md-3">
+            <div v-if="documenttype !== documentsTypes[4].id" class="col-md-3">
               <q-input
                 white
                 color="blue"
@@ -180,7 +175,7 @@
           </div>
 
           <div class="row justify-around">
-            <div v-if="documenttype !== 'NIT'" class="col-md-3">
+            <div v-if="documenttype !== documentsTypes[4].id" class="col-md-3">
               <q-input
                 white
                 color="blue"
@@ -189,7 +184,7 @@
                 stack-label
               />
             </div>
-            <div v-if="documenttype === 'NIT'" class="col-md-7">
+            <div v-if="documenttype === documentsTypes[4].id" class="col-md-7">
               <q-input
                 white
                 color="blue"
@@ -211,7 +206,7 @@
           </div>
           <br>
 
-          <div v-if="documenttype === 'NIT'" class="row justify-around">
+          <div v-if="documenttype === documentsTypes[4].id" class="row justify-around">
             <div class="col-md-2">
             </div>
             <div class="col-md-2">
@@ -263,7 +258,7 @@
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-import { STATUSNB, DOCUMENTTYPE, NATURAL } from '../constants/Constants'
+import { STATUS, DOCUMENTTYPE, NATURAL, ACTIVE, INACTIVE, LISTNATURAL } from '../constants/Constants'
 
 export default defineComponent({
   name: 'ThirdsPage',
@@ -272,9 +267,9 @@ export default defineComponent({
     const socialreason = ref(null)
     const document = ref(null)
     const documenttype = ref(null)
-    const legalnature = ref(null)
+    const nature = ref(null)
     const status = ref(null)
-    const states = ref(STATUSNB)
+    const states = ref(STATUS)
     const firstname = ref(null)
     const secondname = ref(null)
     const firstsurname = ref(null)
@@ -287,6 +282,7 @@ export default defineComponent({
     const dataThird = ref([])
     const documentsTypes = ref(DOCUMENTTYPE)
     const naturals = ref(NATURAL)
+    const listNaturals = ref(LISTNATURAL)
     const myForm = ref(null)
     const $q = useQuasar()
     const pagination = ref({
@@ -299,7 +295,7 @@ export default defineComponent({
       { name: 'document', align: 'center', label: 'Documento', field: 'document', sortable: true },
       { name: 'fullname', align: 'center', label: 'Nombre completo', field: 'fullname', sortable: true },
       { name: 'socialreason', align: 'center', label: 'Razón social', field: 'socialreason', sortable: true },
-      { name: 'legalnature', align: 'center', label: 'Naturaleza', field: 'legalnature', sortable: true },
+      { name: 'nature', align: 'center', label: 'Naturaleza', field: 'nature', sortable: true },
       { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
@@ -330,7 +326,7 @@ export default defineComponent({
       secondname.value = null
       firstsurname.value = null
       secondsurname.value = null
-      legalnature.value = null
+      nature.value = null
       socialreason.value = null
       status.value = null
     }
@@ -345,9 +341,9 @@ export default defineComponent({
             secondname: secondname.value,
             firstsurname: firstsurname.value,
             secondsurname: secondsurname.value,
-            legalnature: legalnature.value,
+            nature: nature.value,
             socialreason: socialreason.value,
-            status: active.value ? STATUSNB[1] : STATUSNB[2],
+            status: active.value ? ACTIVE : INACTIVE,
             verificationcode: 0
           }).then(() => {
             dialog.value = false
@@ -368,9 +364,9 @@ export default defineComponent({
       secondname.value = row.secondname
       firstsurname.value = row.firstsurname
       secondsurname.value = row.secondsurname
-      legalnature.value = row.legalnature
+      nature.value = row.nature
       socialreason.value = row.socialreason
-      if (row.status === STATUSNB[1]) {
+      if (row.status === ACTIVE) {
         active.value = true
       }
     }
@@ -385,9 +381,9 @@ export default defineComponent({
             secondname: secondname.value,
             firstsurname: firstsurname.value,
             secondsurname: secondsurname.value,
-            legalnature: legalnature.value,
+            nature: nature.value,
             socialreason: socialreason.value,
-            status: active.value ? STATUSNB[1] : STATUSNB[2]
+            status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
             getThirds()
@@ -435,7 +431,7 @@ export default defineComponent({
       socialreason,
       document,
       documenttype,
-      legalnature,
+      nature,
       status,
       firstname,
       secondname,
@@ -444,7 +440,8 @@ export default defineComponent({
       active,
       naturals,
       documentsTypes,
-      states
+      states,
+      listNaturals
     }
   }
 })
