@@ -31,7 +31,8 @@ module.exports = configure(function (ctx) {
     boot: [
       'i18n',
       'axios',
-      'sweetalert2'
+      'sweetalert2',
+      'currency'
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
