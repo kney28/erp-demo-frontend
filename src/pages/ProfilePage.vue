@@ -4,8 +4,9 @@
       <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
         <div>
           <q-space />
-          <q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Usuarios" :rows="dataUser" :filter="filter" :columns="columns" row-key="name" >
+          <q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Usuarios" :rows="dataProfiles" :filter="filter" :columns="columns" row-key="name" >
             <template v-slot:top-left>
+              <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
               <q-space />
             </template>
             <template v-slot:top-right>
@@ -17,8 +18,14 @@
             </template>
             <template v-slot:body="props">
               <q-tr :props="props">
-                <q-td key="username" :props="props">
-                  {{ props.row.username }}
+                <q-td key="code" :props="props">
+                  {{ props.row.code }}
+                </q-td>
+                <q-td key="description" :props="props">
+                  {{ props.row.description }}
+                </q-td>
+                <q-td key="status" :props="props">
+                    {{ states[props.row.status] }}
                 </q-td>
                 <q-td key="edit" :props="props">
                   <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
@@ -55,84 +62,37 @@
       <q-card-section>
         <q-form ref="myForm" @submit.prevent="">
           <div class="row justify-around">
-            <div class="col-md-5">
+            <div class="col-md-4">
               <q-input
                 white
                 color="blue"
-                v-model="username"
-                label="Usuario *"
+                v-model="code"
+                label="Código *"
                 lazy-rules
-                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
+                :rules="[ val => !!val || 'El campo es obligatorio']"
               />
             </div>
-
-          </div>
-
-          <div v-if="!isEditing" class="row justify-around">
-            <div class="col-md-5">
+            <div class="col-md-4">
               <q-input
                 white
                 color="blue"
-                type="password"
-                v-model="password"
-                label="Contraseña *"
-                stack-label
+                v-model="description"
+                label="Descripción *"
                 lazy-rules
-                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
-              />
-            </div>
-            <div class="col-md-5">
-              <q-input
-                white
-                color="blue"
-                type="password"
-                v-model="confirmationPassword"
-                label="Repetir contraseña *"
-                stack-label
-                v-on:change="validatePassword()"
-                lazy-rules
-                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
-              />
-            </div>
-          </div>
-
-          <div v-if="changePassword" class="row justify-around">
-            <div class="col-md-5">
-              <q-input
-                white
-                type="password"
-                color="blue"
-                v-model="newPassword"
-                label="Contraseña *"
-                stack-label
-                lazy-rules
-                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
-              />
-            </div>
-            <div class="col-md-5">
-              <q-input
-                white
-                type="password"
-                color="blue"
-                v-model="confirmationPassword"
-                label="Repetir contraseña *"
-                stack-label
-                v-on:change="validatePassword()"
-                lazy-rules
-                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
+                :rules="[ val => !!val || 'El campo es obligatorio']"
               />
             </div>
           </div>
 
           <div class="row justify-around">
-            <div class="col-md-5">
-              <q-toggle v-model="active" label="Estado usuario"/>
+            <div class="col-md-3">
             </div>
-            <div v-if="isEditing" class="col-md-5">
-              <q-toggle v-model="changePassword" label="Cambiar Contraseña"/>
+            <div class="col-md-3">
+              <q-toggle v-model="active" label="Estado"/>
             </div>
-            <div v-else class="col-md-5">
-            </div>
+            <div class="col-md-3">
+          </div>
+
           </div>
         </q-form>
       </q-card-section>
@@ -165,24 +125,21 @@
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-
+import { ACTIVE, INACTIVE, STATUS } from '../constants/Constants'
 export default defineComponent({
-  name: 'ProfilesPage',
+  name: 'ProfilePage',
   setup () {
-    const path = '/users'
+    const path = '/profiles'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)
+    const states = ref(STATUS)
     const filter = ref(null)
-    const dataUser = ref([])
-    const username = ref(null)
-    const password = ref(null)
-    const name = ref(null)
-    const confirmationPassword = ref(null)
+    const dataProfiles = ref([])
+    const description = ref(null)
+    const code = ref(null)
     const role = ref(null)
     const active = ref(false)
-    const changePassword = ref(false)
-    const newPassword = ref(null)
     const myForm = ref(null)
     const $q = useQuasar()
     const pagination = ref({
@@ -191,19 +148,21 @@ export default defineComponent({
     })
     const isEditing = ref(false)
     const columns = ref([
-      { name: 'username', align: 'center', label: 'Usuario', field: 'username', sortable: true },
+      { name: 'code', align: 'center', label: 'Código', field: 'code', sortable: true },
+      { name: 'description', align: 'center', label: 'Descripción', field: 'description', sortable: true },
+      { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
 
     onMounted(() => {
-      getUsers()
+      getProfiles()
     })
 
-    const getUsers = async () => {
+    const getProfiles = async () => {
       visible.value = true
       const { data } = await api.get(path)
-      dataUser.value = data
+      dataProfiles.value = data
       visible.value = false
     }
 
@@ -213,30 +172,22 @@ export default defineComponent({
     }
 
     const onReset = () => {
-      active.value = false
-      username.value = null
-      name.value = null
-      password.value = null
-      newPassword.value = null
-      role.value = null
-      changePassword.value = false
-      confirmationPassword.value = null
+      description.value = null
+      code.value = null
       isEditing.value = false
+      active.value = false
     }
 
     const onSubmit = () => {
-      validatePassword()
       myForm.value.validate().then(async success => {
         if (success) {
           api.post(path, {
-            username: username.value,
-            role: role.value,
-            name: name.value,
-            password: password.value,
-            active: active.value
+            code: code.value,
+            description: description.value,
+            status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getUsers()
+            getProfiles()
           })
         }
       })
@@ -247,26 +198,23 @@ export default defineComponent({
       dialog.value = true
       isEditing.value = true
       id.value = row.id
-      username.value = row.username
-      name.value = row.name
-      role.value = row.role
-      password.value = row.password
-      active.value = row.active
+      code.value = row.code
+      description.value = row.description
+      if (row.status === ACTIVE) {
+        active.value = true
+      }
     }
 
     const onEditing = () => {
-      validatePassword()
       myForm.value.validate().then(async success => {
         if (success) {
           api.patch(path + '/' + id.value, {
-            username: username.value,
-            role: role.value,
-            name: name.value,
-            password: newPassword.value ? newPassword.value : password.value,
-            active: active.value
+            code: code.value,
+            description: description.value,
+            status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getUsers()
+            getProfiles()
           })
         }
       })
@@ -275,7 +223,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar al usuario: ' + row.username + '?',
+        message: '¿Está seguro que desea eliminar este perfil: ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -287,39 +235,15 @@ export default defineComponent({
       }).onOk(() => {
         api.delete(path + '/' + row.id).then(response => {
           dialog.value = false
-          getUsers()
+          getProfiles()
         })
       })
     }
 
-    const validatePassword = () => {
-      if (isEditing.value) {
-        if (confirmationPassword.value !== newPassword.value) {
-          messagePassword()
-          newPassword.value = null
-        }
-      } else {
-        if (confirmationPassword.value !== password.value) {
-          messagePassword()
-          password.value = null
-        }
-      }
-    }
-
-    const messagePassword = () => {
-      $q.dialog({
-        title: 'Notificación',
-        message: '¡El campo de confirmación de contraseña no coincide!'
-      })
-      confirmationPassword.value = null
-    }
-
     return {
-      username,
       dialog,
-      dataUser,
+      dataProfiles,
       isEditing,
-      name,
       role,
       active,
       myForm,
@@ -328,18 +252,15 @@ export default defineComponent({
       columns,
       visible,
       filter,
-      password,
+      code,
       onReset,
       onSubmit,
       editing,
-      changePassword,
       onEditing,
       id,
-      newPassword,
       onDelete,
-      confirmationPassword,
-      validatePassword,
-      messagePassword
+      description,
+      states
     }
   }
 })
