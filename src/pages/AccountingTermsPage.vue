@@ -18,6 +18,9 @@
             </template>
             <template v-slot:body="props">
               <q-tr :props="props">
+                <q-td key="year" :props="props">
+                  {{ props.row.year }}
+                </q-td>
                 <q-td key="status" :props="props">
                   {{ listStatus[props.row.status] }}
                 </q-td>
@@ -59,7 +62,27 @@
       <q-card-section>
         <q-form ref="myForm" @submit.prevent="">
           <div class="row justify-around">
-            <div class="col-md-5">
+            <div class="col-md-3">
+              <q-select
+                white
+                color="blue"
+                :readonly="isEditing"
+                v-model="validity"
+                label="Vigencia *"
+                option-label="year"
+                option-value="id"
+                @filter="filterFNValidity"
+                :options="filterOptionsValidity"
+                stack-label
+                use-input
+                input-debounce="0"
+                emit-value
+                map-options
+                lazy-rules
+                :rules="[ val => !!val || 'El campo es obligatorio']"
+              />
+            </div>
+            <div class="col-md-3">
               <q-select
                 white
                 color="blue"
@@ -78,7 +101,7 @@
                 :rules="[ val => !!val || 'El campo es obligatorio']"
               />
             </div>
-            <div class="col-md-5">
+            <div class="col-md-3">
               <q-select
                 white
                 color="blue"
@@ -143,11 +166,14 @@ export default defineComponent({
     const listInUse = ref(LISTSELECTIONCATALOG)
     const listStatus = ref(LISTACCOUNTINGVALIDITYSTATUS)
     const statuses = ref(ACCOUNTINGVALIDITYSTATUS)
+    const validity = ref(null)
+    const filterOptionsValidity = ref([])
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)
     const filter = ref(null)
     const dataValidity = ref([])
+    const dataSetValidity = ref([])
     const myForm = ref(null)
     const $q = useQuasar()
     const pagination = ref({
@@ -156,6 +182,7 @@ export default defineComponent({
     })
     const isEditing = ref(false)
     const columns = ref([
+      { name: 'year', align: 'center', label: 'Vigencia', field: 'year', sortable: true },
       { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
       { name: 'in_use', align: 'center', label: 'En uso', field: 'in_use', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
@@ -163,6 +190,7 @@ export default defineComponent({
     ])
 
     onMounted(() => {
+      getSetValidity()
       getValidity()
     })
 
@@ -170,6 +198,13 @@ export default defineComponent({
       visible.value = true
       const { data } = await api.get(path)
       dataValidity.value = data
+      visible.value = false
+    }
+
+    const getSetValidity = async () => {
+      visible.value = true
+      const { data } = await api.get('validity')
+      dataSetValidity.value = data
       visible.value = false
     }
 
@@ -188,6 +223,7 @@ export default defineComponent({
       myForm.value.validate().then(async success => {
         if (success) {
           api.post(path, {
+            validity: validity.value,
             status: status.value,
             in_use: inUse.value
           }).then(() => {
@@ -204,13 +240,15 @@ export default defineComponent({
       isEditing.value = true
       id.value = row.id
       status.value = row.status
-      inUse.value = row.third.in_use
+      validity.value = row.validity
+      inUse.value = row.in_use
     }
 
     const onEditing = () => {
       myForm.value.validate().then(async success => {
         if (success) {
           api.patch(path + '/' + id.value, {
+            validity: validity.value,
             status: status.value,
             in_use: inUse.value
           }).then(() => {
@@ -224,7 +262,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar el siguiente registro?: ' + row.third.document + '?',
+        message: '¿Está seguro que desea eliminar la vigencia ' + row.validity.year + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -238,6 +276,20 @@ export default defineComponent({
           dialog.value = false
           getValidity()
         })
+      })
+    }
+
+    const filterFNValidity = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsValidity.value = dataSetValidity.value
+        })
+        return
+      }
+
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsValidity.value = dataSetValidity.value.filter(v => v.year.toLowerCase().indexOf(needle) > -1)
       })
     }
 
@@ -262,7 +314,12 @@ export default defineComponent({
       inUses,
       listInUse,
       listStatus,
-      statuses
+      statuses,
+      validity,
+      filterOptionsValidity,
+      getSetValidity,
+      dataSetValidity,
+      filterFNValidity
     }
   }
 })
