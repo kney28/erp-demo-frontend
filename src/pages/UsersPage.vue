@@ -28,7 +28,7 @@
                   {{ (props.row.active) ? 'Activo' : 'Inactivo' }}
                 </q-td>
                 <q-td key="role" :props="props">
-                  {{ props.row.role }}
+                  {{ props.row.role.description }}
                 </q-td>
                 <q-td key="edit" :props="props">
                   <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
@@ -76,14 +76,19 @@
               />
             </div>
             <div class="col-md-5">
-              <q-input
+              <q-select
                 white
                 color="blue"
                 v-model="role"
                 label="Rol *"
-                stack-label
+                @filter="filterFnProfiles"
+                :options="filterOptionsProfiles"
+                option-value="id"
+                option-label="description"
+                emit-value
+                map-options
                 lazy-rules
-                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
+                :rules="[ val => !!val || 'El campo es obligatorio']"
               />
             </div>
           </div>
@@ -208,6 +213,8 @@ export default defineComponent({
     const id = ref(null)
     const filter = ref(null)
     const dataUser = ref([])
+    const dataProfiles = ref([])
+    const filterOptionsProfiles = ref(dataProfiles)
     const username = ref(null)
     const password = ref(null)
     const name = ref(null)
@@ -234,12 +241,20 @@ export default defineComponent({
 
     onMounted(() => {
       getUsers()
+      getProfiles()
     })
 
     const getUsers = async () => {
       visible.value = true
       const { data } = await api.get(path)
       dataUser.value = data
+      visible.value = false
+    }
+
+    const getProfiles = async () => {
+      visible.value = true
+      const { data } = await api.get('/profiles')
+      dataProfiles.value = data
       visible.value = false
     }
 
@@ -296,7 +311,7 @@ export default defineComponent({
         if (success) {
           api.patch(path + '/' + id.value, {
             username: username.value,
-            role: role.value,
+            role: role.value.id ? role.value.id : role.value,
             name: name.value,
             password: newPassword.value ? newPassword.value : password.value,
             active: active.value
@@ -350,10 +365,24 @@ export default defineComponent({
       confirmationPassword.value = null
     }
 
+    const filterFnProfiles = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsProfiles.value = dataProfiles.value
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsProfiles.value = dataProfiles.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+      })
+    }
+
     return {
       username,
       dialog,
       dataUser,
+      dataProfiles,
       isEditing,
       name,
       role,
@@ -375,7 +404,9 @@ export default defineComponent({
       onDelete,
       confirmationPassword,
       validatePassword,
-      messagePassword
+      messagePassword,
+      filterOptionsProfiles,
+      filterFnProfiles
     }
   }
 })

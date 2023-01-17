@@ -223,7 +223,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar este perfil: ' + row.description + '?',
+        message: '¿Está seguro que desea eliminar el perfil: ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'
