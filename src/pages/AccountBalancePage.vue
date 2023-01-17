@@ -163,10 +163,10 @@ export default defineComponent({
       { id: 13, name: 'Cierre' },
       { id: 14, name: 'Acumulado' }
     ])
-    const statuses = reactive([
+    const statuses = [
       { id: 1, name: 'Activo' },
       { id: 2, name: 'Inactivo' }
-    ])
+    ]
 
     const add = () => {
       isEditing.value = false
