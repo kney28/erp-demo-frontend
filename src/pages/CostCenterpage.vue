@@ -29,7 +29,7 @@
             {{ props.row.description }}
           </q-td>
           <q-td key="status" :props="props">
-            {{ props.row.status }}
+            {{ statuses.find((status) => status.id === props.row.status).name }}
           </q-td>
           <q-td key="edit" :props="props">
             <q-btn round size="xs" color="primary" icon="border_color" @click="editing(props.row)" />
