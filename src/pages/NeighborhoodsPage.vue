@@ -267,7 +267,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar al usuario: ' + row.description + '?',
+        message: '¿Está seguro que desea eliminar el barrio: ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'
