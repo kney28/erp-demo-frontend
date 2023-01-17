@@ -1,209 +1,215 @@
 <template>
   <q-page class="q-pa-md q-gutter-sm">
-    <div>
-      <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
-        <div>
+    <q-table dense title="Saldos de cuentas" :rows="rows" :filter="filter" :columns="columns" row-key="id" :loading="loading"
+      color="primary">
+      <template v-slot:top-left>
+        <q-btn unelevated rounded icon="add" color="primary" @click="add" label="Agregar" />
+      </template>
+      <template v-slot:top-right>
+        <q-input dense debounce="300" v-model="filter" placeholder="Buscar">
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+      </template>
+      <template v-slot:body="props">
+        <q-tr :props="props">
+          <q-td key="month" :props="props">
+            {{ months.find((month) => month.id === props.row.month).name }}
+          </q-td>
+          <q-td key="third" :props="props">
+            {{ props.row.third }}
+          </q-td>
+          <q-td key="debit" :props="props">
+            {{ props.row.debit }}
+          </q-td>
+          <q-td key="credit" :props="props">
+            {{ props.row.credit }}
+          </q-td>
+          <q-td key="status" :props="props">
+            {{ statuses.find((status) => status.id === props.row.status).name }}
+          </q-td>
+          <q-td key="edit" :props="props">
+            <q-btn round size="xs" color="primary" icon="border_color" @click="onEdit(props.row)" />
+          </q-td>
+          <q-td key="delete" :props="props">
+            <q-btn round size="xs" color="red" icon="delete_forever" @click="onDelete(props.row)" />
+          </q-td>
+        </q-tr>
+      </template>
+    </q-table>
+    <q-dialog
+      v-model="dialog"
+      persistent
+    >
+      <q-card style="width: 700px; max-width: 80vw;">
+        <q-bar>
           <q-space />
-          <q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Usuarios" :rows="dataCountry" :filter="filter" :columns="columns" row-key="name" >
-            <template v-slot:top-left>
-              <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
-              <q-space />
-            </template>
-            <template v-slot:top-right>
-              <q-input dense debounce="300" v-model="filter" placeholder="Buscar">
-                <template v-slot:append>
-                  <q-icon name="search" />
-                </template>
-              </q-input>
-            </template>
-            <template v-slot:body="props">
-              <q-tr :props="props">
-                <q-td key="code" :props="props">
-                  {{ props.row.code }}
-                </q-td>
-                <q-td key="description" :props="props">
-                  {{ props.row.description }}
-                </q-td>
-                <q-td key="edit" :props="props">
-                  <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
-                </q-td>
-                <q-td key="delete" :props="props">
-                  <q-btn round size="xs" color="negative" icon="delete_forever" v-on:click="onDelete(props.row)" />
-                </q-td>
-              </q-tr>
-            </template>
-          </q-table>
-        </div>
-      </transition>
-      <q-inner-loading :showing="visible">
-        <q-spinner-pie color="primary" size="70px"/>
-      </q-inner-loading>
-    </div>
-    <q-dialog v-model="dialog" persistent>
-    <q-card style="width: 700px; max-width: 80vw;">
-      <q-linear-progress :value="10" color="blue" />
-
-      <q-card-section class="row items-center">
-        <div class="text-h6"> </div>
-        <q-space />
-        <q-btn icon="close" flat round dense v-close-popup />
-      </q-card-section>
-
-      <q-banner class="bg-grey-3">
-        <template v-slot:avatar>
-          <q-icon name="warning" color="warning" />
-        </template>
-        Los campos marcados con (*) son obligatorios
-      </q-banner>
-
-      <q-card-section>
-        <q-form ref="myForm" @submit.prevent="">
-          <div class="row justify-around">
-            <div class="col-md-5">
-              <q-input
-                white
-                color="blue"
-                v-model="code"
-                label="Código *"
-                lazy-rules
-                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
-              />
+          <q-btn dense flat icon="close" v-close-popup>
+            <q-tooltip class="bg-white text-primary">Close</q-tooltip>
+          </q-btn>
+        </q-bar>
+        <q-card-section>
+          <div class="text-h6">Saldo de cuenta</div>
+        </q-card-section>
+        <q-card-section class="q-pt-none">
+          <q-form ref="myForm" @submit.prevent="" autocomplete="off">
+            <div class="row q-col-gutter-sm">
+              <div class="col-md-6">
+                <q-select
+                  filled
+                  v-model="accountBalance.month"
+                  :options="months"
+                  option-label="name"
+                  option-value="id"
+                  map-options
+                  emit-value
+                  label="Mes"
+                  lazy-rules
+                  :rules="[ val => val && val > 0 || 'El campo es obligatorio']"
+                />
+              </div>
+              <div class="col-md-6">
+                <q-input filled v-model="accountBalance.third" label="Tercero *" lazy-rules
+                  :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']" />
+              </div>
+              <div class="col-md-6">
+                <q-input filled v-model="accountBalance.debit" label="Débito *" lazy-rules
+                  :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']" />
+              </div>
+              <div class="col-md-6">
+                <q-input filled v-model="accountBalance.credit" label="Crédito *" lazy-rules
+                  :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']" />
+              </div>
+              <div class="col-md-6">
+                <q-select
+                  filled
+                  v-model="accountBalance.status"
+                  :options="statuses"
+                  option-label="name"
+                  option-value="id"
+                  map-options
+                  emit-value
+                  label="Estado"
+                  lazy-rules
+                  :rules="[ val => val && val > 0 || 'El campo es obligatorio']"
+                />
+              </div>
             </div>
-            <div class="col-md-5">
-              <q-input
-                white
-                color="blue"
-                v-model="description"
-                label="País *"
-                stack-label
-                lazy-rules
-                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
-              />
-            </div>
-          </div>
-        </q-form>
-      </q-card-section>
-
-      <div class="row justify-between">
-        <q-card-actions align="left" class="bg-white text-teal">
+          </q-form>
+        </q-card-section>
+        <q-card-actions v-if="!loading" align="right" class="bg-white text-teal">
+          <q-btn label="Cancelar" v-close-popup color="negative" />
+          <q-btn v-if="!isEditing" label="Guardar" @click.prevent="onSubmit" color="primary" />
+          <q-btn v-else label="Actualizar" @click.prevent="onUpdate" color="primary" />
         </q-card-actions>
-        <q-card-actions align="right" class="bg-white text-teal">
-          <div v-if="!isEditing">
-            <q-btn round icon="save" @click.prevent="onSubmit" color="primary"/>
-            <q-tooltip>Guardar datos</q-tooltip>
-          </div>
-
-          <div v-else>
-            <q-btn round icon="save" @click.prevent="onEditing" color="primary"/>
-            <q-tooltip>Editar datos</q-tooltip>
-          </div> &nbsp;
-
-          <div>
-            <q-btn round icon="cancel" v-close-popup color="negative"/>
-            <q-tooltip>Cancelar</q-tooltip>
-          </div>
+        <q-card-actions v-else align="right" class="bg-white text-teal">
+          <q-skeleton type="QBtn" />
+          <q-skeleton type="QBtn" />
         </q-card-actions>
-      </div>
-    </q-card>
-  </q-dialog>
+      </q-card>
+    </q-dialog>
   </q-page>
-  </template>
+</template>
+
 <script>
-import { defineComponent, ref, onMounted } from 'vue'
-import { useQuasar } from 'quasar'
+import { defineComponent, ref, reactive, onMounted } from 'vue'
 import { api } from 'boot/axios'
+import { useQuasar } from 'quasar'
 
 export default defineComponent({
-  name: 'CountryPage',
+  name: 'accountBalancesPage',
   setup () {
-    const path = '/users'
-    const dialog = ref(false)
-    const visible = ref(false)
-    const id = ref(null)
-    const filter = ref(null)
-    const dataCountry = ref([])
-    const description = ref(null)
-    const code = ref(null)
-    const name = ref(null)
-    const role = ref(null)
-    const active = ref(false)
-    const myForm = ref(null)
     const $q = useQuasar()
-    const pagination = ref({
-      page: 1,
-      rowsPerPage: 10
-    })
+
+    const dialog = ref(false)
+    const loading = ref(false)
     const isEditing = ref(false)
-    const columns = ref([
-      { name: 'code', align: 'center', label: 'Cuenta número', field: 'code', sortable: true },
-      { name: 'description', align: 'center', label: 'Saldo', field: 'description', sortable: true },
-      { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
-      { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
-    ])
-
-    onMounted(() => {
-      getCountries()
+    const disableSave = ref(false)
+    const search = ref('')
+    const myForm = ref(null)
+    const rows = ref([])
+    const id = ref()
+    const accountBalance = reactive({
+      month: null,
+      third: null,
+      debit: null,
+      credit: null,
+      status: null
     })
+    const filter = ref('')
+    const columns = [
+      { name: 'month', align: 'center', label: 'Mes', field: 'month', sortable: true },
+      { name: 'third', align: 'center', label: 'Tercero', field: 'third', sortable: true },
+      { name: 'debit', align: 'center', label: 'Débito', field: 'debit', sortable: true },
+      { name: 'credit', align: 'center', label: 'Crédito', field: 'credit', sortable: true },
+      { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
+      { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: false },
+      { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: false }
+    ]
+    const months = reactive([
+      { id: 1, name: 'Enero' },
+      { id: 2, name: 'febrero' },
+      { id: 3, name: 'Marzo' },
+      { id: 4, name: 'Abril' },
+      { id: 5, name: 'Mayo' },
+      { id: 6, name: 'Junio' },
+      { id: 7, name: 'Julio' },
+      { id: 8, name: 'Agosto' },
+      { id: 9, name: 'Septiembre' },
+      { id: 10, name: 'Octubre' },
+      { id: 11, name: 'noviembre' },
+      { id: 12, name: 'Diciembre' },
+      { id: 13, name: 'Cierre' },
+      { id: 14, name: 'Acumulado' }
+    ])
+    const statuses = [
+      { id: 1, name: 'Activo' },
+      { id: 2, name: 'Inactivo' }
+    ]
 
-    const getCountries = async () => {
-      visible.value = true
-      const { data } = await api.get(path)
-      dataCountry.value = data
-      visible.value = false
-    }
-
-    const creating = () => {
-      onReset()
-      dialog.value = true
-    }
-
-    const onReset = () => {
-      description.value = null
-      code.value = null
+    const add = () => {
       isEditing.value = false
-    }
-
-    const onSubmit = () => {
-      myForm.value.validate().then(async success => {
-        if (success) {
-          api.post(path, {
-            code: code.value,
-            description: description.value
-          }).then(() => {
-            dialog.value = false
-            getCountries()
-          })
-        }
-      })
-    }
-
-    const editing = (row) => {
-      onReset()
       dialog.value = true
-      isEditing.value = true
-      id.value = row.id
-      code.value = row.code
-      description.value = row.role
+      onReset()
     }
-
-    const onEditing = () => {
-      myForm.value.validate().then(async success => {
+    const onReset = () => Object.keys(accountBalance).forEach((i) => (accountBalance[i] = null))
+    const onSubmit = () => {
+      myForm.value.validate().then(success => {
         if (success) {
-          api.patch(path + '/' + id.value, {
-            code: code.value,
-            description: description.value
-          }).then(() => {
+          loading.value = true
+          api.post('account-balances', accountBalance).then(response => {
+            loadList()
             dialog.value = false
-            getCountries()
+          }).catch(e => {
+            if (e) {
+              console.log(e)
+            }
           })
+          loading.value = false
         }
       })
     }
-
+    const onUpdate = () => {
+      myForm.value.validate().then(success => {
+        if (success) {
+          loading.value = true
+          api.patch('account-balances/' + id.value, accountBalance).then(response => {
+            loadList()
+            dialog.value = false
+          }).catch(e => {
+            if (e) {
+              console.log(e)
+            }
+          })
+          loading.value = false
+        }
+      })
+    }
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar este registro: ' + row.description + '?',
+        message: 'Desea eliminar el registro?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -213,32 +219,47 @@ export default defineComponent({
           color: 'negative'
         }
       }).onOk(() => {
-        api.delete(path + '/' + row.id).then(response => {
-          dialog.value = false
-          getCountries()
+        api.delete(`account-balances/${row.id}`).then(response => {
+          loadList()
+        }).catch(e => {
+          if (e) {
+            console.log(e)
+          }
         })
       })
     }
+    const loadList = async () => {
+      api.get('account-balances').then(response => {
+        rows.value = response.data
+      }).catch(e => {
+        if (e) {
+          console.log(e)
+        }
+      })
+    }
+
+    onMounted(async () => {
+      loading.value = true
+      await loadList()
+      loading.value = false
+    })
 
     return {
-      dialog,
-      dataCountry,
-      isEditing,
-      name,
-      role,
-      active,
-      myForm,
-      pagination,
-      creating,
-      columns,
-      visible,
+      rows,
+      accountBalance,
+      months,
+      statuses,
+      search,
       filter,
-      code,
-      onReset,
+      dialog,
+      loading,
+      isEditing,
+      disableSave,
+      myForm,
+      columns,
+      add,
       onSubmit,
-      editing,
-      onEditing,
-      id,
+      onUpdate,
       onDelete
     }
   }
