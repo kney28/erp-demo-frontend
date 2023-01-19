@@ -45,7 +45,7 @@
       </q-toolbar>
     </q-header>
     <q-drawer
-      class="left-navigation"
+      class="left-navigation text-grey-8"
       show-if-above
       v-model="left"
       side="left"

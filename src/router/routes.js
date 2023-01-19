@@ -34,7 +34,7 @@ const routes = [
       { path: '/billing/careservices', name: 'careservices', component: () => import('pages/billing/CareservicesPage.vue') }
     ]
   },
-  { path: '/login', name: 'login', component: () => import('src/pages/LoginPage.vue') },
+  { path: '/login', name: 'login', component: () => import('src/pages/LoginPage2.vue') },
   // Always leave this as last one,
   // but you can also remove it
   {
