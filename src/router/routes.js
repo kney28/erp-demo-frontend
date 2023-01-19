@@ -31,7 +31,12 @@ const routes = [
       { path: '/groupsCUPS', name: 'groupsCUPS', component: () => import('pages/GroupsCUPSPage.vue') },
       { path: '/thirds', name: 'thirds', component: () => import('pages/ThirdsPage.vue') },
 
-      { path: '/billing/careservices', name: 'careservices', component: () => import('pages/billing/CareservicesPage.vue') }
+      { path: '/billing/careservices', name: 'careservices', component: () => import('pages/billing/CareservicesPage.vue') },
+
+      { path: '/hospitalization/beds', name: 'beds', component: () => import('pages/hospitalization/BedsPage.vue') },
+      { path: '/hospitalization/fees', name: 'fees', component: () => import('pages/hospitalization/FeesPage.vue') },
+      { path: '/hospitalization/floors', name: 'floorservices', component: () => import('pages/hospitalization/FloorsPage.vue') },
+      { path: '/hospitalization/locations', name: 'locations', component: () => import('pages/hospitalization/LocationsPage.vue') }
     ]
   },
   { path: '/login', name: 'login', component: () => import('src/pages/LoginPage2.vue') },

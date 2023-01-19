@@ -655,6 +655,95 @@
                 expand-separator
                 icon="medication_liquid"
                 label="Hospitalización">
+                <q-expansion-item
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  expand-separator
+                  icon="engineering"
+                  label="Maestros">
+                  <q-item
+                    @click="setTabSelected('/hospitalization/floors', 'Pisos')"
+                    active-class="tab-active"
+                    to="/hospitalization/floors"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="domain" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Pisos
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/hospitalization/locations', 'Ubicación')"
+                    active-class="tab-active"
+                    to="/hospitalization/locations"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="bedroom" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Ubicación
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/hospitalization/beds', 'Camas')"
+                    active-class="tab-active"
+                    to="/hospitalization/beds"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="bed" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Camas
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/hospitalization/fees', 'Tarifas de servicio')"
+                    active-class="tab-active"
+                    to="/hospitalization/fees"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="sell" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Tarifas de servicio
+                    </q-item-section>
+                  </q-item>
+                </q-expansion-item>
+                <q-expansion-item
+                  expand-separator
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  icon="account_tree"
+                  label="Procedimientos">
+                </q-expansion-item>
+                <q-expansion-item
+                  expand-separator
+                  icon="analytics"
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  label="Reportes">
+                </q-expansion-item>
               </q-expansion-item>
 
               <q-expansion-item
