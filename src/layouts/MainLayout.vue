@@ -604,6 +604,130 @@
                 expand-separator
                 icon="credit_card"
                 label="Facturación">
+                <q-expansion-item
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  expand-separator
+                  icon="engineering"
+                  label="Maestros">
+                  <q-item
+                    @click="setTabSelected('/billing/careservices', 'Servicios de atención')"
+                    active-class="tab-active"
+                    to="/billing/careservices"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="services" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Servicios de atención
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/users', 'Usuarios')"
+                    to="/users"
+                    active-class="tab-active"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="person" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Usuarios
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/neighborhoods', 'Barrios')"
+                    active-class="tab-active"
+                    to="/neighborhoods"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="home_work" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Barrios
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/thirds', 'Terceros')"
+                    active-class="tab-active"
+                    to="/thirds"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="group" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Terceros
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/validities', 'Vigencias')"
+                    active-class="tab-active"
+                    to="/validities"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="verified_user" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Vigencias
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/companies', 'Compañias')"
+                    active-class="tab-active"
+                    to="/companies"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="store" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Compañias
+                    </q-item-section>
+                  </q-item>
+                </q-expansion-item>
+
+                <q-expansion-item
+                  expand-separator
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  icon="account_tree"
+                  label="Procedimientos">
+                </q-expansion-item>
+                <q-expansion-item
+                  expand-separator
+                  icon="analytics"
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  label="Reportes">
+                </q-expansion-item>
               </q-expansion-item>
 
               <q-expansion-item
