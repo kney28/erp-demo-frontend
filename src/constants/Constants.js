@@ -168,3 +168,33 @@ export const LISTACCOUNTINGVALIDITYSTATUS = {
   3: 'En cierre',
   4: 'Cerrada'
 }
+/*
+export const TYPESERVICESTATUS = {
+  0: 'Ninguna',
+  1: 'Hospitalarios',
+  2: 'Ambulatorios',
+  3: 'Urgencias',
+  4: 'Quirurgicos',
+  5: 'Farmaceuticos',
+  6: 'Sala de partos',
+  7: 'UCI Adultos',
+  8: 'UCI Neonatal',
+  9: 'Intramurales',
+  10: 'Promoción y prevención',
+  11: 'Administrativos'
+}
+*/
+export const TYPESERVICESTATUS = [
+  { id: 0, description: 'Ninguna' },
+  { id: 1, description: 'Hospitalarios' },
+  { id: 2, description: 'Ambulatorios' },
+  { id: 3, description: 'Urgencias' },
+  { id: 4, description: 'Quirurgicos' },
+  { id: 5, description: 'Farmaceuticos' },
+  { id: 6, description: 'Sala de partos' },
+  { id: 7, description: 'UCI Adultos' },
+  { id: 8, description: 'UCI Neonatal' },
+  { id: 9, description: 'Intramurales' },
+  { id: 10, description: 'Promoción y prevención' },
+  { id: 11, description: 'Administrativos' }
+]
