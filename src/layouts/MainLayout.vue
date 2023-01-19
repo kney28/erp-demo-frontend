@@ -620,96 +620,11 @@
                     v-ripple
                   >
                     <q-item-section avatar>
-                      <q-icon name="services" />
+                      <q-icon name="medical_services" />
                     </q-item-section>
 
                     <q-item-section>
                       Servicios de atención
-                    </q-item-section>
-                  </q-item>
-                  <q-item
-                    @click="setTabSelected('/users', 'Usuarios')"
-                    to="/users"
-                    active-class="tab-active"
-                    exact
-                    class="q-ma-sm navigation-item"
-                    clickable
-                    v-ripple
-                  >
-                    <q-item-section avatar>
-                      <q-icon name="person" />
-                    </q-item-section>
-
-                    <q-item-section>
-                      Usuarios
-                    </q-item-section>
-                  </q-item>
-                  <q-item
-                    @click="setTabSelected('/neighborhoods', 'Barrios')"
-                    active-class="tab-active"
-                    to="/neighborhoods"
-                    exact
-                    class="q-ma-sm navigation-item"
-                    clickable
-                    v-ripple
-                  >
-                    <q-item-section avatar>
-                      <q-icon name="home_work" />
-                    </q-item-section>
-
-                    <q-item-section>
-                      Barrios
-                    </q-item-section>
-                  </q-item>
-                  <q-item
-                    @click="setTabSelected('/thirds', 'Terceros')"
-                    active-class="tab-active"
-                    to="/thirds"
-                    exact
-                    class="q-ma-sm navigation-item"
-                    clickable
-                    v-ripple
-                  >
-                    <q-item-section avatar>
-                      <q-icon name="group" />
-                    </q-item-section>
-
-                    <q-item-section>
-                      Terceros
-                    </q-item-section>
-                  </q-item>
-                  <q-item
-                    @click="setTabSelected('/validities', 'Vigencias')"
-                    active-class="tab-active"
-                    to="/validities"
-                    exact
-                    class="q-ma-sm navigation-item"
-                    clickable
-                    v-ripple
-                  >
-                    <q-item-section avatar>
-                      <q-icon name="verified_user" />
-                    </q-item-section>
-
-                    <q-item-section>
-                      Vigencias
-                    </q-item-section>
-                  </q-item>
-                  <q-item
-                    @click="setTabSelected('/companies', 'Compañias')"
-                    active-class="tab-active"
-                    to="/companies"
-                    exact
-                    class="q-ma-sm navigation-item"
-                    clickable
-                    v-ripple
-                  >
-                    <q-item-section avatar>
-                      <q-icon name="store" />
-                    </q-item-section>
-
-                    <q-item-section>
-                      Compañias
                     </q-item-section>
                   </q-item>
                 </q-expansion-item>
