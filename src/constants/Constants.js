@@ -198,3 +198,20 @@ export const TYPESERVICESTATUS = [
   { id: 10, description: 'Promoción y prevención' },
   { id: 11, description: 'Administrativos' }
 ]
+
+export const BEDSTATUS = [
+  { id: 0, description: 'Ninguno' },
+  { id: 1, description: 'Desocupada' },
+  { id: 2, description: 'Ocupada' },
+  { id: 3, description: 'Bloqueada' },
+  { id: 4, description: 'Mantenimiento' },
+  { id: 5, description: 'Inactiva' }
+]
+
+export const TYPEBED = [
+  { id: 0, description: 'Ninguno' },
+  { id: 1, description: 'Unipersonal' },
+  { id: 2, description: 'Bipersonal' },
+  { id: 3, description: 'Tres camas' },
+  { id: 4, description: 'Cuatro camas' }
+]
