@@ -545,9 +545,9 @@
                   icon="engineering"
                   label="Maestros">
                   <q-item
-                    @click="setTabSelected('/occupations', 'Ocupaciones')"
+                    @click="setTabSelected('/admissions/occupations', 'Ocupaciones')"
                     active-class="tab-active"
-                    to="/occupations"
+                    to="/admissions/occupations"
                     exact
                     class="q-ma-sm navigation-item"
                     clickable
@@ -581,9 +581,9 @@
                   icon="engineering"
                   label="Maestros">
                   <q-item
-                    @click="setTabSelected('/groupsCUPS', 'Grupos CUPS')"
+                    @click="setTabSelected('/hiring/groupsCUPS', 'Grupos CUPS')"
                     active-class="tab-active"
-                    to="/groupsCUPS"
+                    to="/hiring/groupsCUPS"
                     exact
                     class="q-ma-sm navigation-item"
                     clickable

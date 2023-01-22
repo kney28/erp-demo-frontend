@@ -4,7 +4,7 @@
       <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
         <div>
           <q-space />
-          <q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Usuarios" :rows="dataCUPS" :filter="filter" :columns="columns" row-key="name" >
+          <q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Usuarios" :rows="dataOccupations" :filter="filter" :columns="columns" row-key="name" >
             <template v-slot:top-left>
               <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
               <q-space />
@@ -125,17 +125,17 @@
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-import { ACTIVE, INACTIVE, STATUS } from '../constants/Constants'
+import { ACTIVE, INACTIVE, STATUS } from '../../constants/Constants'
 export default defineComponent({
-  name: 'GroupsCUPSPage',
+  name: 'OccupationsPage',
   setup () {
-    const path = '/groups-cups'
+    const path = '/admissions/occupations'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)
     const states = ref(STATUS)
     const filter = ref(null)
-    const dataCUPS = ref([])
+    const dataOccupations = ref([])
     const description = ref(null)
     const code = ref(null)
     const role = ref(null)
@@ -156,13 +156,13 @@ export default defineComponent({
     ])
 
     onMounted(() => {
-      getCUPS()
+      getOccupations()
     })
 
-    const getCUPS = async () => {
+    const getOccupations = async () => {
       visible.value = true
       const { data } = await api.get(path)
-      dataCUPS.value = data
+      dataOccupations.value = data
       visible.value = false
     }
 
@@ -187,7 +187,7 @@ export default defineComponent({
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getCUPS()
+            getOccupations()
           })
         }
       })
@@ -214,7 +214,7 @@ export default defineComponent({
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getCUPS()
+            getOccupations()
           })
         }
       })
@@ -223,7 +223,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar este CUPS: ' + row.description + '?',
+        message: '¿Está seguro que desea eliminar esta ocupación: ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -235,14 +235,14 @@ export default defineComponent({
       }).onOk(() => {
         api.delete(path + '/' + row.id).then(response => {
           dialog.value = false
-          getCUPS()
+          getOccupations()
         })
       })
     }
 
     return {
       dialog,
-      dataCUPS,
+      dataOccupations,
       isEditing,
       role,
       active,
