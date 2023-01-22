@@ -1,55 +1,125 @@
+<style>
+@font-face {
+  font-family: quicksand;
+  src: url(../fonts/Quicksand.ttf);
+}
+@font-face {
+  font-family: poppins-bold;
+  src: url(../fonts/Poppins-Bold.ttf);
+}
+@font-face {
+  font-family: poppins-regular;
+  src: url(../fonts/Poppins-Regular.ttf);
+}
+.font-poppins-regular{
+  font-family: 'poppins-regular';
+}
+.font-poppins-bold{
+  font-family: 'poppins-bold';
+}
+/*Prevent the web browser styles*/
+.input-login:-webkit-autofill,
+.input-login:-webkit-autofill:hover,
+.input-login:-webkit-autofill:focus {
+  -webkit-text-fill-color: #31b0dd;
+  -webkit-box-shadow: 0 0 0px 40rem #ffff inset;
+}
+.input-login{
+  height: 25px;
+}
+</style>
 <template>
-  <div class="q-pa-md row q-col-gutter-sm fit wrap justify-center items-center content-center">
-    <div class="col-8">
-      <q-card class="my-card">
-        <q-img src="images/hospital.jpg">
+  <div class="row items-start q-col-gutter-sm fit wrap justify-center content-center">
+    <div class="col-12 col-md-8" style="min-width: 300px;">
+      <div>
+        <q-img
+          src="images/hospital.jpeg"
+          style="position: relative; width: 100%; height: 100vh"
+        >
           <div class="fullscreen">
             <div class="absolute-center justify-center fixed-left">
-              <div class="text-h5 text-weight-bolder">
+              <div class="text-h4 text-weight-bolder">
                 ¡Bienvenid@!
               </div>
-              <div class="text-h6 q-mt-sm">
+              <div class="text-h5 q-mt-sm font-poppins-regular" style="text-shadow:3px 5px 6px #000;">
                 Aquí encontraras todas las herramientas que necesitas para gestionar
                 todos los aspectos administrativos de tu hospital
               </div>
             </div>
           </div>
         </q-img>
-      </q-card>
+      </div>
     </div>
-    <div class="col-4">
-      <q-card class="my-card" flat>
-        <q-img src="images/logo.png"></q-img>
+    <div class="col-12 col-md-4" style="min-width: 300px;">
+      <div>
         <q-card-section>
-          <div class="col text-h4 text-weight-bold ellipsis text-grey-10">
+          <div class="text-center">
+            <q-icon
+              name="fa-solid fa-stethoscope"
+              size="70px"
+              style="color: #12506A"
+              class="q-mb-lg"
+            />
+          </div>
+          <div>
+            <p style="color: #60818E; font-size: 20px; font-weight: bolder;" class="text-center q-mb-xs">Hospital Universitario</p>
+            <p style="color: #12506A; font-size: 30px; font-weight: bolder;" class="text-center q-mb-lg">San Vicente de Paul</p>
+          </div>
+          <div class="col text-h6 text-center font-poppins-bold" style="color: #12506A; font-weight:bold">
             Iniciar sesión
           </div>
         </q-card-section>
-        <q-card-section>
+        <q-card-section style="padding: 0 18% 0 18%;">
           <form class="q-form q-gutter-md">
-            <q-input
-              filled
-              v-model="username"
-              label="Usuario"
-              lazy-rules
-            />
-            <q-input
-              type="password"
-              filled
-              v-model="password"
-              label="Contraseña"
-              lazy-rules
-            />
+            <div>
+              <label class="font-poppins-regular" style="color: rgb(40,40,40)" for="">Usuario</label>
+              <q-input
+                v-model="username"
+                placeholder="Ej. will2023"
+                lazy-rules
+                rounded
+                outlined
+                :input-style="{marginTop: '15px'}"
+                :input-class="{'input-login': 'a'}"
+                class="font-poppins-regular"
+              />
+            </div>
+            <div>
+              <label class="font-poppins-regular" style="color: rgb(40,40,40)" for="">Constraseña</label>
+              <q-input
+                type="password"
+                v-model="password"
+                placeholder="Ingresa tu contraseña..."
+                lazy-rules
+                rounded
+                outlined
+                :input-style="{marginTop: '15px'}"
+                :input-class="{'input-login': 'a'}"
+                class="font-poppins-regular"
+              />
+            </div>
+            <div class="text-right font-poppins-bold q-mt-sm" style="color: #2fc1ff; font-size: 12px;">
+              Recuperar contraseña
+            </div>
             <div>
               <q-btn
-                label="Iniciar Sesión"
+                label="Iniciar sesión"
                 @click="login"
-                color="primary"
+                lazy-rules
+                rounded
+                class="full-width font-poppins-bold q-mt-md"
+                no-caps
+                size="lg"
+                style="background: #2fc1ff; color: white;"
               />
+            </div>
+            <div class="q-mt-lg">
+              <p class="text-center font-poppins-regular q-mb-xs" style="font-size: 11px;">¿Necesitas usuario para ingresar?</p>
+              <p class="text-center font-poppins-bold" style="color: #2fc1ff; font-size: 16px;">Solicitalo aquí</p>
             </div>
           </form>
         </q-card-section>
-      </q-card>
+      </div>
     </div>
   </div>
 </template>
