@@ -26,9 +26,8 @@ const routes = [
       { path: '/yearSeatClosure', name: 'yearSeatClosure', component: () => import('pages/YearSeatClosurePage.vue') },
       { path: '/yearClosure', name: 'yearClosure', component: () => import('pages/YearClosurePage.vue') },
       { path: '/accountCatalog', name: 'accountCatalog', component: () => import('pages/AccountCatalogPage.vue') },
-      { path: '/occupations', name: 'occupations', component: () => import('pages/OccupationsPage.vue') },
-      { path: '/occupations', name: 'occupations', component: () => import('pages/OccupationsPage.vue') },
-      { path: '/groupsCUPS', name: 'groupsCUPS', component: () => import('pages/GroupsCUPSPage.vue') },
+      { path: '/admissions/occupations', name: 'occupations', component: () => import('pages/admissions/OccupationsPage.vue') },
+      { path: '/hiring/groupsCUPS', name: 'groupsCUPS', component: () => import('pages/hiring/GroupsCUPSPage.vue') },
       { path: '/thirds', name: 'thirds', component: () => import('pages/ThirdsPage.vue') },
 
       { path: '/billing/careservices', name: 'careservices', component: () => import('pages/billing/CareservicesPage.vue') },
