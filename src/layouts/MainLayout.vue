@@ -196,6 +196,23 @@
                       Compañias
                     </q-item-section>
                   </q-item>
+                  <q-item
+                    @click="setTabSelected('/configuration/holidays', 'Días festivos')"
+                    active-class="tab-active"
+                    to="/configuration/holidays"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="celebration" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Días festivos
+                    </q-item-section>
+                  </q-item>
                 </q-expansion-item>
 
                 <q-expansion-item
@@ -545,6 +562,40 @@
                   icon="engineering"
                   label="Maestros">
                   <q-item
+                    @click="setTabSelected('/admissions/healthproviders', 'Prestadores de salud')"
+                    active-class="tab-active"
+                    to="/admissions/healthproviders"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-stethoscope" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Prestadores de salud
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/admissions/headquarters', 'Sedes')"
+                    active-class="tab-active"
+                    to="/admissions/headquarters"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="apartment" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Sedes
+                    </q-item-section>
+                  </q-item>
+                  <q-item
                     @click="setTabSelected('/admissions/occupations', 'Ocupaciones')"
                     active-class="tab-active"
                     to="/admissions/occupations"
@@ -559,6 +610,74 @@
 
                     <q-item-section>
                       Ocupaciones
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/admissions/charges', 'Cargos')"
+                    active-class="tab-active"
+                    to="/admissions/charges"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="business_center" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Cargos
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/admissions/groundsdenialcares', 'Causales de negación')"
+                    active-class="tab-active"
+                    to="/admissions/groundsdenialcares"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="report" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Causales de negación
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/admissions/sisbenlevels', 'Niveles del Sisbén')"
+                    active-class="tab-active"
+                    to="/admissions/sisbenlevels"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-stairs" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Niveles del Sisbén
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/admissions/specialpopulations', 'Población Especial')"
+                    active-class="tab-active"
+                    to="/admissions/specialpopulations"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-people-group" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Población especial
                     </q-item-section>
                   </q-item>
                 </q-expansion-item>
