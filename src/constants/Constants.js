@@ -215,3 +215,167 @@ export const TYPEBED = [
   { id: 3, description: 'Tres camas' },
   { id: 4, description: 'Cuatro camas' }
 ]
+
+export const COMPLEXITYLEVEL = {
+  1: 'Nivel I',
+  2: 'Nivel II',
+  3: 'Nivel III',
+  4: 'Nivel IV'
+}
+export const LISTCOMPLEXITYLEVEL = [
+  { id: 1, description: 'Nivel I' },
+  { id: 2, description: 'Nivel II' },
+  { id: 3, description: 'Nivel III' },
+  { id: 4, description: 'Nivel IV' }
+]
+export const PROVIDERCLASS = {
+  1: 'Ninguno',
+  2: 'Ambulatoria',
+  3: 'Hospitalaria',
+  4: 'Mixta'
+}
+
+export const LISTPROVIDERCLASS = [
+  { id: 1, description: 'Ninguno' },
+  { id: 2, description: 'Ambulatoria' },
+  { id: 3, description: 'Hospitalaria' },
+  { id: 4, description: 'Mixta' }
+]
+
+export const SISBENLEVELTYPE = {
+  0: 'Ninguno',
+  1: 'Nivel 1',
+  2: 'Nivel 2'
+}
+
+export const LISTSISBENLEVELTYPE = [
+  { id: 0, description: 'Ninguno' },
+  { id: 1, description: 'Nivel 1' },
+  { id: 2, description: 'Nivel 2' }
+]
+
+export const SISBENLEVELGROUP = {
+  0: 'Ninguno',
+  1: 'Grupo A',
+  2: 'Grupo B',
+  3: 'Grupo C',
+  4: 'Grupo D'
+}
+
+export const LISTSISBENLEVELGROUP = [
+  { id: 0, description: 'Ninguno' },
+  { id: 1, description: 'Grupo A' },
+  { id: 2, description: 'Grupo B' },
+  { id: 3, description: 'Grupo C' },
+  { id: 4, description: 'Grupo D' }
+]
+
+export const SISBENLEVELSUBGROUP = {
+  0: 'Ninguno',
+  1: 'A1',
+  2: 'A2',
+  3: 'A3',
+  4: 'A4',
+  5: 'A5',
+  6: 'B1',
+  7: 'B2',
+  8: 'B3',
+  9: 'B4',
+  10: 'B5',
+  11: 'B6',
+  12: 'B7',
+  13: 'C1',
+  14: 'C2',
+  15: 'C3',
+  16: 'C4',
+  17: 'C5',
+  18: 'C6',
+  19: 'C7',
+  20: 'C8',
+  21: 'C9',
+  22: 'C10',
+  23: 'C11',
+  24: 'C12',
+  25: 'C13',
+  26: 'C14',
+  27: 'C15',
+  28: 'C16',
+  29: 'C17',
+  30: 'C18',
+  31: 'D1',
+  32: 'D2',
+  33: 'D3',
+  34: 'D4',
+  35: 'D5',
+  36: 'D6',
+  37: 'D7',
+  38: 'D8',
+  39: 'D9',
+  40: 'D10',
+  41: 'D11',
+  42: 'D12',
+  43: 'D13',
+  44: 'D14',
+  45: 'D15',
+  46: 'D16',
+  47: 'D17',
+  48: 'D18',
+  49: 'D19',
+  50: 'D20',
+  51: 'D21'
+}
+
+export const LISTSISBENLEVELSUBGROUP = [
+  { id: 0, description: 'Ninguno' },
+  { id: 1, description: 'A1' },
+  { id: 2, description: 'A2' },
+  { id: 3, description: 'A3' },
+  { id: 4, description: 'A4' },
+  { id: 5, description: 'A5' },
+  { id: 6, description: 'B1' },
+  { id: 7, description: 'B2' },
+  { id: 8, description: 'B3' },
+  { id: 9, description: 'B4' },
+  { id: 10, description: 'B5' },
+  { id: 11, description: 'B6' },
+  { id: 12, description: 'B7' },
+  { id: 13, description: 'C1' },
+  { id: 14, description: 'C2' },
+  { id: 15, description: 'C3' },
+  { id: 16, description: 'C4' },
+  { id: 17, description: 'C5' },
+  { id: 18, description: 'C6' },
+  { id: 19, description: 'C7' },
+  { id: 20, description: 'C8' },
+  { id: 21, description: 'C9' },
+  { id: 22, description: 'C10' },
+  { id: 23, description: 'C11' },
+  { id: 24, description: 'C12' },
+  { id: 25, description: 'C13' },
+  { id: 26, description: 'C14' },
+  { id: 27, description: 'C15' },
+  { id: 28, description: 'C16' },
+  { id: 29, description: 'C17' },
+  { id: 30, description: 'C18' },
+  { id: 31, description: 'D1' },
+  { id: 32, description: 'D2' },
+  { id: 33, description: 'D3' },
+  { id: 34, description: 'D4' },
+  { id: 35, description: 'D5' },
+  { id: 36, description: 'D6' },
+  { id: 37, description: 'D7' },
+  { id: 38, description: 'D8' },
+  { id: 39, description: 'D9' },
+  { id: 40, description: 'D10' },
+  { id: 41, description: 'D11' },
+  { id: 42, description: 'D12' },
+  { id: 43, description: 'D13' },
+  { id: 44, description: 'D14' },
+  { id: 45, description: 'D15' },
+  { id: 46, description: 'D16' },
+  { id: 47, description: 'D17' },
+  { id: 48, description: 'D18' },
+  { id: 49, description: 'D19' },
+  { id: 50, description: 'D20' },
+  { id: 51, description: 'D21' }
+]
