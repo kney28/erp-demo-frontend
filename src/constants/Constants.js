@@ -379,3 +379,9 @@ export const LISTSISBENLEVELSUBGROUP = [
   { id: 50, description: 'D20' },
   { id: 51, description: 'D21' }
 ]
+
+export const TIPOFACTURACION = [
+  { id: 1, description: 'En computador' },
+  { id: 2, description: 'Máquina registradora' },
+  { id: 3, description: 'Electrónica' }
+]

@@ -681,6 +681,20 @@
                     </q-item-section>
                   </q-item>
                 </q-expansion-item>
+                <q-expansion-item
+                  expand-separator
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  icon="account_tree"
+                  label="Procedimientos">
+                </q-expansion-item>
+                <q-expansion-item
+                  expand-separator
+                  icon="analytics"
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  label="Reportes">
+                </q-expansion-item>
               </q-expansion-item>
 
               <q-expansion-item
@@ -744,6 +758,23 @@
 
                     <q-item-section>
                       Servicios de atención
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/billing/numerationdian', 'Numeración DIAN')"
+                    active-class="tab-active"
+                    to="/billing/numerationdian"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="point_of_sale" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Numeración DIAN
                     </q-item-section>
                   </q-item>
                 </q-expansion-item>

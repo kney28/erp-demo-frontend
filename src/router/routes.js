@@ -31,6 +31,7 @@ const routes = [
       { path: '/thirds', name: 'thirds', component: () => import('pages/ThirdsPage.vue') },
 
       { path: '/billing/careservices', name: 'careservices', component: () => import('pages/billing/CareservicesPage.vue') },
+      { path: '/billing/numerationdian', name: 'numerationDIAN', component: () => import('pages/billing/NumerationdiansPage.vue') },
 
       { path: '/hospitalization/beds', name: 'beds', component: () => import('pages/hospitalization/BedsPage.vue') },
       { path: '/hospitalization/fees', name: 'fees', component: () => import('pages/hospitalization/FeesPage.vue') },
