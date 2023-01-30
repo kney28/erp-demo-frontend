@@ -39,6 +39,7 @@ const routes = [
       { path: '/hospitalization/locations', name: 'locations', component: () => import('pages/hospitalization/LocationsPage.vue') },
 
       { path: '/configuration/holidays', name: 'holidays', component: () => import('pages/configuration/HolidayssPage.vue') },
+      { path: '/configuration/permissionss', name: 'permissionss', component: () => import('pages/configuration/PermissionssPage.vue') },
 
       { path: '/admissions/headquarters', name: 'headquarters', component: () => import('pages/admissions/HeadquarterssPage.vue') },
       { path: '/admissions/healthproviders', name: 'healthproviders', component: () => import('pages/admissions/HealthproviderssPage.vue') },

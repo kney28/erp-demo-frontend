@@ -180,6 +180,23 @@
                     </q-item-section>
                   </q-item>
                   <q-item
+                    @click="setTabSelected('/configuration/permissionss', 'Permisos')"
+                    active-class="tab-active"
+                    to="/configuration/permissionss"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="key" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Permisos
+                    </q-item-section>
+                  </q-item>
+                  <q-item
                     @click="setTabSelected('/companies', 'Compañias')"
                     active-class="tab-active"
                     to="/companies"
