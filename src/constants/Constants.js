@@ -392,3 +392,33 @@ export const OPTIONPERMISSIONS = [
   { id: 3, description: 'Configuración - Maestros - Usuarios' },
   { id: 4, description: 'Configuración - Maestros - Paises' }
 ]
+
+export const CONSECONTVALIPROCESS = [
+  { id: 1, description: 'Gestión Presupuestal' },
+  { id: 2, description: 'Gestión Contable' }
+]
+
+export const CONSECONTVALIOPTION = [
+  { id: 1, description: 'Programación Presupuestal Ingresos' },
+  { id: 2, description: 'Adiciones/Reducciones Presupuestales Ingresos' },
+  { id: 3, description: 'Traslados Presupuestales Ingresos' },
+  { id: 4, description: 'Recaudos' },
+  { id: 5, description: 'Ajustes Recaudos' },
+  { id: 6, description: 'Programación Presupuestal Gastos' },
+  { id: 7, description: 'Adiciones/Reducciones Presupuestales Gastos' },
+  { id: 8, description: 'Traslados Presupuestales Gastos' },
+  { id: 9, description: 'Solicitudes Disponibilidades Presupuestales' },
+  { id: 10, description: 'Disponibilidades Presupuestales' },
+  { id: 11, description: 'Ajustes Disponibilidades Presupuestal' },
+  { id: 12, description: 'Compromisos' },
+  { id: 13, description: 'Ajustes Compromisos' },
+  { id: 14, description: 'Reservas Presupuestales' },
+  { id: 15, description: 'Ajustes Reservas Presupuestales' },
+  { id: 16, description: 'Obligaciones' },
+  { id: 17, description: 'Ajustes Obligaciones' },
+  { id: 18, description: 'Cuentas por Pagar Presupuestales' },
+  { id: 19, description: 'Ajustes Cuentas por Pagar Presupuestales' },
+  { id: 20, description: 'Pagos' },
+  { id: 21, description: 'Ajustes Pagos' },
+  { id: 22, description: 'Asientos Contables' }
+]
