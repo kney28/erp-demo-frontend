@@ -70,16 +70,17 @@
         </q-banner>
         <q-card-section>
           <q-form ref="myForm" @submit.prevent="">
-            <div class="row q-col-gutter-sm">
+            <div class="row justify-around">
               <div class="col-6">
-                <q-input filled v-model="company.name" label="Nombre *" lazy-rules :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"/>
+                <q-input white color="blue" v-model="company.name" label="Nombre *" lazy-rules :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"/>
               </div>
               <div class="col-6">
-                <q-input filled v-model="company.legal_representative" label="Representante legal *" lazy-rules :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"/>
+                <q-input white color="blue" v-model="company.legal_representative" label="Representante legal *" lazy-rules :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"/>
               </div>
               <div class="col-md-6">
                 <q-select
-                  filled
+                  white
+                  color="blue"
                   v-model="company.company_type"
                   :options="companyTypes"
                   option-label="name"
@@ -92,11 +93,12 @@
                 />
               </div>
               <div class="col-6">
-                <q-input filled v-model="company.email" label="Correo electrónico *" lazy-rules :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"/>
+                <q-input white color="blue" v-model="company.email" label="Correo electrónico *" lazy-rules :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"/>
               </div>
               <div class="col-md-6">
                 <q-select
-                  filled
+                  white
+                  color="blue"
                   v-model="company.third"
                   :options="thirds"
                   option-label="fullname"
@@ -109,11 +111,30 @@
                 />
               </div>
               <div class="col-6">
-                <q-input filled v-model="company.license" label="Licencia *" lazy-rules :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"/>
+                <q-input white color="blue" v-model="company.license" label="Licencia *" lazy-rules :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"/>
               </div>
               <div class="col-md-6">
                 <q-select
-                  filled
+                  white
+                  color="blue"
+                  v-model="company.neighborhood"
+                  :options="neighborhoods"
+                  option-label="description"
+                  option-value="id"
+                  map-options
+                  emit-value
+                  label="Barrios"
+                  lazy-rules
+                  :rules="[ val => val && val > 0 || 'El campo es obligatorio']"
+                />
+              </div>
+            </div>
+            <div class="row justify-around">
+              <div class="col-md-6">
+                <!--
+                <q-select
+                  white
+                  color="blue"
                   v-model="company.status"
                   :options="statuses"
                   option-label="name"
@@ -123,29 +144,35 @@
                   label="Estado"
                   lazy-rules
                   :rules="[ val => val && val > 0 || 'El campo es obligatorio']"
-                />
-              </div>
-              <div class="col-md-6">
-                <q-select
-                  filled
-                  v-model="company.neighborhood"
-                  :options="neighborhoods"
-                  option-label="description"
-                  option-value="code"
-                  map-options
-                  emit-value
-                  label="Barrios"
-                  lazy-rules
-                  :rules="[ val => val && val > 0 || 'El campo es obligatorio']"
-                />
+                />-->
+                <div class="row justify-around">
+                  <div class="col-md-3">
+                  </div>
+                  <div class="col-md-3">
+                    <q-toggle v-model="active" label="Estado Vigencia"/>
+                  </div>
+                  <div class="col-md-3">
+                  </div>
+                </div>
               </div>
             </div>
           </q-form>
         </q-card-section>
         <q-card-actions align="right" class="bg-white text-teal">
-          <q-btn label="Cancelar" v-close-popup color="negative"/>
-          <q-btn :disable="disableSave" v-if="!isEditing" label="Guardar" @click.prevent="onCreate" color="primary"/>
-          <q-btn v-else label="Actualizar" @click.prevent="onEdit" color="primary"/>
+          <div v-if="!isEditing">
+            <q-btn round icon="save" @click.prevent="onCreate" color="primary"/>
+            <q-tooltip>Guardar datos</q-tooltip>
+          </div>
+
+          <div v-else>
+            <q-btn round icon="save" @click.prevent="onEdit" color="primary"/>
+            <q-tooltip>Editar datos</q-tooltip>
+          </div> &nbsp;
+
+          <div>
+            <q-btn round icon="cancel" v-close-popup color="negative"/>
+            <q-tooltip>Cancelar</q-tooltip>
+          </div>
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -156,6 +183,7 @@
 import { defineComponent, onMounted, reactive, ref } from 'vue'
 import { api } from 'boot/axios'
 import { useQuasar } from 'quasar'
+import { ACTIVE, INACTIVE } from 'src/constants/Constants'
 
 export default defineComponent({
   name: 'companyPage',
@@ -204,6 +232,7 @@ export default defineComponent({
     const dialog = ref(false)
     const isEditing = ref(false)
     const disableSave = ref(false)
+    const active = ref(false)
 
     const getAll = async () => {
       loading.value = true
@@ -242,9 +271,11 @@ export default defineComponent({
     const creating = () => {
       onReset()
       isEditing.value = false
+      active.value = false
       dialog.value = true
     }
     const onCreate = () => {
+      company.status = active.value ? ACTIVE : INACTIVE
       myForm.value.validate().then(success => {
         if (success) {
           api.post(path, company).then(response => {
@@ -267,12 +298,15 @@ export default defineComponent({
       company.email = row.email
       company.third = row.third.id
       company.license = row.license
-      company.neighborhood = row.neighborhood.code
-      company.status = row.status
+      company.neighborhood = row.neighborhood.id
+      if (row.status === ACTIVE) {
+        active.value = true
+      }
       isEditing.value = true
       dialog.value = true
     }
     const onEdit = () => {
+      company.status = active.value ? ACTIVE : INACTIVE
       myForm.value.validate().then(success => {
         if (success) {
           api.patch(`${path}/${id.value}`, company).then(response => {
@@ -289,7 +323,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: 'Desea eliminar el registro?',
+        message: 'Desea eliminar la compañya ' + row.name + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -334,7 +368,8 @@ export default defineComponent({
       onCreate,
       editing,
       onEdit,
-      onDelete
+      onDelete,
+      active
     }
   }
 })

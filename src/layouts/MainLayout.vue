@@ -163,9 +163,9 @@
                     </q-item-section>
                   </q-item>
                   <q-item
-                    @click="setTabSelected('/validities', 'Vigencias')"
+                    @click="setTabSelected('/configuration/validities', 'Vigencias')"
                     active-class="tab-active"
-                    to="/validities"
+                    to="/configuration/validities"
                     exact
                     class="q-ma-sm navigation-item"
                     clickable
@@ -262,6 +262,7 @@
                   :header-inset-level="0.5"
                   :content-inset-level="1"
                   label="Reportes">
+                  <!--
                   <q-item
                     @click="setTabSelected('/logsAudits', 'Logs de auditoría')"
                     active-class="tab-active"
@@ -278,7 +279,7 @@
                     <q-item-section>
                       Logs de auditoria
                     </q-item-section>
-                  </q-item>
+                  </q-item>-->
                 </q-expansion-item>
               </q-expansion-item>
 

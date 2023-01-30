@@ -173,7 +173,7 @@
               <q-space />
             </template>
             <template v-slot:top-right>
-              <q-input dense debounce="300" v-model="filter" placeholder="Buscar">
+              <q-input dense debounce="300" v-model="filterDetail" placeholder="Buscar">
                 <template v-slot:append>
                   <q-icon name="search" />
                 </template>
