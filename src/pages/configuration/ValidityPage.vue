@@ -396,7 +396,7 @@ export default defineComponent({
 
     const getAllDetail = async () => {
       visible.value = true
-      const { data } = await api.get('/configuration/consecutivecontrolvaliditiess')
+      const { data } = await api.get('/configuration/consecutivecontrolvaliditiess/head/' + idValidity.value)
       // const { data } = await api.get(pathDetail + '/head/' + row.id)
       rowsDetail.value = data
       visible.value = false

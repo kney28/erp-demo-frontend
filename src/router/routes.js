@@ -46,7 +46,13 @@ const routes = [
       { path: '/admissions/charges', name: 'charges', component: () => import('pages/admissions/ChargesPage.vue') },
       { path: '/admissions/groundsdenialcares', name: 'groundsdenialcares', component: () => import('pages/admissions/GroundsdenialcaresPage.vue') },
       { path: '/admissions/sisbenlevels', name: 'sisbenlevels', component: () => import('pages/admissions/SisbenlevelsPage.vue') },
-      { path: '/admissions/specialpopulations', name: 'specialpopulations', component: () => import('pages/admissions/SpecialpopulationsPage.vue') }
+      { path: '/admissions/specialpopulations', name: 'specialpopulations', component: () => import('pages/admissions/SpecialpopulationsPage.vue') },
+
+      { path: '/hiring/categoriescupss', name: 'categoriescupss', component: () => import('pages/hiring/CategoriescupssPage.vue') },
+      { path: '/hiring/entitytemplates', name: 'entitytemplates', component: () => import('pages/hiring/EntitytemplatesPage.vue') },
+      { path: '/hiring/parameterizationcupss', name: 'parameterizationcupss', component: () => import('pages/hiring/ParameterizationcupssPage.vue') },
+      { path: '/hiring/subcatcupss', name: 'subcatcupss', component: () => import('pages/hiring/SubcatcupssPage.vue') },
+      { path: '/hiring/subgruposcupss', name: 'subgruposcupss', component: () => import('pages/hiring/SubgruposcupssPage.vue') }
     ]
   },
   { path: '/login', name: 'login', component: () => import('src/pages/LoginPage2.vue') },

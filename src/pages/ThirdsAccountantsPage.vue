@@ -20,11 +20,11 @@
               <q-tr :props="props">
                   <q-td key="third" :props="props">
                     <template v-if="props.row.third">
+                      {{ props.row.third.socialreason }}
                       {{ props.row.third.firstname }}
                       {{ props.row.third.secondname }}
                       {{ props.row.third.firstsurname }}
                       {{ props.row.third.secondsurname }}
-                      {{ props.row.third.socialreason }}
                     </template>
                   </q-td>
                 <q-td key="taxpayer_type" :props="props">
@@ -82,13 +82,12 @@
                 white
                 color="blue"
                 :readonly="isEditing"
-                v-model="document"
+                v-model="third"
                 label="Tercero *"
-                option-label="document"
+                option-label="fullname"
                 option-value="id"
-                @filter="filterFNThird"
-                :options="filterOptionsThirds"
-                :v-on:change="loadThirdFields()"
+                @filter="filterFnThird"
+                :options="filterOptionsThird"
                 stack-label
                 use-input
                 input-debounce="0"
@@ -104,6 +103,7 @@
             </div>
           </div>
 
+          <!--
           <div class="row justify-around">
             <div v-if="document" class="col-md-3">
               <q-input
@@ -126,6 +126,7 @@
               </div>
             </div>
           </div>
+          -->
           <br>
 
           <div class="row justify-around">
@@ -193,9 +194,7 @@
                 v-model="percentageICA"
                 label="Porcentaje ICA *"
                 stack-label
-                lazy-rules
-                mask="###"
-                :rules="[ val => !!val || 'El campo es obligatorio']"
+                value="0"
               />
             </div>
             <div class="col-md-3">
@@ -253,6 +252,7 @@ export default defineComponent({
     const path = '/third-party-accountants'
     const socialreason = ref(null)
     const document = ref(null)
+    const third = ref(null)
     const documenttype = ref(null)
     const taxPayers = ref(TAXPAYERTYPECATALOG)
     const listTaxPayers = ref(LISTTAXPAYERTYPECATALOG)
@@ -276,6 +276,7 @@ export default defineComponent({
     const id = ref(null)
     const filter = ref(null)
     const dataThird = ref([])
+    const filterOptionsThird = ref(dataThird)
     const documentsTypes = ref(DOCUMENTTYPE)
     const filterOptionsThirds = ref([])
     const dataAccountsThirds = ref([])
@@ -312,6 +313,8 @@ export default defineComponent({
     const getThirds = async () => {
       visible.value = true
       const { data } = await api.get('thirdperson')
+      dataThird.value = data
+      /*
       const loadListThirds = []
       data.forEach(function (value, key) {
         loadListThirds.push({
@@ -331,6 +334,7 @@ export default defineComponent({
         })
       })
       dataThird.value = loadListThirds
+      */
       visible.value = false
     }
 
@@ -344,6 +348,7 @@ export default defineComponent({
       isEditing.value = false
       documenttype.value = null
       document.value = null
+      third.value = null
       firstname.value = null
       secondname.value = null
       firstsurname.value = null
@@ -352,7 +357,7 @@ export default defineComponent({
       socialreason.value = null
       status.value = null
       filterOptionsThirds.value = []
-      percentageICA.value = null
+      percentageICA.value = 0
       withHoldingType.value = null
       affectICA.value = null
       percentageICA.value = null
@@ -364,9 +369,10 @@ export default defineComponent({
           api.post(path, {
             taxpayer_type: taxPayerType.value,
             document: document.value,
+            third: third.value,
             withholding_type: withHoldingType.value,
             affect_ICA: affectICA.value,
-            percentage_ICA: percentageICA.value,
+            percentage_ICA: affectICA.value === 1 ? percentageICA.value : 0,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
@@ -383,6 +389,7 @@ export default defineComponent({
       id.value = row.id
       documenttype.value = row.third.documenttype
       document.value = row.third.document
+      third.value = row.third.id
       firstname.value = row.third.firstname
       secondname.value = row.third.secondname
       firstsurname.value = row.third.firstsurname
@@ -449,7 +456,19 @@ export default defineComponent({
         filterOptionsThirds.value = dataThird.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
       })
     }
-
+    const filterFnThird = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsThird.value = dataThird.value
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsThird.value = dataThird.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+      })
+    }
+    /*
     const loadThirdFields = () => {
       if (filterOptionsThirds.value[0] && document.value) {
         documenttype.value = filterOptionsThirds.value[0].documenttype
@@ -460,7 +479,7 @@ export default defineComponent({
         socialreason.value = filterOptionsThirds.value[0].socialreason
       }
     }
-
+    */
     return {
       dialog,
       dataThird,
@@ -491,7 +510,9 @@ export default defineComponent({
       documentsTypes,
       filterFNThird,
       filterOptionsThirds,
+      /*
       loadThirdFields,
+      */
       states,
       listWithHolding,
       withHoldingType,
@@ -501,7 +522,10 @@ export default defineComponent({
       percentageICA,
       dataAccountsThirds,
       listTaxPayers,
-      listAffectICA
+      listAffectICA,
+      filterFnThird,
+      filterOptionsThird,
+      third
     }
   }
 })
