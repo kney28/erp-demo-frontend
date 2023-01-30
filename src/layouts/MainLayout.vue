@@ -748,6 +748,95 @@
                       Grupos CUPS
                     </q-item-section>
                   </q-item>
+                  <q-item
+                    @click="setTabSelected('/hiring/subgruposcupss', 'Subgrupos CUPS')"
+                    active-class="tab-active"
+                    to="/hiring/subgruposcupss"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-folder" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Subgrupos CUPS
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/hiring/categoriescupss', 'Categorías CUPS')"
+                    active-class="tab-active"
+                    to="/hiring/categoriescupss"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-list" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Categorías CUPS
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/hiring/subcatcupss', 'Subcategorías CUPS')"
+                    active-class="tab-active"
+                    to="/hiring/subcatcupss"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="segment"/>
+                    </q-item-section>
+
+                    <q-item-section>
+                      Subcategorías CUPS
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/hiring/entitytemplates', 'Plantillas de entidades')"
+                    active-class="tab-active"
+                    to="/hiring/entitytemplates"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-building-circle-check" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Plantillas de Entidades
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/hiring/parameterizationcupss', 'Parametrización RIPS')"
+                    active-class="tab-active"
+                    to="/hiring/parameterizationcupss"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-sliders" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Parametrización RIPS
+                    </q-item-section>
+                  </q-item>
                 </q-expansion-item>
               </q-expansion-item>
 

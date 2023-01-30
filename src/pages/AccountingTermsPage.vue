@@ -159,7 +159,7 @@ import {
 export default defineComponent({
   name: 'AccountTermsPage',
   setup () {
-    const path = '/accountingValidity'
+    const path = '/accountingvalidity'
     const status = ref(null)
     const inUse = ref(null)
     const inUses = ref(SELECTIONCATALOG)
@@ -203,7 +203,7 @@ export default defineComponent({
 
     const getSetValidity = async () => {
       visible.value = true
-      const { data } = await api.get('validity')
+      const { data } = await api.get('configuration/validity')
       dataSetValidity.value = data
       visible.value = false
     }
