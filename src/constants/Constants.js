@@ -385,3 +385,10 @@ export const TIPOFACTURACION = [
   { id: 2, description: 'Máquina registradora' },
   { id: 3, description: 'Electrónica' }
 ]
+
+export const OPTIONPERMISSIONS = [
+  { id: 1, description: 'Configuración - Maestros - Configuración General' },
+  { id: 2, description: 'Configuración - Maestros - Perfiles' },
+  { id: 3, description: 'Configuración - Maestros - Usuarios' },
+  { id: 4, description: 'Configuración - Maestros - Paises' }
+]
