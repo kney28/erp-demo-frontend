@@ -422,3 +422,33 @@ export const CONSECONTVALIOPTION = [
   { id: 21, description: 'Ajustes Pagos' },
   { id: 22, description: 'Asientos Contables' }
 ]
+
+export const MES = [
+  { id: 1, description: 'ENERO' },
+  { id: 2, description: 'FEBRERO' },
+  { id: 3, description: 'MARZO' },
+  { id: 4, description: 'ABRIL' },
+  { id: 5, description: 'MAYO' },
+  { id: 6, description: 'JUNIO' },
+  { id: 7, description: 'JULIO' },
+  { id: 8, description: 'AGOSTO' },
+  { id: 9, description: 'SEPTIEMBRE' },
+  { id: 10, description: 'OCTUBRE' },
+  { id: 11, description: 'NOVIEMBRE' },
+  { id: 12, description: 'DICIEMBRE' }
+]
+
+export const LISTREDONDING = [
+  { id: 1, description: 'SIN REDONDEO' },
+  { id: 2, description: 'AL PESO' }
+]
+
+export const LISTSTATUSCOUNTING = [
+  { id: 1, description: 'ACTIVO' },
+  { id: 2, description: 'INACTIVO' }
+]
+
+export const LISINUSOCOUNTING = [
+  { id: 1, description: 'SI' },
+  { id: 2, description: 'NO' }
+]

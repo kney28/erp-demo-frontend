@@ -295,9 +295,9 @@
                   label="Maestros">
 
                   <q-item
-                    @click="setTabSelected('/accountingSettings', 'Configuración general')"
+                    @click="setTabSelected('/accounting/acccongens', 'Configuración general')"
                     active-class="tab-active"
-                    to="/accountingSettings"
+                    to="/accounting/acccongens"
                     exact
                     class="q-ma-sm navigation-item"
                     clickable
