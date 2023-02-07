@@ -369,7 +369,7 @@ export default defineComponent({
     const getAccountCatalog = async () => {
       visible.value = true
       const { data } = await api.get('/account-catalog')
-      dataAccountCatalog.value = data
+      dataAccountCatalog.value = data.filter(catalogo => catalogo.level === 5)
       visible.value = false
     }
     const getValidity = async () => {
