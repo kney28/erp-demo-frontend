@@ -54,7 +54,10 @@ const routes = [
       { path: '/hiring/subcatcupss', name: 'subcatcupss', component: () => import('pages/hiring/SubcatcupssPage.vue') },
       { path: '/hiring/subgruposcupss', name: 'subgruposcupss', component: () => import('pages/hiring/SubgruposcupssPage.vue') },
 
-      { path: '/accounting/acccongens', name: 'acccongens', component: () => import('pages/accounting/AcccongensPage.vue') }
+      { path: '/accounting/acccongens', name: 'acccongens', component: () => import('pages/accounting/AcccongensPage.vue') },
+      { path: '/accounting/accountingtermss', name: 'accountingtermss', component: () => import('pages/accounting/AccountingtermssPage.vue') },
+      { path: '/accounting/acccostcenterss', name: 'Acccostcenterss', component: () => import('pages/accounting/AcccostcenterssPage.vue') },
+      { path: '/accounting/accbalmovs', name: 'Accbalmovs', component: () => import('pages/accounting/AccbalmovsPage.vue') }
     ]
   },
   { path: '/login', name: 'login', component: () => import('src/pages/LoginPage2.vue') },

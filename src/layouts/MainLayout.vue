@@ -331,9 +331,9 @@
                   </q-item>
 
                   <q-item
-                    @click="setTabSelected('/accountingTerms', 'Vigencias contables')"
+                    @click="setTabSelected('/accounting/accountingtermss', 'Vigencias contables')"
                     active-class="tab-active"
-                    to="/accountingTerms"
+                    to="/accounting/accountingtermss"
                     exact
                     class="q-ma-sm navigation-item"
                     clickable
@@ -403,9 +403,9 @@
                   </q-item>
 
                   <q-item
-                    @click="setTabSelected('/costCenter', 'Centros de costo')"
+                    @click="setTabSelected('/accounting/acccostcenterss', 'Centros de costo')"
                     active-class="tab-active"
-                    to="/costCenter"
+                    to="/accounting/acccostcenterss"
                     exact
                     class="q-ma-sm navigation-item"
                     clickable
@@ -421,9 +421,9 @@
                   </q-item>
 
                   <q-item
-                    @click="setTabSelected('/accountBalance', 'Saldo de cuentas')"
+                    @click="setTabSelected('/accounting/accbalmovs', 'Saldo de cuentas')"
                     active-class="tab-active"
-                    to="/accountBalance"
+                    to="/accounting/accbalmovs"
                     exact
                     class="q-ma-sm navigation-item"
                     clickable

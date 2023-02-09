@@ -241,8 +241,8 @@ lazy-rules
                   :rules="[val => !!val || 'El campo es obligatorio']" />
               </div>-->
               <div class="col-md-3">
-<q-toggle v-model="active" label="Estado"/>
-</div>
+                <q-toggle v-model="active" label="Estado"/>
+              </div>
             </div>
           </q-form>
         </q-card-section>
