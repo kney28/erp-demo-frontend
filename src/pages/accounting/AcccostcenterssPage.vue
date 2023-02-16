@@ -84,8 +84,8 @@ lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
 </div>
-
-              <div class="col-md-3">
+<br/>
+            <div class="col-md-12 text-center">
                 <q-toggle v-model="active" label="Estado"/>
               </div>
 
@@ -228,7 +228,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar la acccostcenters: ' + row.id + '?',
+        message: '¿Está seguro que desea eliminar el centro de costo : ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'

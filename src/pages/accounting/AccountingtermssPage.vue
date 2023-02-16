@@ -19,19 +19,16 @@
 <template v-slot:body="props">
 <q-tr :props="props">
 
-<!--The next column is ENUM, please complete the code necessary
-<q-td key="status" :props="props">
-{{ props.row.status }}</q-td>-->
-                <q-td key="status" :props="props">
-                  {{ states[props.row.status - 1].description }}
+<q-td key="validity" :props="props">
+                  {{ props.row.validity.year }}
                 </q-td>
 
                 <q-td key="inuse" :props="props">
                   {{ uso[props.row.inuse - 1].description }}
                 </q-td>
 
-                <q-td key="validity" :props="props">
-                  {{ props.row.validity.year }}
+                <q-td key="status" :props="props">
+                  {{ states[props.row.status - 1].description }}
                 </q-td>
 
 <q-td key="edit" :props="props">
@@ -67,29 +64,6 @@ Los campos marcados con (*) son obligatorios
 <q-form ref="myForm" @submit.prevent="">
 <div class="row justify-around">
 
-<!--The next column is ENUM, please complete the code necessary
-//<div class="col-md-4">
-//<q-input
-//white
-//color="blue"
-//v-model="status"
-//label="status *"
-//lazy-rules
-//:rules="[ val => !!val || 'El campo es obligatorio']"
-///>
-//</div>-->
-              <div class="col-md-4">
-                <q-select white color="blue" v-model="status" label="Estado *" option-label="description"
-                  option-value="id" :options="states" emit-value map-options lazy-rules
-                  :rules="[val => !!val || 'El campo es obligatorio']" />
-              </div>
-
-              <div class="col-md-4">
-                <q-select white color="blue" v-model="inuse" label="En uso *" option-label="description"
-                  option-value="id" :options="uso" emit-value map-options lazy-rules
-                  :rules="[val => !!val || 'El campo es obligatorio']" />
-              </div>
-
               <div class="col-md-4">
                 <q-select
                 white
@@ -105,6 +79,18 @@ Los campos marcados con (*) son obligatorios
                 lazy-rules
                 :rules="[ val => !!val || 'El campo es obligatorio']"
                 />
+              </div>
+
+              <div class="col-md-4">
+                <q-select white color="blue" v-model="inuse" label="En uso *" option-label="description"
+                  option-value="id" :options="uso" emit-value map-options lazy-rules
+                  :rules="[val => !!val || 'El campo es obligatorio']" />
+              </div>
+
+              <div class="col-md-4">
+                <q-select white color="blue"  v-model="status" label="Estado *" option-label="description" :disable="isActive"
+                  option-value="id" :options="states" emit-value map-options lazy-rules
+                  :rules="[val => !!val || 'El campo es obligatorio']"   />
               </div>
 
 </div>
@@ -168,9 +154,9 @@ export default defineComponent({
     })
     const isEditing = ref(false)
     const columns = ref([
-      { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
-      { name: 'inuse', align: 'center', label: 'En uso', field: 'inuse', sortable: true },
       { name: 'validity', align: 'center', label: 'Vigencia', field: 'validity', sortable: true },
+      { name: 'inuse', align: 'center', label: 'En uso', field: 'inuse', sortable: true },
+      { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
@@ -213,8 +199,8 @@ export default defineComponent({
       idvalididy.value = null
       isEditing.value = false
       active.value = false
-      status.value = null
-      inuse.value = false
+      status.value = 1
+      inuse.value = 2
     }
     const onSubmit = () => {
       myForm.value.validate().then(async success => {
@@ -247,8 +233,8 @@ export default defineComponent({
           api.patch(path + '/' + id.value, {
             code: code.value,
             validity: validity.value,
-            status: status.value,
-            inuse: inuse.value
+            inuse: inuse.value,
+            status: states.value
           }).then(() => {
             dialog.value = false
             getAccountingtermss()
@@ -259,7 +245,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar la accountingterms: ' + row.id + '?',
+        message: '¿Está seguro que desea eliminar la vigencia contable : ' + row.validity.year + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -318,5 +304,7 @@ export default defineComponent({
       filterOptionsValidity
     }
   }
+
 })
+
 </script>

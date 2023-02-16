@@ -367,7 +367,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar la accbalmov: ' + row.id + '?',
+        message: '¿Está seguro que desea eliminar saldos de la cuenta ' + row.idledgeraccount.description + ' del tercero ' + row.idthird.fullname + '?',
         ok: {
           label: 'Si',
           color: 'positive'
