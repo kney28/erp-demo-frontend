@@ -36,16 +36,16 @@
                 <q-td key="rounding" :props="props">
                   {{ redondeo[props.row.rounding - 1].description }}</q-td>
                 <q-td key="seattypeclosure" :props="props">
-                  {{ props.row.seattypeclosure }}
+                  {{ props.row.seattypeclosure.description }}
                 </q-td>
                 <q-td key="lostcount" :props="props">
                   {{ props.row.lostcount.description }}
                 </q-td>
                 <q-td key="profitaccount" :props="props">
-                  {{ props.row.lostcount.description }}
+                  {{ props.row.profitaccount.description}}
                 </q-td>
                 <q-td key="closingaccount" :props="props">
-                  {{ props.row.lostcount.description }}
+                  {{ props.row.closingaccount.description }}
                 </q-td>
                 <!--The next column is ENUM, please complete the code necessary
 <q-td key="inuse" :props="props">
@@ -152,9 +152,22 @@ lazy-rules
                   option-value="id" :options="redondeo" emit-value map-options lazy-rules
                   :rules="[val => !!val || 'El campo es obligatorio']" />
               </div>
+
               <div class="col-md-4">
-                <q-input white color="blue" v-model="seattypeclosure" label="Tipo asiento *" lazy-rules
-                  :rules="[val => !!val || 'El campo es obligatorio']" />
+                <q-select
+                white
+                color="blue"
+                v-model="seattypeclosure"
+                label="Tipo de asiento *"
+                @filter="filterFnA"
+                :options="filterOptionsAccountSeattypeclosure"
+                option-value="id"
+                option-label="description"
+                emit-value
+                map-options
+                lazy-rules
+                :rules="[ val => !!val || 'El campo es obligatorio']"
+                />
               </div>
 
               <div class="col-md-4">
@@ -180,8 +193,8 @@ lazy-rules
                 color="blue"
                 v-model="profitaccount"
                 label="Cuenta utilidad *"
-                @filter="filterFnAccountCatalog"
-                :options="filterOptionsAccountCatalog"
+                @filter="filterFnAccountProfiltaccount"
+                :options="filterOptionsAccountProfitaccount"
                 option-value="id"
                 option-label="description"
                 emit-value
@@ -197,8 +210,8 @@ lazy-rules
                 color="blue"
                 v-model="closingaccount"
                 label="Cuenta cierre "
-                @filter="filterFnAccountCatalog"
-                :options="filterOptionsAccountCatalog"
+                @filter="filterFnAccountClosingaccount"
+                :options="filterOptionsAccountClosingaccount"
                 option-value="id"
                 option-label="description"
                 emit-value
@@ -304,8 +317,16 @@ export default defineComponent({
     const redondeo = ref(LISTREDONDING)
     const dataAccountCatalog = ref([])
     const filterOptionsAccountCatalog = ref(dataAccountCatalog)
+    const dataAccountProfitaccount = ref([])
+    const filterOptionsAccountProfitaccount = ref(dataAccountProfitaccount)
+    const dataAccountClosingaccount = ref([])
+    const filterOptionsAccountClosingaccount = ref(dataAccountClosingaccount)
+    const dataAccountSeattypeclosure = ref([])
+    const filterOptionsAccountSeattypeclosure = ref(dataAccountSeattypeclosure)
     const dataValidity = ref([])
     const filterOptionsValidity = ref(dataValidity)
+    const dataACcount = ref(dataAccountCatalog)
+    const dataclosingaccount = ref(dataAccountCatalog)
     const myForm = ref(null)
     const $q = useQuasar()
     const pagination = ref({
@@ -335,6 +356,9 @@ export default defineComponent({
       getRounding()
       getAccountCatalog()
       getValidity()
+      getAccountProfitaccount()
+      getAccountClosingaccount()
+      getAccountSeattypeclosure()
     })
     const getAcccongens = async () => {
       visible.value = true
@@ -378,6 +402,24 @@ export default defineComponent({
       dataValidity.value = data
       visible.value = false
     }
+    const getAccountProfitaccount = async () => {
+      visible.value = true
+      const { data } = await api.get('/account-catalog')
+      dataAccountProfitaccount.value = data.filter(catalogo => catalogo.level === 5)
+      visible.value = false
+    }
+    const getAccountClosingaccount = async () => {
+      visible.value = true
+      const { data } = await api.get('/account-catalog')
+      dataAccountClosingaccount.value = data.filter(catalogo => catalogo.level === 5)
+      visible.value = false
+    }
+    const getAccountSeattypeclosure = async () => {
+      visible.value = true
+      const { data } = await api.get('/types-seats')
+      dataAccountSeattypeclosure.value = data
+      visible.value = false
+    }
     const creating = () => {
       onReset()
       dialog.value = true
@@ -390,9 +432,9 @@ export default defineComponent({
       profitaccount.value = null
       closingaccount.value = null
       isEditing.value = false
-      active.value = false
-      month.value = null
-      inuse.value = null
+      active.value = true
+      month.value = 1
+      inuse.value = 2
       rounding.value = null
     }
     const onSubmit = () => {
@@ -407,7 +449,8 @@ export default defineComponent({
             month: month.value,
             status: active.value ? ACTIVE : INACTIVE,
             inuse: inuse.value,
-            rounding: rounding.value
+            rounding: rounding.value,
+            closingaccount: closingaccount.value
           }).then(() => {
             dialog.value = false
             getAcccongens()
@@ -457,7 +500,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Esté seguro que desea eliminar la acccongen: ' + row.id + '?',
+        message: '¿Esté seguro que desea eliminar el código: ' + row.code + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -500,6 +543,45 @@ export default defineComponent({
       })
     }
 
+    const filterFnAccountProfiltaccount = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsAccountProfitaccount.value = dataAccountProfitaccount.value
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsAccountProfitaccount.value = dataAccountProfitaccount.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+      })
+    }
+
+    const filterFnAccountClosingaccount = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsAccountClosingaccount.value = dataAccountClosingaccount.value
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsAccountClosingaccount.value = dataAccountClosingaccount.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+      })
+    }
+
+    const filterFnAccountSeattypeclosure = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsAccountSeattypeclosure.value = dataAccountSeattypeclosure.value
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsAccountSeattypeclosure.value = dataAccountSeattypeclosure.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+      })
+    }
+
     return {
       dialog,
       dataAcccongens,
@@ -537,7 +619,18 @@ export default defineComponent({
       dataAccountCatalog,
       filterOptionsValidity,
       dataValidity,
-      filterFnValidity
+      filterFnValidity,
+      dataAccountProfitaccount,
+      filterOptionsAccountProfitaccount,
+      filterFnAccountProfiltaccount,
+      dataACcount,
+      dataAccountClosingaccount,
+      filterOptionsAccountClosingaccount,
+      filterFnAccountClosingaccount,
+      dataclosingaccount,
+      dataAccountSeattypeclosure,
+      filterFnAccountSeattypeclosure,
+      filterOptionsAccountSeattypeclosure
     }
   }
 })
