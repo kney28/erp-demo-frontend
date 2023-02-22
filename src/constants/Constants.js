@@ -452,3 +452,35 @@ export const LISINUSOCOUNTING = [
   { id: 1, description: 'SI' },
   { id: 2, description: 'NO' }
 ]
+
+export const TYPESEX = [
+  { id: 1, description: 'NINGUNA' },
+  { id: 2, description: 'FEMENINO' },
+  { id: 3, description: 'MASCULINO' },
+  { id: 4, description: 'AMBOS' }
+]
+
+export const TYPEPROF = [
+  { id: 1, description: 'MÉDICOGENERAL' },
+  { id: 2, description: 'MÉDICO ESPECIALISTA' },
+  { id: 3, description: 'ENFERMERA' },
+  { id: 4, description: 'AUXILIAR DE ENFERMERÍA' },
+  { id: 5, description: 'ODONTÓLOGO GENERAL' },
+  { id: 6, description: 'ODONTÓLOGO ESPECIALISTA' },
+  { id: 7, description: 'HIGIENISTA' },
+  { id: 8, description: 'NUTRICIONISTA' },
+  { id: 9, description: 'PSICOLOGÍA' },
+  { id: 10, description: 'TRABAJADORA SOCIAL' },
+  { id: 11, description: 'BACTERIÓLOGO' },
+  { id: 12, description: 'TERAPISTA' },
+  { id: 13, description: 'OPTÓMETRA' },
+  { id: 13, description: 'QUÍMICO FARMACÉUTICO' }
+]
+
+export const TYPECONT = [
+  { id: 1, description: 'VINCULACIÓN LEGAL Y REGLAMENTARIA' },
+  { id: 2, description: 'CONTRATO DE PRESTACIÓN DE SERVICIOS' },
+  { id: 3, description: 'TERCERIZACIÓN LABORAL ' },
+  { id: 4, description: 'CONTRATO INDIVIDUAL DE TRABAJO' },
+  { id: 5, description: 'CONTRATO COLECTIVO DE TRABAJO' }
+]
