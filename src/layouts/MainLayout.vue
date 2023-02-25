@@ -1017,6 +1017,352 @@
 
               <q-expansion-item
                 expand-separator
+                icon="clinic-history"
+                label="Historia Clinica">
+                <q-expansion-item
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  expand-separator
+                  icon="engineering"
+                  label="Maestros">
+
+                  <q-item
+                    @click="setTabSelected('/clinichistory/hcdignosess', 'Diagnosticos')"
+                    active-class="tab-active"
+                    to="/hcdignosess"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="groups" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Diagnosticos
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/clinichistory/hchealthpros', 'Profesionales de la salud')"
+                    active-class="tab-active"
+                    to="/clinichistory/hchealthpros"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fact_check" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Profesionales de la salud
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/clinichistory/hcspecialtiess', 'Especialidades')"
+                    active-class="tab-active"
+                    to="/clinichistory/hcspecialtiess"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="collections_bookmark" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Especialidades
+                    </q-item-section>
+                  </q-item>
+                </q-expansion-item>
+
+                <q-expansion-item
+                  expand-separator
+                  icon="account_tree"
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  label="Procedimientos">
+                    <q-item
+                      @click="setTabSelected('/accountingEntries', 'Asientos contables')"
+                      active-class="tab-active"
+                      to="/accountingEntries"
+                      exact
+                      class="q-ma-sm navigation-item"
+                      clickable
+                      v-ripple
+                    >
+                      <q-item-section avatar>
+                        <q-icon name="account_balance_wallet" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        Asientos contables
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item
+                      @click="setTabSelected('/monthlyClosure', 'Cierres mensuales')"
+                      active-class="tab-active"
+                      to="/monthlyClosure"
+                      exact
+                      class="q-ma-sm navigation-item"
+                      clickable
+                      v-ripple
+                    >
+                      <q-item-section avatar>
+                        <q-icon name="lock" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        Cierres mensuales
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item
+                      @click="setTabSelected('/monthlyOpening', 'Apertura mensual')"
+                      active-class="tab-active"
+                      to="/monthlyOpening"
+                      exact
+                      class="q-ma-sm navigation-item"
+                      clickable
+                      v-ripple
+                    >
+                      <q-item-section avatar>
+                        <q-icon name="lock_open" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        Apertura mensual
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item
+                      @click="setTabSelected('/yearSeatClosure', 'Asiento cierre anual')"
+                      active-class="tab-active"
+                      to="/yearSeatClosure"
+                      exact
+                      class="q-ma-sm navigation-item"
+                      clickable
+                      v-ripple
+                    >
+                      <q-item-section avatar>
+                        <q-icon name="lock" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        Asiento cierre anual
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item
+                      @click="setTabSelected('/yearClosure', 'Cierre anual')"
+                      active-class="tab-active"
+                      to="/yearClosure"
+                      exact
+                      class="q-ma-sm navigation-item"
+                      clickable
+                      v-ripple
+                    >
+                      <q-item-section avatar>
+                        <q-icon name="lock" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        Cierre anual
+                      </q-item-section>
+                    </q-item>
+
+                </q-expansion-item>
+
+                <q-expansion-item
+                  expand-separator
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  icon="analytics"
+                  label="Reportes">
+                </q-expansion-item>
+              </q-expansion-item>
+
+              <q-expansion-item
+                expand-separator
+                icon="goods"
+                label="Bienes">
+                <q-expansion-item
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  expand-separator
+                  icon="engineering"
+                  label="Maestros">
+
+                  <q-item
+                    @click="setTabSelected('/goods/goopars', 'Parametrizaciones Contables')"
+                    active-class="tab-active"
+                    to="/goods/goopars"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="groups" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Diagnosticos
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/goods/gooconfs', 'Configuración de bienes')"
+                    active-class="tab-active"
+                    to="/goods/gooconfs"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fact_check" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Configuración de bienes
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/goods/gooclas', 'Clasificación de bienes')"
+                    active-class="tab-active"
+                    to="/goods/gooclas"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="collections_bookmark" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Clasificación de bienes
+                    </q-item-section>
+                  </q-item>
+                </q-expansion-item>
+
+                <q-expansion-item
+                  expand-separator
+                  icon="account_tree"
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  label="Procedimientos">
+                    <q-item
+                      @click="setTabSelected('/accountingEntries', 'Asientos contables')"
+                      active-class="tab-active"
+                      to="/accountingEntries"
+                      exact
+                      class="q-ma-sm navigation-item"
+                      clickable
+                      v-ripple
+                    >
+                      <q-item-section avatar>
+                        <q-icon name="account_balance_wallet" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        Asientos contables
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item
+                      @click="setTabSelected('/monthlyClosure', 'Cierres mensuales')"
+                      active-class="tab-active"
+                      to="/monthlyClosure"
+                      exact
+                      class="q-ma-sm navigation-item"
+                      clickable
+                      v-ripple
+                    >
+                      <q-item-section avatar>
+                        <q-icon name="lock" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        Cierres mensuales
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item
+                      @click="setTabSelected('/monthlyOpening', 'Apertura mensual')"
+                      active-class="tab-active"
+                      to="/monthlyOpening"
+                      exact
+                      class="q-ma-sm navigation-item"
+                      clickable
+                      v-ripple
+                    >
+                      <q-item-section avatar>
+                        <q-icon name="lock_open" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        Apertura mensual
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item
+                      @click="setTabSelected('/yearSeatClosure', 'Asiento cierre anual')"
+                      active-class="tab-active"
+                      to="/yearSeatClosure"
+                      exact
+                      class="q-ma-sm navigation-item"
+                      clickable
+                      v-ripple
+                    >
+                      <q-item-section avatar>
+                        <q-icon name="lock" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        Asiento cierre anual
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item
+                      @click="setTabSelected('/yearClosure', 'Cierre anual')"
+                      active-class="tab-active"
+                      to="/yearClosure"
+                      exact
+                      class="q-ma-sm navigation-item"
+                      clickable
+                      v-ripple
+                    >
+                      <q-item-section avatar>
+                        <q-icon name="lock" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        Cierre anual
+                      </q-item-section>
+                    </q-item>
+
+                </q-expansion-item>
+
+                <q-expansion-item
+                  expand-separator
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  icon="analytics"
+                  label="Reportes">
+                </q-expansion-item>
+              </q-expansion-item>
+
+              <q-expansion-item
+                expand-separator
                 icon="checklist"
                 label="Tesorería">
               </q-expansion-item>

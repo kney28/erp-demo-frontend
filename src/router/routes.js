@@ -57,7 +57,15 @@ const routes = [
       { path: '/accounting/acccongens', name: 'acccongens', component: () => import('pages/accounting/AcccongensPage.vue') },
       { path: '/accounting/accountingtermss', name: 'accountingtermss', component: () => import('pages/accounting/AccountingtermssPage.vue') },
       { path: '/accounting/acccostcenterss', name: 'Acccostcenterss', component: () => import('pages/accounting/AcccostcenterssPage.vue') },
-      { path: '/accounting/accbalmovs', name: 'Accbalmovs', component: () => import('pages/accounting/AccbalmovsPage.vue') }
+      { path: '/accounting/accbalmovs', name: 'Accbalmovs', component: () => import('pages/accounting/AccbalmovsPage.vue') },
+
+      { path: '/clinichistory/hcdignosess', name: 'hcdignosess', component: () => import('pages/clinic-history/HcdignosessPage.vue') },
+      { path: '/clinichistory/hchealthpros', name: 'hchealthpros', component: () => import('pages/clinic-history/HchealthprosPage.vue') },
+      { path: '/clinichistory/hcspecialtiess', name: 'hcspecialtiess', component: () => import('pages/clinic-history/HcspecialtiessPage.vue') },
+
+      { path: '/goods/goopars', name: 'goopars', component: () => import('pages/goods/GooparsPage.vue') },
+      { path: '/goods/gooconfs', name: 'gooconfs', component: () => import('pages/goods/GooconfsPage.vue') },
+      { path: '/goods/gooclas', name: 'gooclas', component: () => import('pages/goods/GooclasPage.vue') }
     ]
   },
   { path: '/login', name: 'login', component: () => import('src/pages/LoginPage2.vue') },
