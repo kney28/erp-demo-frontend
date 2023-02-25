@@ -484,3 +484,23 @@ export const TYPECONT = [
   { id: 4, description: 'CONTRATO INDIVIDUAL DE TRABAJO' },
   { id: 5, description: 'CONTRATO COLECTIVO DE TRABAJO' }
 ]
+
+export const TYPEGOODS = [
+  { id: 1, description: 'MUEBLE' },
+  { id: 2, description: 'INMUEBLE' }
+]
+
+export const RESIDUALVALUETYPE = [
+  { id: 1, description: 'VALOR' },
+  { id: 2, description: 'PORCENTAJE' }
+]
+
+export const GENDEP = [
+  { id: 1, description: 'SI' },
+  { id: 2, description: 'NO' }
+]
+
+export const TYPEUSEFULLIFE = [
+  { id: 1, description: 'AÑOS' },
+  { id: 2, description: 'MESES' }
+]
