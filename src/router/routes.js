@@ -65,7 +65,7 @@ const routes = [
 
       { path: '/goods/goopars', name: 'goopars', component: () => import('pages/goods/GooparsPage.vue') },
       { path: '/goods/gooconfs', name: 'gooconfs', component: () => import('pages/goods/GooconfsPage.vue') },
-      { path: '/goods/gooclas', name: 'gooclas', component: () => import('pages/goods/GooclasPage.vue') },
+      { path: '/goods/gooclas', name: 'gooclas', component: () => import('pages/goods/GooclasPage.vue') }
     ]
   },
   { path: '/login', name: 'login', component: () => import('src/pages/LoginPage2.vue') },
