@@ -177,7 +177,7 @@ import { STATUS, TYPESEX } from '../../constants/Constants'
 export default defineComponent({
   name: 'HcdignosessPage',
   setup () {
-    const path = 'clinic-history/hcdignosess'
+    const path = '/clinict-history/hcdignosess'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)

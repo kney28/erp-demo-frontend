@@ -130,7 +130,7 @@ import { STATUS } from '../../constants/Constants'
 export default defineComponent({
   name: 'HcspecialtiessPage',
   setup () {
-    const path = '/hcspecialtiess'
+    const path = '/clinict-history/hcspecialtiess'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)

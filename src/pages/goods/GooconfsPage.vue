@@ -279,7 +279,7 @@ import { STATUS, TYPEGOODS, RESIDUALVALUETYPE, GENDEP, TYPEUSEFULLIFE } from '..
 export default defineComponent({
   name: 'GooconfsPage',
   setup () {
-    const path = '/gooconfs'
+    const path = '/goods/gooconfs'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)

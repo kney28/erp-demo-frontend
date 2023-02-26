@@ -246,7 +246,7 @@ import { STATUS } from '../../constants/Constants'
 export default defineComponent({
   name: 'GooparsPage',
   setup () {
-    const path = '/goopars'
+    const path = '/goods/goopars'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)

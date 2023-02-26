@@ -130,7 +130,7 @@ import { STATUS } from '../../constants/Constants'
 export default defineComponent({
   name: 'GooclasPage',
   setup () {
-    const path = '/gooclas'
+    const path = '/goods/gooclas'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)
