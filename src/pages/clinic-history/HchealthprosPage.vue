@@ -293,7 +293,7 @@ export default defineComponent({
             idthird: idthird.value,
             businesscard: businesscard.value,
             idspecialty: idspecialty.value,
-            digsig: digsig.value,
+            digsig: digsig.value
           }).then(() => {
             dialog.value = false
             getHchealthpros()
@@ -322,7 +322,7 @@ export default defineComponent({
             idthird: idthird.value,
             businesscard: businesscard.value,
             idspecialty: idspecialty.value,
-            digsig: digsig.value,
+            digsig: digsig.value
           }).then(() => {
             dialog.value = false
             getHchealthpros()

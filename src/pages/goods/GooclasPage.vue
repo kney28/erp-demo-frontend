@@ -182,7 +182,7 @@ export default defineComponent({
           api.post(path, {
             code: code.value,
             state: state.value,
-            description: description.value,
+            description: description.value
           }).then(() => {
             dialog.value = false
             getGooclas()
@@ -205,7 +205,7 @@ export default defineComponent({
           api.patch(path + '/' + id.value, {
             code: code.value,
             state: state.value,
-            description: description.value,
+            description: description.value
           }).then(() => {
             dialog.value = false
             getGooclas()

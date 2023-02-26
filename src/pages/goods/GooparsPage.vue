@@ -334,7 +334,7 @@ export default defineComponent({
             idacclos: idacclos.value,
             idaccoutusedue: idaccoutusedue.value,
             idacccomowe: idacccomowe.value,
-            idcrecomacc: idcrecomacc.value,
+            idcrecomacc: idcrecomacc.value
           }).then(() => {
             dialog.value = false
             getGoopars()
@@ -375,7 +375,7 @@ export default defineComponent({
             idacclos: idacclos.value,
             idaccoutusedue: idaccoutusedue.value,
             idacccomowe: idacccomowe.value,
-            idcrecomacc: idcrecomacc.value,
+            idcrecomacc: idcrecomacc.value
           }).then(() => {
             dialog.value = false
             getGoopars()

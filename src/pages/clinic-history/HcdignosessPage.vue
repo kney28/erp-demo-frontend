@@ -242,7 +242,7 @@ export default defineComponent({
             sex: sex.value,
             state: state.value,
             lowlimage: lowlimage.value,
-            upplimage: upplimage.value,
+            upplimage: upplimage.value
           }).then(() => {
             dialog.value = false
             getHcdignosess()
@@ -256,7 +256,7 @@ export default defineComponent({
       isEditing.value = true
       id.value = row.id
       code.value = row.code
-      sex.value = rom.sex
+      sex.value = row.sex
       state.value = row.state
       description.value = row.description
       lowlimage.value = row.lowlimage
@@ -271,7 +271,7 @@ export default defineComponent({
             sex: sex.value,
             state: state.value,
             lowlimage: lowlimage.value,
-            upplimage: upplimage.value,
+            upplimage: upplimage.value
           }).then(() => {
             dialog.value = false
             getHcdignosess()
