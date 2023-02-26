@@ -130,7 +130,7 @@ import { STATUS } from '../../constants/Constants'
 export default defineComponent({
   name: 'HcspecialtiessPage',
   setup () {
-    const path = '/hcspecialtiess'
+    const path = '/clinict-history/hcspecialtiess'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)
@@ -182,7 +182,7 @@ export default defineComponent({
           api.post(path, {
             code: code.value,
             state: state.value,
-            description: description.value,
+            description: description.value
           }).then(() => {
             dialog.value = false
             getHcspecialtiess()
@@ -204,7 +204,7 @@ export default defineComponent({
         if (success) {
           api.patch(path + '/' + id.value, {
             code: code.value,
-            description: description.value,
+            description: description.value
           }).then(() => {
             dialog.value = false
             getHcspecialtiess()
@@ -251,6 +251,8 @@ export default defineComponent({
       onEditing,
       id,
       onDelete,
+      status,
+      state
     }
   }
 })

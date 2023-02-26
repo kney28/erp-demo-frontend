@@ -279,7 +279,7 @@ import { STATUS, TYPEGOODS, RESIDUALVALUETYPE, GENDEP, TYPEUSEFULLIFE } from '..
 export default defineComponent({
   name: 'GooconfsPage',
   setup () {
-    const path = '/gooconfs'
+    const path = '/goods/gooconfs'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)
@@ -371,7 +371,7 @@ export default defineComponent({
             uselif: uselif.value,
             coniva: coniva.value,
             resvaltyp: resvaltyp.value,
-            resval: resval.value,
+            resval: resval.value
           }).then(() => {
             dialog.value = false
             getGooconfs()
@@ -412,7 +412,7 @@ export default defineComponent({
             resval: resval.value,
             state: state.value,
             tipgoo: tipgoo.value,
-            gendep: gendep.value,
+            gendep: gendep.value
           }).then(() => {
             dialog.value = false
             getGooconfs()
@@ -471,11 +471,9 @@ export default defineComponent({
       typegoods,
       tipgoo,
       residualvaluetype,
-      resvaltyp,
       gendeps,
       gendep,
-      typeusefullife,
-      typuseli
+      typeusefullife
     }
   }
 })

@@ -221,7 +221,7 @@ import { STATUS, TYPECONT, TYPEPROF } from '../../constants/Constants'
 export default defineComponent({
   name: 'HchealthprosPage',
   setup () {
-    const path = '/hchealthpros'
+    const path = '/clinict-history/hchealthpros'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)
@@ -293,7 +293,7 @@ export default defineComponent({
             idthird: idthird.value,
             businesscard: businesscard.value,
             idspecialty: idspecialty.value,
-            digsig: digsig.value,
+            digsig: digsig.value
           }).then(() => {
             dialog.value = false
             getHchealthpros()
@@ -322,7 +322,7 @@ export default defineComponent({
             idthird: idthird.value,
             businesscard: businesscard.value,
             idspecialty: idspecialty.value,
-            digsig: digsig.value,
+            digsig: digsig.value
           }).then(() => {
             dialog.value = false
             getHchealthpros()

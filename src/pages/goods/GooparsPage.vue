@@ -246,7 +246,7 @@ import { STATUS } from '../../constants/Constants'
 export default defineComponent({
   name: 'GooparsPage',
   setup () {
-    const path = '/goopars'
+    const path = '/goods/goopars'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)
@@ -334,7 +334,7 @@ export default defineComponent({
             idacclos: idacclos.value,
             idaccoutusedue: idaccoutusedue.value,
             idacccomowe: idacccomowe.value,
-            idcrecomacc: idcrecomacc.value,
+            idcrecomacc: idcrecomacc.value
           }).then(() => {
             dialog.value = false
             getGoopars()
@@ -375,7 +375,7 @@ export default defineComponent({
             idacclos: idacclos.value,
             idaccoutusedue: idaccoutusedue.value,
             idacccomowe: idacccomowe.value,
-            idcrecomacc: idcrecomacc.value,
+            idcrecomacc: idcrecomacc.value
           }).then(() => {
             dialog.value = false
             getGoopars()
