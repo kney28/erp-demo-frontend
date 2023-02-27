@@ -41,7 +41,8 @@
 {{ digsig[props.row.digsig] }}
 </q-td>
 <q-td key="status" :props="props">
-{{ status[props.row.state].description  }}</q-td>
+  {{ states[props.row.status] }}
+</q-td>
 <q-td key="edit" :props="props">
 <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
 </q-td>
@@ -170,24 +171,15 @@ lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
 </div>
-<div class="col-md-4">
-<q-select
-white
-color="blue"
-v-model="state"
-label="Estado *"
-option-label="description"
-option-value="id"
-:options="status"
-stack-label
-use-input
-input-debounce="0"
-emit-value
-map-options
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
 </div>
+<div class="row justify-around">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-3">
+      <q-toggle v-model="active" label="Estado"/>
+    </div>
+    <div class="col-md-3">
+  </div>
 </div>
 </q-form>
 </q-card-section>
@@ -217,7 +209,7 @@ lazy-rules
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-import { STATUS, TYPECONT, TYPEPROF } from '../../constants/Constants'
+import { ACTIVE, INACTIVE, STATUS, TYPECONT, TYPEPROF } from '../../constants/Constants'
 export default defineComponent({
   name: 'HchealthprosPage',
   setup () {
@@ -228,8 +220,7 @@ export default defineComponent({
     const filter = ref(null)
     const dataHchealthpros = ref([])
     const code = ref(null)
-    const status = ref(STATUS)
-    const state = ref(null)
+    const states = ref(STATUS)
     const typeconts = ref(TYPECONT)
     const typecont = ref(null)
     const typeprofs = ref(TYPEPROF)
@@ -293,7 +284,8 @@ export default defineComponent({
             idthird: idthird.value,
             businesscard: businesscard.value,
             idspecialty: idspecialty.value,
-            digsig: digsig.value
+            digsig: digsig.value,
+            status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
             getHchealthpros()
@@ -312,6 +304,9 @@ export default defineComponent({
       businesscard.value = row.businesscard
       idspecialty.value = row.idspecialty
       digsig.value = row.digsig
+      if (row.status === ACTIVE) {
+        active.value = true
+      }
     }
     const onEditing = () => {
       myForm.value.validate().then(async success => {
@@ -322,7 +317,8 @@ export default defineComponent({
             idthird: idthird.value,
             businesscard: businesscard.value,
             idspecialty: idspecialty.value,
-            digsig: digsig.value
+            digsig: digsig.value,
+            status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
             getHchealthpros()
@@ -333,7 +329,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar la hchealthpro: ' + row.id + '?',
+        message: '¿Está seguro que desea eliminar el profesional de la salud: ' + row.id + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -373,8 +369,7 @@ export default defineComponent({
       onEditing,
       id,
       onDelete,
-      status,
-      state,
+      states,
       typeconts,
       typecont,
       typeprofs,

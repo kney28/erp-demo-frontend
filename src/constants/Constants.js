@@ -504,3 +504,38 @@ export const TYPEUSEFULLIFE = [
   { id: 1, description: 'AÑOS' },
   { id: 2, description: 'MESES' }
 ]
+
+export const TYPEGLOSS = [
+  { id: 1, description: 'NINGUNO' },
+  { id: 2, description: 'FACTURACIÓN' },
+  { id: 3, description: 'TARIFAS' },
+  { id: 4, description: 'AUTORIZACIÓN' },
+  { id: 5, description: 'COBERTURA' },
+  { id: 6, description: 'PERTINENCIA' },
+  { id: 7, description: 'DEVOLUCIÓN' },
+  { id: 8, description: 'RESPUESTA' }
+]
+
+export const COCEPTTYPE = [
+  { id: 1, description: 'NINGUNO' },
+  { id: 2, description: 'CUENTAS POR COBRAR' },
+  { id: 3, description: 'NOTAS' }
+]
+
+export const CONCEPTTYPE = [
+  { id: 1, description: 'NINGUNO' },
+  { id: 2, description: 'CUENTAS POR PAGAR' },
+  { id: 3, description: 'NOTAS' }
+]
+
+export const SELECTION = [
+  { id: 1, description: 'SI' },
+  { id: 2, description: 'NO' }
+]
+
+export const PROVIDERTYPE = [
+  { id: 1, description: 'NINGUNO' },
+  { id: 2, description: 'PRODUCTOS' },
+  { id: 3, description: 'SERVICIOS' },
+  { id: 4, description: 'AMBOS' }
+]

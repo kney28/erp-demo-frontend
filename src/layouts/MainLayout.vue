@@ -1365,12 +1365,129 @@
                 expand-separator
                 icon="work"
                 label="Cuentas por cobrar">
+                <q-expansion-item
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  expand-separator
+                  icon="engineering"
+                  label="Maestros">
+
+                  <q-item
+                    @click="setTabSelected('/accountsreceivable/cxcaccrecs', 'Concepto de glosa')"
+                    active-class="tab-active"
+                    to="/accountsreceivable/cxcaccrecs"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="groups" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Concepto de glosa
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/accountsreceivable/cxccoucons', 'Conceptos contrapartida–CXC y Notas')"
+                    active-class="tab-active"
+                    to="/accountsreceivable/cxccoucons"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fact_check" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Conceptos contrapartida–CXC y Notas
+                    </q-item-section>
+                  </q-item>
+                </q-expansion-item>
+
+                <q-expansion-item
+                  expand-separator
+                  icon="account_tree"
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  label="Procedimientos">
+                </q-expansion-item>
+
+                <q-expansion-item
+                  expand-separator
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  icon="analytics"
+                  label="Reportes">
+                </q-expansion-item>
               </q-expansion-item>
 
               <q-expansion-item
                 expand-separator
                 icon="payments"
                 label="Cuentas por pagar">
+                <q-expansion-item
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  expand-separator
+                  icon="engineering"
+                  label="Maestros">
+                  <q-item
+                    @click="setTabSelected('/accountspayable/cxpcoucons', 'Conceptos contrapartida–CXP y Notas')"
+                    active-class="tab-active"
+                    to="/accountspayable/cxpcoucons"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="groups" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Conceptos contrapartida–CXP y Notas
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/accountspayable/cxpproviderss', 'Proveedores')"
+                    active-class="tab-active"
+                    to="/accountspayable/cxpproviderss"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fact_check" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Proveedores
+                    </q-item-section>
+                  </q-item>
+                </q-expansion-item>
+
+                <q-expansion-item
+                  expand-separator
+                  icon="account_tree"
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  label="Procedimientos">
+                </q-expansion-item>
+
+                <q-expansion-item
+                  expand-separator
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  icon="analytics"
+                  label="Reportes">
+                </q-expansion-item>
               </q-expansion-item>
 
             </q-list>

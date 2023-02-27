@@ -4,7 +4,7 @@
 <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
 <div>
 <q-space />
-<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Hcspecialties" :rows="dataHcspecialtiess" :filter="filter" :columns="columns" row-key="name" >
+<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Cxpproviders" :rows="dataCxpproviderss" :filter="filter" :columns="columns" row-key="name" >
 <template v-slot:top-left>
 <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
 <q-space />
@@ -21,8 +21,23 @@
 <q-td key="code" :props="props">
 {{ props.row.code }}
 </q-td>
-<q-td key="description" :props="props">
-{{ props.row.description }}
+<q-td key="idthird" :props="props">
+{{ props.row.idthird }}
+</q-td>
+<q-td key="thirddocument" :props="props">
+{{ props.row.thirddocument }}
+</q-td>
+<q-td key="type" :props="props">
+{{ providertype[props.row.type].description  }}
+</q-td>
+<q-td key="idledacc" :props="props">
+{{ props.row.idledacc }}
+</q-td>
+<q-td key="idecoact" :props="props">
+{{ props.row.idecoact }}
+</q-td>
+<q-td key="ecoactper" :props="props">
+{{ props.row.ecoactper }}
 </q-td>
 <q-td key="status" :props="props">
   {{ states[props.row.status] }}
@@ -73,8 +88,66 @@ lazy-rules
 <q-input
 white
 color="blue"
-v-model="description"
-label="Descripción *"
+v-model="idthird"
+label="Tercero *"
+lazy-rules
+:rules="[ val => !!val || 'El campo es obligatorio']"
+/>
+</div>
+<div class="col-md-4">
+<q-input
+white
+color="blue"
+v-model="thirddocument"
+label="Documento del Tercero *"
+lazy-rules
+:rules="[ val => !!val || 'El campo es obligatorio']"
+/>
+</div>
+<div class="col-md-4">
+<q-select
+white
+color="blue"
+v-model="type"
+label="Tipo *"
+option-label="description"
+option-value="id"
+:options="providertype"
+stack-label
+use-input
+input-debounce="0"
+emit-value
+map-options
+lazy-rules
+:rules="[ val => !!val || 'El campo es obligatorio']"
+/>
+</div>
+<div class="col-md-4">
+<q-input
+white
+color="blue"
+v-model="idledacc"
+label="Cuenta Contable *"
+lazy-rules
+:rules="[ val => !!val || 'El campo es obligatorio']"
+/>
+</div>
+<div class="col-md-4">
+<q-input
+white
+color="blue"
+v-model="idecoact"
+label="Actividad económica *"
+lazy-rules
+:rules="[ val => !!val || 'El campo es obligatorio']"
+/>
+</div>
+<div class="col-md-4">
+<q-input
+white
+color="blue"
+v-model="ecoactper"
+label="Porcentaje actividad económica *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
@@ -117,19 +190,25 @@ lazy-rules
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-import { ACTIVE, INACTIVE, STATUS } from '../../constants/Constants'
+import { ACTIVE, INACTIVE, STATUS, PROVIDERTYPE } from '../../constants/Constants'
 export default defineComponent({
-  name: 'HcspecialtiessPage',
+  name: 'CxpproviderssPage',
   setup () {
-    const path = '/clinict-history/hcspecialtiess'
+    const path = 'accounts-payable/cxpproviderss'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)
     const filter = ref(null)
-    const dataHcspecialtiess = ref([])
-    const code = ref(null)
+    const dataCxpproviderss = ref([])
     const states = ref(STATUS)
-    const description = ref(null)
+    const providertype = ref(PROVIDERTYPE)
+    const type = ref(null)
+    const code = ref(null)
+    const idthird = ref(null)
+    const thirddocument = ref(null)
+    const idledacc = ref(null)
+    const idecoact = ref(null)
+    const ecoactper = ref(null)
     const role = ref(null)
     const active = ref(false)
     const myForm = ref(null)
@@ -141,18 +220,23 @@ export default defineComponent({
     const isEditing = ref(false)
     const columns = ref([
       { name: 'code', align: 'center', label: 'Codigo', field: 'code', sortable: true },
-      { name: 'description', align: 'center', label: 'Descripción', field: 'description', sortable: true },
-      { name: 'state', align: 'center', label: 'Estado', field: 'state', sortable: true },
+      { name: 'idthird', align: 'center', label: 'Tercero', field: 'idthird', sortable: true },
+      { name: 'thirddocument', align: 'center', label: 'Documento del Tercero ', field: 'thirddocument', sortable: true },
+      { name: 'typeprovider', align: 'center', label: 'Tipo de proveedor', field: 'typeprovider', sortable: true },
+      { name: 'idledacc', align: 'center', label: 'Cuenta Contable', field: 'idledacc', sortable: true },
+      { name: 'idecoact', align: 'center', label: 'Actividad económica', field: 'idecoact', sortable: true },
+      { name: 'ecoactper', align: 'center', label: 'Porcentaje actividad económica', field: 'ecoactper', sortable: true },
+      { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
     onMounted(() => {
-      getHcspecialtiess()
+      getCxpproviderss()
     })
-    const getHcspecialtiess = async () => {
+    const getCxpproviderss = async () => {
       visible.value = true
       const { data } = await api.get(path)
-      dataHcspecialtiess.value = data
+      dataCxpproviderss.value = data
       visible.value = false
     }
     const creating = () => {
@@ -161,7 +245,12 @@ export default defineComponent({
     }
     const onReset = () => {
       code.value = null
-      description.value = null
+      idthird.value = null
+      thirddocument.value = null
+      idledacc.value = null
+      idecoact.value = null
+      ecoactper.value = null
+      type.value = null
       isEditing.value = false
       active.value = false
     }
@@ -170,11 +259,16 @@ export default defineComponent({
         if (success) {
           api.post(path, {
             code: code.value,
-            description: description.value,
+            idthird: idthird.value,
+            thirddocument: thirddocument.value,
+            idledacc: idledacc.value,
+            idecoact: idecoact.value,
+            type: type.value,
+            ecoactper: ecoactper.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getHcspecialtiess()
+            getCxpproviderss()
           })
         }
       })
@@ -185,7 +279,12 @@ export default defineComponent({
       isEditing.value = true
       id.value = row.id
       code.value = row.code
-      description.value = row.description
+      type.value = row.type
+      idthird.value = row.idthird
+      thirddocument.value = row.thirddocument
+      idledacc.value = row.idledacc
+      idecoact.value = row.idecoact
+      ecoactper.value = row.ecoactper
       if (row.status === ACTIVE) {
         active.value = true
       }
@@ -195,11 +294,16 @@ export default defineComponent({
         if (success) {
           api.patch(path + '/' + id.value, {
             code: code.value,
-            description: description.value,
+            idthird: idthird.value,
+            thirddocument: thirddocument.value,
+            idledacc: idledacc.value,
+            idecoact: idecoact.value,
+            ecoactper: ecoactper.value,
+            type: type.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getHcspecialtiess()
+            getCxpproviderss()
           })
         }
       })
@@ -207,7 +311,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar la especialidad: ' + row.id + '?',
+        message: '¿Está seguro que desea eliminar los Proveedores: ' + row.id + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -219,13 +323,13 @@ export default defineComponent({
       }).onOk(() => {
         api.delete(path + '/' + row.id).then(response => {
           dialog.value = false
-          getHcspecialtiess()
+          getCxpproviderss()
         })
       })
     }
     return {
       dialog,
-      dataHcspecialtiess,
+      dataCxpproviderss,
       isEditing,
       role,
       active,
@@ -236,14 +340,20 @@ export default defineComponent({
       visible,
       filter,
       code,
-      description,
+      idthird,
+      thirddocument,
+      idledacc,
+      idecoact,
+      ecoactper,
       onReset,
       onSubmit,
       editing,
       onEditing,
       id,
       onDelete,
-      states
+      states,
+      providertype,
+      type
     }
   }
 })

@@ -4,7 +4,7 @@
 <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
 <div>
 <q-space />
-<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Hcspecialties" :rows="dataHcspecialtiess" :filter="filter" :columns="columns" row-key="name" >
+<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Cxccoucon" :rows="dataCxccoucons" :filter="filter" :columns="columns" row-key="name" >
 <template v-slot:top-left>
 <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
 <q-space />
@@ -23,6 +23,12 @@
 </q-td>
 <q-td key="description" :props="props">
 {{ props.row.description }}
+</q-td>
+<q-td key="type" :props="props">
+{{ typecocept[props.row.type].description  }}
+</q-td>
+<q-td key="idledacc" :props="props">
+{{ props.row.idledacc }}
 </q-td>
 <q-td key="status" :props="props">
   {{ states[props.row.status] }}
@@ -64,7 +70,7 @@ Los campos marcados con (*) son obligatorios
 white
 color="blue"
 v-model="code"
-label="Codigo *"
+label="Código *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
@@ -75,6 +81,34 @@ white
 color="blue"
 v-model="description"
 label="Descripción *"
+lazy-rules
+:rules="[ val => !!val || 'El campo es obligatorio']"
+/>
+</div>
+<div class="col-md-4">
+<q-select
+white
+color="blue"
+v-model="type"
+label="Tipo *"
+option-label="description"
+option-value="id"
+:options="typecocept"
+stack-label
+use-input
+input-debounce="0"
+emit-value
+map-options
+lazy-rules
+:rules="[ val => !!val || 'El campo es obligatorio']"
+/>
+</div>
+<div class="col-md-4">
+<q-input
+white
+color="blue"
+v-model="idledacc"
+label="Cuenta de contable *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
@@ -117,19 +151,22 @@ lazy-rules
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-import { ACTIVE, INACTIVE, STATUS } from '../../constants/Constants'
+import { ACTIVE, INACTIVE, STATUS, COCEPTTYPE } from '../../constants/Constants'
 export default defineComponent({
-  name: 'HcspecialtiessPage',
+  name: 'CxccouconsPage',
   setup () {
-    const path = '/clinict-history/hcspecialtiess'
+    const path = 'accounts-receivable/cxccoucons'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)
     const filter = ref(null)
-    const dataHcspecialtiess = ref([])
+    const dataCxccoucons = ref([])
     const code = ref(null)
     const states = ref(STATUS)
+    const typecocept = ref(COCEPTTYPE)
     const description = ref(null)
+    const type = ref(null)
+    const idledacc = ref(null)
     const role = ref(null)
     const active = ref(false)
     const myForm = ref(null)
@@ -140,19 +177,21 @@ export default defineComponent({
     })
     const isEditing = ref(false)
     const columns = ref([
-      { name: 'code', align: 'center', label: 'Codigo', field: 'code', sortable: true },
+      { name: 'code', align: 'center', label: 'Código', field: 'code', sortable: true },
       { name: 'description', align: 'center', label: 'Descripción', field: 'description', sortable: true },
-      { name: 'state', align: 'center', label: 'Estado', field: 'state', sortable: true },
+      { name: 'type', align: 'center', label: 'Tipo', field: 'type', sortable: true },
+      { name: 'idledacc', align: 'center', label: 'Cuenta de contable', field: 'idledacc', sortable: true },
+      { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
     onMounted(() => {
-      getHcspecialtiess()
+      getCxccoucons()
     })
-    const getHcspecialtiess = async () => {
+    const getCxccoucons = async () => {
       visible.value = true
       const { data } = await api.get(path)
-      dataHcspecialtiess.value = data
+      dataCxccoucons.value = data
       visible.value = false
     }
     const creating = () => {
@@ -162,6 +201,8 @@ export default defineComponent({
     const onReset = () => {
       code.value = null
       description.value = null
+      type.value = null
+      idledacc.value = null
       isEditing.value = false
       active.value = false
     }
@@ -171,10 +212,12 @@ export default defineComponent({
           api.post(path, {
             code: code.value,
             description: description.value,
+            type: type.value,
+            idledacc: idledacc.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getHcspecialtiess()
+            getCxccoucons()
           })
         }
       })
@@ -186,6 +229,8 @@ export default defineComponent({
       id.value = row.id
       code.value = row.code
       description.value = row.description
+      type.value = row.type
+      idledacc.value = row.idledacc
       if (row.status === ACTIVE) {
         active.value = true
       }
@@ -196,10 +241,12 @@ export default defineComponent({
           api.patch(path + '/' + id.value, {
             code: code.value,
             description: description.value,
+            type: type.value,
+            idledacc: idledacc.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getHcspecialtiess()
+            getCxccoucons()
           })
         }
       })
@@ -207,7 +254,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar la especialidad: ' + row.id + '?',
+        message: '¿Está seguro que desea eliminar los conceptos contrapartida CXC y Notas: ' + row.id + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -219,13 +266,13 @@ export default defineComponent({
       }).onOk(() => {
         api.delete(path + '/' + row.id).then(response => {
           dialog.value = false
-          getHcspecialtiess()
+          getCxccoucons()
         })
       })
     }
     return {
       dialog,
-      dataHcspecialtiess,
+      dataCxccoucons,
       isEditing,
       role,
       active,
@@ -237,13 +284,16 @@ export default defineComponent({
       filter,
       code,
       description,
+      type,
+      idledacc,
       onReset,
       onSubmit,
       editing,
       onEditing,
       id,
       onDelete,
-      states
+      states,
+      typecocept
     }
   }
 })

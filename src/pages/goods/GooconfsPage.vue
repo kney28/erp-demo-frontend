@@ -52,7 +52,7 @@
 {{ props.row.resval }}
 </q-td>
 <q-td key="status" :props="props">
-{{ status[props.row.state].description  }}
+  {{ states[props.row.status] }}
 </q-td>
 <q-td key="edit" :props="props">
 <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
@@ -228,24 +228,15 @@ lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
 </div>
-<div class="col-md-4">
-<q-select
-white
-color="blue"
-v-model="state"
-label="Estado *"
-option-label="description"
-option-value="id"
-:options="status"
-stack-label
-use-input
-input-debounce="0"
-emit-value
-map-options
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
 </div>
+<div class="row justify-around">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-3">
+      <q-toggle v-model="active" label="Estado"/>
+    </div>
+    <div class="col-md-3">
+  </div>
 </div>
 </q-form>
 </q-card-section>
@@ -275,7 +266,7 @@ lazy-rules
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-import { STATUS, TYPEGOODS, RESIDUALVALUETYPE, GENDEP, TYPEUSEFULLIFE } from '../../constants/Constants'
+import { ACTIVE, INACTIVE, STATUS, TYPEGOODS, RESIDUALVALUETYPE, GENDEP, TYPEUSEFULLIFE } from '../../constants/Constants'
 export default defineComponent({
   name: 'GooconfsPage',
   setup () {
@@ -286,8 +277,7 @@ export default defineComponent({
     const filter = ref(null)
     const dataGooconfs = ref([])
     const code = ref(null)
-    const status = ref(STATUS)
-    const state = ref(null)
+    const states = ref(STATUS)
     const typegoods = ref(TYPEGOODS)
     const tipgoo = ref(null)
     const residualvaluetype = ref(RESIDUALVALUETYPE)
@@ -343,7 +333,6 @@ export default defineComponent({
     const onReset = () => {
       code.value = null
       description.value = null
-      state.value = null
       tipgoo.value = null
       gendep.value = null
       idgoocla.value = null
@@ -364,14 +353,14 @@ export default defineComponent({
             description: description.value,
             idgoocla: idgoocla.value,
             idaccpar: idaccpar.value,
-            state: state.value,
             tipgoo: tipgoo.value,
             gendep: gendep.value,
             typuselif: typuselif.value,
             uselif: uselif.value,
             coniva: coniva.value,
             resvaltyp: resvaltyp.value,
-            resval: resval.value
+            resval: resval.value,
+            status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
             getGooconfs()
@@ -393,9 +382,11 @@ export default defineComponent({
       coniva.value = row.coniva
       resvaltyp.value = row.resvaltyp
       resval.value = row.resval
-      state.value = row.state
       tipgoo.value = row.tipgoo
       gendep.value = row.gendep
+      if (row.status === ACTIVE) {
+        active.value = true
+      }
     }
     const onEditing = () => {
       myForm.value.validate().then(async success => {
@@ -410,9 +401,9 @@ export default defineComponent({
             coniva: coniva.value,
             resvaltyp: resvaltyp.value,
             resval: resval.value,
-            state: state.value,
             tipgoo: tipgoo.value,
-            gendep: gendep.value
+            gendep: gendep.value,
+            status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
             getGooconfs()
@@ -466,8 +457,7 @@ export default defineComponent({
       onEditing,
       id,
       onDelete,
-      status,
-      state,
+      states,
       typegoods,
       tipgoo,
       residualvaluetype,

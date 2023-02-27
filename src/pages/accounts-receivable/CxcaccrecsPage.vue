@@ -4,7 +4,7 @@
 <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
 <div>
 <q-space />
-<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Hcspecialties" :rows="dataHcspecialtiess" :filter="filter" :columns="columns" row-key="name" >
+<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Cxcaccrec" :rows="dataCxcaccrecs" :filter="filter" :columns="columns" row-key="name" >
 <template v-slot:top-left>
 <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
 <q-space />
@@ -23,6 +23,9 @@
 </q-td>
 <q-td key="description" :props="props">
 {{ props.row.description }}
+</q-td>
+<q-td key="typglo" :props="props">
+{{ typegloss[props.row.typglo].description  }}
 </q-td>
 <q-td key="status" :props="props">
   {{ states[props.row.status] }}
@@ -79,6 +82,24 @@ lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
 </div>
+<div class="col-md-4">
+<q-select
+white
+color="blue"
+v-model="type"
+label="Tipo de glosa *"
+option-label="description"
+option-value="id"
+:options="typegloss"
+stack-label
+use-input
+input-debounce="0"
+emit-value
+map-options
+lazy-rules
+:rules="[ val => !!val || 'El campo es obligatorio']"
+/>
+</div>
 </div>
 <div class="row justify-around">
     <div class="col-md-3">
@@ -117,18 +138,20 @@ lazy-rules
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-import { ACTIVE, INACTIVE, STATUS } from '../../constants/Constants'
+import { ACTIVE, INACTIVE, STATUS, TYPEGLOSS } from '../../constants/Constants'
 export default defineComponent({
-  name: 'HcspecialtiessPage',
+  name: 'CxcaccrecsPage',
   setup () {
-    const path = '/clinict-history/hcspecialtiess'
+    const path = 'accounts-receivable/cxcaccrecs'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)
     const filter = ref(null)
-    const dataHcspecialtiess = ref([])
-    const code = ref(null)
     const states = ref(STATUS)
+    const typegloss = ref(TYPEGLOSS)
+    const type = ref(null)
+    const dataCxcaccrecs = ref([])
+    const code = ref(null)
     const description = ref(null)
     const role = ref(null)
     const active = ref(false)
@@ -140,19 +163,20 @@ export default defineComponent({
     })
     const isEditing = ref(false)
     const columns = ref([
-      { name: 'code', align: 'center', label: 'Codigo', field: 'code', sortable: true },
+      { name: 'code', align: 'center', label: 'Código', field: 'code', sortable: true },
       { name: 'description', align: 'center', label: 'Descripción', field: 'description', sortable: true },
-      { name: 'state', align: 'center', label: 'Estado', field: 'state', sortable: true },
+      { name: 'typglo', align: 'center', label: 'Tipo de glosa', field: 'typglo', sortable: true },
+      { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
     onMounted(() => {
-      getHcspecialtiess()
+      getCxcaccrecs()
     })
-    const getHcspecialtiess = async () => {
+    const getCxcaccrecs = async () => {
       visible.value = true
       const { data } = await api.get(path)
-      dataHcspecialtiess.value = data
+      dataCxcaccrecs.value = data
       visible.value = false
     }
     const creating = () => {
@@ -163,6 +187,7 @@ export default defineComponent({
       code.value = null
       description.value = null
       isEditing.value = false
+      type.value = null
       active.value = false
     }
     const onSubmit = () => {
@@ -170,11 +195,12 @@ export default defineComponent({
         if (success) {
           api.post(path, {
             code: code.value,
+            type: type.value,
             description: description.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getHcspecialtiess()
+            getCxcaccrecs()
           })
         }
       })
@@ -185,6 +211,7 @@ export default defineComponent({
       isEditing.value = true
       id.value = row.id
       code.value = row.code
+      type.value = row.type
       description.value = row.description
       if (row.status === ACTIVE) {
         active.value = true
@@ -196,10 +223,11 @@ export default defineComponent({
           api.patch(path + '/' + id.value, {
             code: code.value,
             description: description.value,
+            type: type.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getHcspecialtiess()
+            getCxcaccrecs()
           })
         }
       })
@@ -207,7 +235,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar la especialidad: ' + row.id + '?',
+        message: '¿Está seguro que desea eliminar el concepto de glosa: ' + row.id + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -219,13 +247,13 @@ export default defineComponent({
       }).onOk(() => {
         api.delete(path + '/' + row.id).then(response => {
           dialog.value = false
-          getHcspecialtiess()
+          getCxcaccrecs()
         })
       })
     }
     return {
       dialog,
-      dataHcspecialtiess,
+      dataCxcaccrecs,
       isEditing,
       role,
       active,
@@ -243,7 +271,9 @@ export default defineComponent({
       onEditing,
       id,
       onDelete,
-      states
+      states,
+      typegloss,
+      type
     }
   }
 })

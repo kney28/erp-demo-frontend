@@ -33,8 +33,8 @@
 <q-td key="upplimage" :props="props">
 {{ props.row.upplimage }}
 </q-td>
-<q-td key="state" :props="props">
-{{ status[props.row.state].description   }}
+<q-td key="status" :props="props">
+  {{ states[props.row.status] }}
 </q-td>
 <q-td key="edit" :props="props">
 <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
@@ -126,24 +126,15 @@ lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
 </div>
-<div class="col-md-4">
-<q-select
-white
-color="blue"
-v-model="state"
-label="Estado *"
-option-label="description"
-option-value="id"
-:options="status"
-stack-label
-use-input
-input-debounce="0"
-emit-value
-map-options
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
 </div>
+<div class="row justify-around">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-3">
+      <q-toggle v-model="active" label="Estado"/>
+    </div>
+    <div class="col-md-3">
+  </div>
 </div>
 </q-form>
 </q-card-section>
@@ -173,7 +164,7 @@ lazy-rules
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-import { STATUS, TYPESEX } from '../../constants/Constants'
+import { ACTIVE, INACTIVE, STATUS, TYPESEX } from '../../constants/Constants'
 export default defineComponent({
   name: 'HcdignosessPage',
   setup () {
@@ -187,7 +178,6 @@ export default defineComponent({
     const typesex = ref(TYPESEX)
     const sex = ref(null)
     const status = ref(STATUS)
-    const state = ref(null)
     const description = ref(null)
     const lowlimage = ref(null)
     const upplimage = ref(null)
@@ -227,7 +217,6 @@ export default defineComponent({
       code.value = null
       description.value = null
       sex.value = null
-      state.value = null
       lowlimage.value = null
       upplimage.value = null
       isEditing.value = false
@@ -240,9 +229,9 @@ export default defineComponent({
             code: code.value,
             description: description.value,
             sex: sex.value,
-            state: state.value,
             lowlimage: lowlimage.value,
-            upplimage: upplimage.value
+            upplimage: upplimage.value,
+            status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
             getHcdignosess()
@@ -257,10 +246,12 @@ export default defineComponent({
       id.value = row.id
       code.value = row.code
       sex.value = row.sex
-      state.value = row.state
       description.value = row.description
       lowlimage.value = row.lowlimage
       upplimage.value = row.upplimage
+      if (row.status === ACTIVE) {
+        active.value = true
+      }
     }
     const onEditing = () => {
       myForm.value.validate().then(async success => {
@@ -268,10 +259,10 @@ export default defineComponent({
           api.patch(path + '/' + id.value, {
             code: code.value,
             description: description.value,
-            sex: sex.value,
-            state: state.value,
             lowlimage: lowlimage.value,
-            upplimage: upplimage.value
+            sex: sex.value,
+            upplimage: upplimage.value,
+            status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
             getHcdignosess()
@@ -282,7 +273,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar la hcdignoses: ' + row.id + '?',
+        message: '¿Está seguro que desea eliminar el diagnostico: ' + row.id + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -322,8 +313,7 @@ export default defineComponent({
       onDelete,
       sex,
       typesex,
-      status,
-      state
+      status
     }
   }
 })
