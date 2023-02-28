@@ -4,7 +4,7 @@
 <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
 <div>
 <q-space />
-<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Hchealthpro" :rows="dataHchealthpros" :filter="filter" :columns="columns" row-key="name" >
+<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Invcum" :rows="dataInvcums" :filter="filter" :columns="columns" row-key="name" >
 <template v-slot:top-left>
 <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
 <q-space />
@@ -21,25 +21,14 @@
 <q-td key="code" :props="props">
 {{ props.row.code }}
 </q-td>
-<q-td key="description" :props="props">
-{{ props.row.description }}
+<q-td key="filecum" :props="props">
+{{ props.row.filecum }}
 </q-td>
-<q-td key="typheapro" :props="props">
-{{ typeprofs[props.row.typeprof].description  }}
+<q-td key="actdat" :props="props">
+{{ props.row.actdat }}
 </q-td>
-<q-td key="idthird" :props="props">
-{{ props.row.idthird }}
-</q-td>
-<q-td key="businesscard" :props="props">
-{{ props.row.businesscard }}
-</q-td>
-<q-td key="conttyp" :props="props">
-{{ typeconts[props.row.typecont].description  }}</q-td>
-<q-td key="idspecialty" :props="props">
-{{ props.row.idspecialty }}
-</q-td>
-<q-td key="digsig" :props="props">
-{{ digsig[props.row.digsig] }}
+<q-td key="inadat" :props="props">
+{{ props.row.inadat }}
 </q-td>
 <q-td key="status" :props="props">
   {{ states[props.row.status] }}
@@ -81,7 +70,7 @@ Los campos marcados con (*) son obligatorios
 white
 color="blue"
 v-model="code"
-label="Codigo *"
+label="Código *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
@@ -90,26 +79,8 @@ lazy-rules
 <q-input
 white
 color="blue"
-v-model="description"
-label="Descripción  *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
-</div>
-<div class="col-md-4">
-<q-select
-white
-color="blue"
-v-model="typeprof"
-label="Tipo de profesional en salud *"
-option-label="description"
-option-value="id"
-:options="typeprofs"
-stack-label
-use-input
-input-debounce="0"
-emit-value
-map-options
+v-model="filecum"
+label="Expediente CUM *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
@@ -118,8 +89,8 @@ lazy-rules
 <q-input
 white
 color="blue"
-v-model="idthird"
-label="Tercero *"
+v-model="actdat"
+label="Fecha de activación *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
@@ -128,46 +99,8 @@ lazy-rules
 <q-input
 white
 color="blue"
-v-model="businesscard"
-label="Tarjeta Profesional *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
-</div>
-<div class="col-md-4">
-<q-select
-white
-color="blue"
-v-model="typecont"
-label="Tipo de Contratación *"
-option-label="description"
-option-value="id"
-:options="typeconts"
-stack-label
-use-input
-input-debounce="0"
-emit-value
-map-options
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
-</div>
-<div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idspecialty"
-label="idspecialty *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
-</div>
-<div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="digsig"
-label="digsig *"
+v-model="inadat"
+label="Fecha de Inactivación *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
@@ -210,27 +143,21 @@ lazy-rules
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-import { ACTIVE, INACTIVE, STATUS, TYPECONT, TYPEPROF } from '../../constants/Constants'
+import { ACTIVE, INACTIVE, STATUS } from '../../constants/Constants'
 export default defineComponent({
-  name: 'HchealthprosPage',
+  name: 'InvcumsPage',
   setup () {
-    const path = '/clinict-history/hchealthpros'
+    const path = 'inventory/invcums'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)
-    const filter = ref(null)
-    const dataHchealthpros = ref([])
-    const code = ref(null)
     const states = ref(STATUS)
-    const typeconts = ref(TYPECONT)
-    const typecont = ref(null)
-    const typeprofs = ref(TYPEPROF)
-    const typeprof = ref(null)
-    const description = ref(null)
-    const idthird = ref(null)
-    const businesscard = ref(null)
-    const idspecialty = ref(null)
-    const digsig = ref(null)
+    const filter = ref(null)
+    const dataInvcums = ref([])
+    const code = ref(null)
+    const filecum = ref(null)
+    const actdat = ref(null)
+    const inadat = ref(null)
     const role = ref(null)
     const active = ref(false)
     const myForm = ref(null)
@@ -241,25 +168,21 @@ export default defineComponent({
     })
     const isEditing = ref(false)
     const columns = ref([
-      { name: 'code', align: 'center', label: 'Codigo', field: 'code', sortable: true },
-      { name: 'description', align: 'center', label: 'Descripción', field: 'description', sortable: true },
-      { name: 'typheapro', align: 'center', label: 'Tipo de profesional en salud', field: 'typheapro', sortable: true },
-      { name: 'idthird', align: 'center', label: 'Tercero', field: 'idthird', sortable: true },
-      { name: 'businesscard', align: 'center', label: 'Tarjeta Profesional', field: 'businesscard', sortable: true },
-      { name: 'conttyp', align: 'center', label: 'Tipo de Contratación', field: 'conttyp', sortable: true },
-      { name: 'idspecialty', align: 'center', label: 'Especialidad', field: 'idspecialty', sortable: true },
-      { name: 'digsig', align: 'center', label: 'Descripción de Especialidad', field: 'digsig', sortable: true },
+      { name: 'code', align: 'center', label: 'Código', field: 'code', sortable: true },
+      { name: 'filecum', align: 'center', label: 'Expediente CUM', field: 'filecum', sortable: true },
+      { name: 'actdat', align: 'center', label: 'Fecha de activación', field: 'actdat', sortable: true },
+      { name: 'inadat', align: 'center', label: 'Fecha de Inactivación', field: 'inadat', sortable: true },
       { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
     onMounted(() => {
-      getHchealthpros()
+      getInvcums()
     })
-    const getHchealthpros = async () => {
+    const getInvcums = async () => {
       visible.value = true
       const { data } = await api.get(path)
-      dataHchealthpros.value = data
+      dataInvcums.value = data
       visible.value = false
     }
     const creating = () => {
@@ -268,11 +191,9 @@ export default defineComponent({
     }
     const onReset = () => {
       code.value = null
-      description.value = null
-      idthird.value = null
-      businesscard.value = null
-      idspecialty.value = null
-      digsig.value = null
+      filecum.value = null
+      actdat.value = null
+      inadat.value = null
       isEditing.value = false
       active.value = false
     }
@@ -281,15 +202,13 @@ export default defineComponent({
         if (success) {
           api.post(path, {
             code: code.value,
-            description: description.value,
-            idthird: idthird.value,
-            businesscard: businesscard.value,
-            idspecialty: idspecialty.value,
-            digsig: digsig.value,
+            filecum: filecum.value,
+            actdat: actdat.value,
+            inadat: inadat.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getHchealthpros()
+            getInvcums()
           })
         }
       })
@@ -300,11 +219,9 @@ export default defineComponent({
       isEditing.value = true
       id.value = row.id
       code.value = row.code
-      description.value = row.description
-      idthird.value = row.idthird
-      businesscard.value = row.businesscard
-      idspecialty.value = row.idspecialty
-      digsig.value = row.digsig
+      filecum.value = row.filecum
+      actdat.value = row.actdat
+      inadat.value = row.inadat
       if (row.status === ACTIVE) {
         active.value = true
       }
@@ -314,15 +231,13 @@ export default defineComponent({
         if (success) {
           api.patch(path + '/' + id.value, {
             code: code.value,
-            description: description.value,
-            idthird: idthird.value,
-            businesscard: businesscard.value,
-            idspecialty: idspecialty.value,
-            digsig: digsig.value,
+            filecum: filecum.value,
+            actdat: actdat.value,
+            inadat: inadat.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getHchealthpros()
+            getInvcums()
           })
         }
       })
@@ -330,7 +245,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar el profesional de la salud: ' + row.id + '?',
+        message: '¿Está seguro que desea eliminar el inventario CUM: ' + row.id + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -342,13 +257,13 @@ export default defineComponent({
       }).onOk(() => {
         api.delete(path + '/' + row.id).then(response => {
           dialog.value = false
-          getHchealthpros()
+          getInvcums()
         })
       })
     }
     return {
       dialog,
-      dataHchealthpros,
+      dataInvcums,
       isEditing,
       role,
       active,
@@ -359,22 +274,16 @@ export default defineComponent({
       visible,
       filter,
       code,
-      description,
-      idthird,
-      businesscard,
-      idspecialty,
-      digsig,
+      filecum,
+      actdat,
+      inadat,
       onReset,
       onSubmit,
       editing,
       onEditing,
       id,
       onDelete,
-      states,
-      typeconts,
-      typecont,
-      typeprofs,
-      typeprof
+      states
     }
   }
 })

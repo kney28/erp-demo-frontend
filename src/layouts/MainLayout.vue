@@ -886,6 +886,62 @@
                 expand-separator
                 icon="medical_services"
                 label="Citas médicas">
+                <q-expansion-item
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  expand-separator
+                  icon="engineering"
+                  label="Maestros">
+                  <q-item
+                    @click="setTabSelected('/medicalappointments/appreacans', 'Motivo de la cancelación')"
+                    active-class="tab-active"
+                    to="/medicalappointments/appreacans"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-stairs" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Motivo de la cancelación
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/medicalappointments/appofficess', 'Consultorio')"
+                    active-class="tab-active"
+                    to="/medicalappointments/appofficess"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-people-group" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Consultorio
+                    </q-item-section>
+                  </q-item>
+                </q-expansion-item>
+
+                <q-expansion-item
+                  expand-separator
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  icon="account_tree"
+                  label="Procedimientos">
+                </q-expansion-item>
+                <q-expansion-item
+                  expand-separator
+                  icon="analytics"
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  label="Reportes">
+                </q-expansion-item>
               </q-expansion-item>
 
               <q-expansion-item
@@ -1359,6 +1415,112 @@
                 expand-separator
                 icon="inventory"
                 label="Inventarios">
+                <q-expansion-item
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  expand-separator
+                  icon="engineering"
+                  label="Maestros">
+                  <q-item
+                    @click="setTabSelected('/inventory/invaccpars', 'Parametrizacion')"
+                    active-class="tab-active"
+                    to="/inventory/invaccpars"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="domain" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Parametrizacion
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/inventory/invunitsmeas', 'Unidades de medidas')"
+                    active-class="tab-active"
+                    to="/inventory/invunitsmeas"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="bedroom" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Unidades de medidas
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/inventory/invmanufroless', 'Roles')"
+                    active-class="tab-active"
+                    to="/inventory/invmanufroless"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="bedroom" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Roles
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/inventory/invcums', 'Inventarios CUM')"
+                    active-class="tab-active"
+                    to="/inventory/invcums"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="bedroom" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Inventarios CUM
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/inventory/invpharfors', 'Formas farmacéuticas')"
+                    active-class="tab-active"
+                    to="/inventory/invpharfors"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="bedroom" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Formas farmacéuticas
+                    </q-item-section>
+                  </q-item>
+                </q-expansion-item>
+                <q-expansion-item
+                  expand-separator
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  icon="account_tree"
+                  label="Procedimientos">
+                </q-expansion-item>
+                <q-expansion-item
+                  expand-separator
+                  icon="analytics"
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  label="Reportes">
+                </q-expansion-item>
               </q-expansion-item>
 
               <q-expansion-item

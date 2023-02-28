@@ -71,7 +71,16 @@ const routes = [
       { path: '/accountsreceivable/cxccoucons', name: 'cxccoucons', component: () => import('pages/accounts-receivable/CxccouconsPage.vue') },
 
       { path: '/accountspayable/cxpcoucons', name: 'cxpcoucons', component: () => import('pages/accounts-payable/CxpcouconsPage.vue') },
-      { path: '/accountspayable/cxpproviderss', name: 'cxpproviderss', component: () => import('pages/accounts-payable/CxpproviderssPage.vue') }
+      { path: '/accountspayable/cxpproviderss', name: 'cxpproviderss', component: () => import('pages/accounts-payable/CxpproviderssPage.vue') },
+
+      { path: '/medicalappointments/appofficess', name: 'appofficess', component: () => import('pages/medicalap-pointments/AppofficessPage.vue') },
+      { path: '/medicalappointments/appreacans', name: 'appreacans', component: () => import('pages/medicalap-pointments/AppreacansPage.vue') },
+
+      { path: '/inventory/invaccpars', name: 'invaccpars', component: () => import('pages/inventory/Invaccpars.vue') },
+      { path: '/inventory/invunitsmeas', name: 'invunitsmeas', component: () => import('pages/inventory/Invunitsmeas.vue') },
+      { path: '/inventory/invmanufroless', name: 'invmanufroless', component: () => import('pages/inventory/InvmanufrolessPage.vue') },
+      { path: '/inventory/invcums', name: 'invcums', component: () => import('pages/inventory/InvcumsPage.vue') },
+      { path: '/inventory/invpharfors', name: 'invpharfors', component: () => import('pages/inventory/InvpharforsPage.vue') }
     ]
   },
   { path: '/login', name: 'login', component: () => import('src/pages/LoginPage2.vue') },

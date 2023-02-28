@@ -539,3 +539,13 @@ export const PROVIDERTYPE = [
   { id: 3, description: 'SERVICIOS' },
   { id: 4, description: 'AMBOS' }
 ]
+
+export const EMEROFFICE = [
+  { id: 1, description: 'SI' },
+  { id: 2, description: 'NO' }
+]
+
+export const ROLTYPE = [
+  { id: 1, description: 'FABRICANTE' },
+  { id: 2, description: 'IMPORTADOR' }
+]
