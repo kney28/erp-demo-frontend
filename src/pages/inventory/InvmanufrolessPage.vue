@@ -24,12 +24,12 @@
 <q-td key="description" :props="props">
 {{ props.row.description }}
 </q-td>
-<!--The next column is ENUM, please complete the code necessary
-<q-td key="roltype" :props="props">
-{{ props.row.roltype }}</q-td>-->
-<!--The next column is ENUM, please complete the code necessary
+<q-td key="type" :props="props">
+  {{ typerol[props.row.type-1].description }}
+</q-td>
 <q-td key="status" :props="props">
-{{ props.row.status }}</q-td>-->
+  {{ state[props.row.status] }}
+</q-td>
 <q-td key="edit" :props="props">
 <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
 </q-td>
@@ -165,7 +165,7 @@ export default defineComponent({
     const columns = ref([
       { name: 'code', align: 'center', label: 'Código', field: 'code', sortable: true },
       { name: 'description', align: 'center', label: 'Descripción', field: 'description', sortable: true },
-      { name: 'roltype', align: 'center', label: 'Tipo de rol', field: 'roltype', sortable: true },
+      { name: 'type', align: 'center', label: 'Tipo de rol', field: 'type', sortable: true },
       { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }

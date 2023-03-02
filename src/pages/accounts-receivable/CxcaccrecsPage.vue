@@ -25,7 +25,7 @@
 {{ props.row.description }}
 </q-td>
 <q-td key="typglo" :props="props">
-{{ typegloss[props.row.typglo].description  }}
+{{ typegloss[props.row.typglo-1].description  }}
 </q-td>
 <q-td key="status" :props="props">
   {{ states[props.row.status] }}

@@ -107,94 +107,148 @@ lazy-rules
 />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idactacc"
-label="Cuenta Activo  *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+  white
+  color="blue"
+  v-model="idactacc"
+  label="Cuenta Activo *"
+  @filter="filterFnAccountCatalog"
+  :options="filterOptionsAccountCatalog"
+  option-value="id"
+  option-label="description"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idadmdepacc"
-label="Cuenta Depreciación Administrativa  *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+  white
+  color="blue"
+  v-model="idadmdepacc"
+  label="Cuenta Depreciación Administrativa *"
+  @filter="filterFnAccountCatalog"
+  :options="filterOptionsAccountCatalog"
+  option-value="id"
+  option-label="description"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idweldepacc"
-label="Cuenta Depreciación Asistencial  *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+  white
+  color="blue"
+  v-model="idweldepacc"
+  label="Cuenta Depreciación Asistencial *"
+  @filter="filterFnAccountCatalog"
+  :options="filterOptionsAccountCatalog"
+  option-value="id"
+  option-label="description"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idaccdepacc"
-label="Cuenta Depreciación Acumulada  *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+  white
+  color="blue"
+  v-model="idaccdepacc"
+  label="Cuenta Depreciación Acumulada *"
+  @filter="filterFnAccountCatalog"
+  :options="filterOptionsAccountCatalog"
+  option-value="id"
+  option-label="description"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idaccmovgoowar"
-label="Cuenta Bienes Muebles en Bodega  *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+  white
+  color="blue"
+  v-model="idaccmovgoowar"
+  label="Cuenta Bienes Muebles en Bodega *"
+  @filter="filterFnAccountCatalog"
+  :options="filterOptionsAccountCatalog"
+  option-value="id"
+  option-label="description"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idacclos"
-label="Cuenta Ganancia  *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+  white
+  color="blue"
+  v-model="idacclos"
+  label="Cuenta Ganancia *"
+  @filter="filterFnAccountCatalog"
+  :options="filterOptionsAccountCatalog"
+  option-value="id"
+  option-label="description"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idaccoutusedue"
-label="Cuenta Perdida  *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+  white
+  color="blue"
+  v-model="idaccoutusedue"
+  label="Cuenta Perdida *"
+  @filter="filterFnAccountCatalog"
+  :options="filterOptionsAccountCatalog"
+  option-value="id"
+  option-label="description"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idacccomowe"
-label="Cuenta Salida Inservibles Debito  *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+  white
+  color="blue"
+  v-model="idacccomowe"
+  label="Cuenta Salida Inservibles Debito *"
+  @filter="filterFnAccountCatalog"
+  :options="filterOptionsAccountCatalog"
+  option-value="id"
+  option-label="description"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idcrecomacc"
-label="Cuenta Salida Inservibles Crédito  *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+  white
+  color="blue"
+  v-model="idcrecomacc"
+  label="Cuenta Salida Inservibles Crédito *"
+  @filter="filterFnAccountCatalog"
+  :options="filterOptionsAccountCatalog"
+  option-value="id"
+  option-label="description"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 </div>
 <div class="row justify-around">
@@ -246,6 +300,8 @@ export default defineComponent({
     const dataGoopars = ref([])
     const code = ref(null)
     const states = ref(STATUS)
+    const dataAccountCatalog = ref([])
+    const filterOptionsAccountCatalog = ref(dataAccountCatalog)
     const description = ref(null)
     const idactacc = ref(null)
     const idadmdepacc = ref(null)
@@ -283,7 +339,14 @@ export default defineComponent({
     ])
     onMounted(() => {
       getGoopars()
+      getAccountCatalog()
     })
+    const getAccountCatalog = async () => {
+      visible.value = true
+      const { data } = await api.get('/account-catalog')
+      dataAccountCatalog.value = data.filter(catalogo => catalogo.level === 5)
+      visible.value = false
+    }
     const getGoopars = async () => {
       visible.value = true
       const { data } = await api.get(path)
@@ -394,6 +457,18 @@ export default defineComponent({
         })
       })
     }
+    const filterFnAccountCatalog = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsAccountCatalog.value = dataAccountCatalog.value
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsAccountCatalog.value = dataAccountCatalog.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+      })
+    }
     return {
       dialog,
       dataGoopars,
@@ -423,7 +498,10 @@ export default defineComponent({
       onEditing,
       id,
       onDelete,
-      states
+      states,
+      filterFnAccountCatalog,
+      filterOptionsAccountCatalog,
+      dataAccountCatalog
     }
   }
 })

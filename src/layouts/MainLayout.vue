@@ -1431,7 +1431,7 @@
                     v-ripple
                   >
                     <q-item-section avatar>
-                      <q-icon name="domain" />
+                      <q-icon name="variables" />
                     </q-item-section>
 
                     <q-item-section>
@@ -1448,7 +1448,7 @@
                     v-ripple
                   >
                     <q-item-section avatar>
-                      <q-icon name="bedroom" />
+                      <q-icon name="straighten" />
                     </q-item-section>
 
                     <q-item-section>
@@ -1465,7 +1465,7 @@
                     v-ripple
                   >
                     <q-item-section avatar>
-                      <q-icon name="bedroom" />
+                      <q-icon name="groups" />
                     </q-item-section>
 
                     <q-item-section>
@@ -1482,7 +1482,7 @@
                     v-ripple
                   >
                     <q-item-section avatar>
-                      <q-icon name="bedroom" />
+                      <q-icon name="labs" />
                     </q-item-section>
 
                     <q-item-section>
@@ -1499,7 +1499,7 @@
                     v-ripple
                   >
                     <q-item-section avatar>
-                      <q-icon name="bedroom" />
+                      <q-icon name="article" />
                     </q-item-section>
 
                     <q-item-section>

@@ -207,7 +207,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar la clasificación del bienes: ' + row.id + '?',
+        message: '¿Está seguro que desea eliminar la clasificación de bienes: ' + row.id + '?',
         ok: {
           label: 'Si',
           color: 'positive'

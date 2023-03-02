@@ -42,7 +42,7 @@
 {{ digsig[props.row.digsig] }}
 </q-td>
 <q-td key="status" :props="props">
-  {{ states[props.row.status] }}
+  {{ state[props.row.status] }}
 </q-td>
 <q-td key="edit" :props="props">
 <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
@@ -115,14 +115,20 @@ lazy-rules
 />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idthird"
-label="Tercero *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+    white
+    color="blue"
+    v-model="idthird"
+    label="Tercero *"
+    @filter="filterFnAccountThirPerson"
+    :options="filterOptionsAccountThirPerson"
+    option-value="id"
+    option-label="fullname"
+    emit-value
+    map-options
+    lazy-rules
+    :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
 <q-input
@@ -153,21 +159,27 @@ lazy-rules
 />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idspecialty"
-label="idspecialty *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+    white
+    color="blue"
+    v-model="idspecialty"
+    label="Especialidad *"
+    @filter="filterFnAccountHcSpecialtiess"
+    :options="filterOptionsAccountHcSpecialtiess"
+    option-value="id"
+    option-label="code"
+    emit-value
+    map-options
+    lazy-rules
+    :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
 <q-input
 white
 color="blue"
 v-model="digsig"
-label="digsig *"
+label="Descripción de Especialidad *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
@@ -221,13 +233,17 @@ export default defineComponent({
     const filter = ref(null)
     const dataHchealthpros = ref([])
     const code = ref(null)
-    const states = ref(STATUS)
+    const state = ref(STATUS)
     const typeconts = ref(TYPECONT)
     const typecont = ref(null)
     const typeprofs = ref(TYPEPROF)
     const typeprof = ref(null)
     const description = ref(null)
     const idthird = ref(null)
+    const dataAccountThirPerson = ref([])
+    const filterOptionsAccountThirPerson = ref(dataAccountThirPerson)
+    const dataAccountHcSpecialtiess = ref([])
+    const filterOptionsAccountHcSpecialtiess = ref(dataAccountHcSpecialtiess)
     const businesscard = ref(null)
     const idspecialty = ref(null)
     const digsig = ref(null)
@@ -255,7 +271,20 @@ export default defineComponent({
     ])
     onMounted(() => {
       getHchealthpros()
+      getAccountThirPerson()
     })
+    const getAccountThirPerson = async () => {
+      visible.value = true
+      const { data } = await api.get('/thirdperson')
+      dataAccountThirPerson.value = data
+      visible.value = false
+    }
+    const getAccountHcSpecialtiess = async () => {
+      visible.value = true
+      const { data } = await api.get('/clinict-history/hcspecialtiess')
+      dataAccountHcSpecialtiess.value = data
+      visible.value = false
+    }
     const getHchealthpros = async () => {
       visible.value = true
       const { data } = await api.get(path)
@@ -346,6 +375,32 @@ export default defineComponent({
         })
       })
     }
+
+    const filterFnAccountThirPerson = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsAccountThirPerson.value = dataAccountThirPerson.value
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsAccountThirPerson.value = dataAccountThirPerson.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+      })
+    }
+
+    const filterFnAccountHcSpecialtiess = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsAccountHcSpecialtiess.value = dataAccountHcSpecialtiess.value
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsAccountHcSpecialtiess.value = dataAccountHcSpecialtiess.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+      })
+    }
     return {
       dialog,
       dataHchealthpros,
@@ -370,11 +425,18 @@ export default defineComponent({
       onEditing,
       id,
       onDelete,
-      states,
+      state,
       typeconts,
       typecont,
       typeprofs,
-      typeprof
+      typeprof,
+      dataAccountThirPerson,
+      filterFnAccountThirPerson,
+      filterOptionsAccountThirPerson,
+      getAccountHcSpecialtiess,
+      dataAccountHcSpecialtiess,
+      filterFnAccountHcSpecialtiess,
+      filterOptionsAccountHcSpecialtiess
     }
   }
 })

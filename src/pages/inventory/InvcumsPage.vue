@@ -90,6 +90,7 @@ lazy-rules
 white
 color="blue"
 v-model="actdat"
+type="date"
 label="Fecha de activación *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
@@ -100,6 +101,7 @@ lazy-rules
 white
 color="blue"
 v-model="inadat"
+type="date"
 label="Fecha de Inactivación *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"

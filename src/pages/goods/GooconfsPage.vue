@@ -31,13 +31,13 @@
 {{ props.row.idaccpar }}
 </q-td>
 <q-td key="tipgoo" :props="props">
-{{ typegoods[props.row.tipgoo].description  }}
+{{ typegoods[props.row.tipgoo-1].description  }}
 </q-td>
 <q-td key="gendep" :props="props">
-{{ gendeps[props.row.gendep].description  }}
+{{ gendeps[props.row.gendep-1].description  }}
 </q-td>
 <q-td key="typuselif" :props="props">
-{{ typeusefullife[props.row.typuselif].description }}
+{{ typeusefullife[props.row.typuselif-1].description }}
 </q-td>
 <q-td key="uselif" :props="props">
 {{ props.row.uselif }}
@@ -46,13 +46,13 @@
 {{ props.row.coniva }}
 </q-td>
 <q-td key="resvaltyp" :props="props">
-{{ residualvaluetype[props.row.resvaltyp].description }}
+{{ residualvaluetype[props.row.resvaltyp-1].description }}
 </q-td>
 <q-td key="resval" :props="props">
 {{ props.row.resval }}
 </q-td>
 <q-td key="status" :props="props">
-  {{ states[props.row.status] }}
+  {{ state[props.row.status] }}
 </q-td>
 <q-td key="edit" :props="props">
 <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
@@ -185,7 +185,7 @@ lazy-rules
 white
 color="blue"
 v-model="uselif"
-label="uselif *"
+label="Vida Útil *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
@@ -277,7 +277,7 @@ export default defineComponent({
     const filter = ref(null)
     const dataGooconfs = ref([])
     const code = ref(null)
-    const states = ref(STATUS)
+    const state = ref(STATUS)
     const typegoods = ref(TYPEGOODS)
     const tipgoo = ref(null)
     const residualvaluetype = ref(RESIDUALVALUETYPE)
@@ -313,7 +313,7 @@ export default defineComponent({
       { name: 'coniva', align: 'center', label: 'Concepto de IVA', field: 'coniva', sortable: true },
       { name: 'resvaltyp', align: 'center', label: 'Tipo Valor Residual', field: 'resvaltyp', sortable: true },
       { name: 'resval', align: 'center', label: 'Valor Residual', field: 'resval', sortable: true },
-      { name: 'state', align: 'center', label: 'Estado', field: 'state', sortable: true },
+      { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
@@ -457,7 +457,7 @@ export default defineComponent({
       onEditing,
       id,
       onDelete,
-      states,
+      state,
       typegoods,
       tipgoo,
       residualvaluetype,

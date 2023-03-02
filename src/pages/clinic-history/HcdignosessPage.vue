@@ -25,7 +25,7 @@
 {{ props.row.description }}
 </q-td>
 <q-td key="sex" :props="props">
-{{ typesex[props.row.sex].description  }}
+{{ typesex[props.row.sex-1].word  }}
 </q-td>
 <q-td key="lowlimage" :props="props">
 {{ props.row.lowlimage }}
@@ -126,15 +126,9 @@ lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
 </div>
-</div>
-<div class="row justify-around">
-    <div class="col-md-3">
-    </div>
-    <div class="col-md-3">
+<div class="col-md-3">
       <q-toggle v-model="active" label="Estado"/>
     </div>
-    <div class="col-md-3">
-  </div>
 </div>
 </q-form>
 </q-card-section>
@@ -177,7 +171,7 @@ export default defineComponent({
     const code = ref(null)
     const typesex = ref(TYPESEX)
     const sex = ref(null)
-    const status = ref(STATUS)
+    const states = ref(STATUS)
     const description = ref(null)
     const lowlimage = ref(null)
     const upplimage = ref(null)
@@ -196,7 +190,7 @@ export default defineComponent({
       { name: 'sex', align: 'center', label: 'Sexo', field: 'sex', sortable: true },
       { name: 'lowlimage', align: 'center', label: 'Edad límite inferior', field: 'lowlimage', sortable: true },
       { name: 'upplimage', align: 'center', label: 'Edad límite superior', field: 'upplimage', sortable: true },
-      { name: 'state', align: 'center', label: 'Estado', field: 'state', sortable: true },
+      { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
@@ -313,7 +307,7 @@ export default defineComponent({
       onDelete,
       sex,
       typesex,
-      status
+      states
     }
   }
 })

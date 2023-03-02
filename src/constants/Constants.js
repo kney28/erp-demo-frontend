@@ -454,10 +454,9 @@ export const LISINUSOCOUNTING = [
 ]
 
 export const TYPESEX = [
-  { id: 1, description: 'NINGUNA' },
-  { id: 2, description: 'FEMENINO' },
-  { id: 3, description: 'MASCULINO' },
-  { id: 4, description: 'AMBOS' }
+  { id: 1, description: 'FEMENINO', word: 'M' },
+  { id: 2, description: 'MASCULINO', word: 'H' },
+  { id: 3, description: 'AMBOS', word: 'A' }
 ]
 
 export const TYPEPROF = [

@@ -121,7 +121,7 @@ import { ACTIVE, INACTIVE, STATUS } from '../../constants/Constants'
 export default defineComponent({
   name: 'InvpharforsPage',
   setup () {
-    const path = '/invpharfors'
+    const path = 'inventory/invpharfors'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)

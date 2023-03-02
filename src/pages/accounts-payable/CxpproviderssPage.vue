@@ -85,24 +85,36 @@ lazy-rules
 />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idthird"
-label="Tercero *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+    white
+    color="blue"
+    v-model="idthird"
+    label="Tercero *"
+    @filter="filterFnAccountThirPerson"
+    :options="filterOptionsAccountThirPerson"
+    option-value="id"
+    option-label="code"
+    emit-value
+    map-options
+    lazy-rules
+    :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="thirddocument"
-label="Documento del Tercero *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+    white
+    color="blue"
+    v-model="thirddocument"
+    label="Documento del Tercer *"
+    @filter="filterFnAccountThirPerson"
+    :options="filterOptionsAccountThirPerson"
+    option-value="id"
+    option-label="document"
+    emit-value
+    map-options
+    lazy-rules
+    :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
 <q-select
@@ -123,14 +135,20 @@ lazy-rules
 />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idledacc"
-label="Cuenta Contable *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+  white
+  color="blue"
+  v-model="idledacc"
+  label="Cuenta Contable *"
+  @filter="filterFnAccountCatalog"
+  :options="filterOptionsAccountCatalog"
+  option-value="id"
+  option-label="description"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
 <q-input
@@ -201,6 +219,10 @@ export default defineComponent({
     const filter = ref(null)
     const dataCxpproviderss = ref([])
     const states = ref(STATUS)
+    const dataAccountThirPerson = ref([])
+    const filterOptionsAccountThirPerson = ref(dataAccountThirPerson)
+    const dataAccountCatalog = ref([])
+    const filterOptionsAccountCatalog = ref(dataAccountCatalog)
     const providertype = ref(PROVIDERTYPE)
     const type = ref(null)
     const code = ref(null)
@@ -232,7 +254,21 @@ export default defineComponent({
     ])
     onMounted(() => {
       getCxpproviderss()
+      getAccountThirPerson()
+      getAccountCatalog()
     })
+    const getAccountCatalog = async () => {
+      visible.value = true
+      const { data } = await api.get('/account-catalog')
+      dataAccountCatalog.value = data.filter(catalogo => catalogo.level === 5)
+      visible.value = false
+    }
+    const getAccountThirPerson = async () => {
+      visible.value = true
+      const { data } = await api.get('/thirdperson')
+      dataAccountThirPerson.value = data
+      visible.value = false
+    }
     const getCxpproviderss = async () => {
       visible.value = true
       const { data } = await api.get(path)
@@ -327,6 +363,30 @@ export default defineComponent({
         })
       })
     }
+    const filterFnAccountCatalog = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsAccountCatalog.value = dataAccountCatalog.value
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsAccountCatalog.value = dataAccountCatalog.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+      })
+    }
+    const filterFnAccountThirPerson = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsAccountThirPerson.value = dataAccountThirPerson.value
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsAccountThirPerson.value = dataAccountThirPerson.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+      })
+    }
     return {
       dialog,
       dataCxpproviderss,
@@ -353,7 +413,13 @@ export default defineComponent({
       onDelete,
       states,
       providertype,
-      type
+      type,
+      filterFnAccountCatalog,
+      filterFnAccountThirPerson,
+      filterOptionsAccountThirPerson,
+      dataAccountThirPerson,
+      dataAccountCatalog,
+      filterOptionsAccountCatalog
     }
   }
 })

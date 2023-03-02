@@ -25,7 +25,7 @@
 {{ props.row.description }}
 </q-td>
 <q-td key="type" :props="props">
-{{ typecocept[props.row.type].description  }}
+{{ typecocept[props.row.type-1].description  }}
 </q-td>
 <q-td key="idledacc" :props="props">
 {{ props.row.idledacc }}
@@ -104,14 +104,20 @@ lazy-rules
 />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idledacc"
-label="Cuenta de contable *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+  white
+  color="blue"
+  v-model="idledacc"
+  label="Cuenta de contable *"
+  @filter="filterFnAccountCatalog"
+  :options="filterOptionsAccountCatalog"
+  option-value="id"
+  option-label="description"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 </div>
 <div class="row justify-around">
@@ -161,6 +167,8 @@ export default defineComponent({
     const id = ref(null)
     const filter = ref(null)
     const dataCxccoucons = ref([])
+    const dataAccountCatalog = ref([])
+    const filterOptionsAccountCatalog = ref(dataAccountCatalog)
     const code = ref(null)
     const states = ref(STATUS)
     const typecocept = ref(COCEPTTYPE)
@@ -187,11 +195,18 @@ export default defineComponent({
     ])
     onMounted(() => {
       getCxccoucons()
+      getAccountCatalog()
     })
     const getCxccoucons = async () => {
       visible.value = true
       const { data } = await api.get(path)
       dataCxccoucons.value = data
+      visible.value = false
+    }
+    const getAccountCatalog = async () => {
+      visible.value = true
+      const { data } = await api.get('/account-catalog')
+      dataAccountCatalog.value = data.filter(catalogo => catalogo.level === 5)
       visible.value = false
     }
     const creating = () => {
@@ -270,6 +285,18 @@ export default defineComponent({
         })
       })
     }
+    const filterFnAccountCatalog = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsAccountCatalog.value = dataAccountCatalog.value
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsAccountCatalog.value = dataAccountCatalog.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+      })
+    }
     return {
       dialog,
       dataCxccoucons,
@@ -293,7 +320,10 @@ export default defineComponent({
       id,
       onDelete,
       states,
-      typecocept
+      typecocept,
+      filterOptionsAccountCatalog,
+      dataAccountCatalog,
+      filterFnAccountCatalog
     }
   }
 })
