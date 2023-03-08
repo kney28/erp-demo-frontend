@@ -455,6 +455,79 @@
                       Saldos iniciales
                     </q-item-section>
                   </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/accounting/accinicialruns', 'Ejecución inicial')"
+                    active-class="tab-active"
+                    to="/accounting/accinicialruns"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="description" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Ejecución inicial
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/accounting/accountingentriess', 'Principal')"
+                    active-class="tab-active"
+                    to="/accounting/accountingentriess"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="archive" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Principal
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/accounting/accountingentriesdets', 'Detalle')"
+                    active-class="tab-active"
+                    to="/accounting/accountingentriesdets"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="details" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Detalle
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/accounting/accentsubdets', 'Subformulario detalle')"
+                    active-class="tab-active"
+                    to="/accounting/accentsubdets"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="format list bulleted" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Subformulario Detalle
+                    </q-item-section>
+                  </q-item>
+
                 </q-expansion-item>
                 <q-expansion-item
                   expand-separator

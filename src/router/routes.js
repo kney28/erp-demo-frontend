@@ -58,6 +58,10 @@ const routes = [
       { path: '/accounting/accountingtermss', name: 'accountingtermss', component: () => import('pages/accounting/AccountingtermssPage.vue') },
       { path: '/accounting/acccostcenterss', name: 'Acccostcenterss', component: () => import('pages/accounting/AcccostcenterssPage.vue') },
       { path: '/accounting/accbalmovs', name: 'Accbalmovs', component: () => import('pages/accounting/AccbalmovsPage.vue') },
+      { path: '/accounting/accentsubdets', name: 'accentsubdets', component: () => import('pages/accounting/AccentsubdetsPage.vue') },
+      { path: '/accounting/accinicialruns', name: 'accinicialruns', component: () => import('pages/accounting/AccinicialrunsPage.vue') },
+      { path: '/accounting/accountingentriesdets', name: 'accountingentriesdets', component: () => import('pages/accounting/AccountingentriesdetsPage.vue') },
+      { path: '/accounting/accountingentriess', name: 'accountingentriess', component: () => import('pages/accounting/AccountingentriessPage.vue') },
 
       { path: '/clinichistory/hcdignosess', name: 'hcdignosess', component: () => import('pages/clinic-history/HcdignosessPage.vue') },
       { path: '/clinichistory/hchealthpros', name: 'hchealthpros', component: () => import('pages/clinic-history/HchealthprosPage.vue') },

@@ -504,6 +504,17 @@ export const TYPEUSEFULLIFE = [
   { id: 2, description: 'MESES' }
 ]
 
+export const NATURE = [
+  { id: 1, description: 'DÉBITO' },
+  { id: 2, description: 'CRÉDITO' }
+]
+
+export const STATEDOCUMENT = [
+  { id: 1, description: 'SIN APROBAR' },
+  { id: 2, description: 'APROBADO' },
+  { id: 3, description: 'DEROGADO' }
+]
+
 export const TYPEGLOSS = [
   { id: 1, description: 'NINGUNO' },
   { id: 2, description: 'FACTURACIÓN' },
