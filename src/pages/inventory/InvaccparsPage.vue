@@ -25,40 +25,40 @@
 {{ props.row.description }}
 </q-td>
 <q-td key="idledaccinc" :props="props">
-{{ props.row.idledaccinc }}
+{{ props.row.idledaccinc.description }}
 </q-td>
 <q-td key="idinvledacc" :props="props">
-{{ props.row.idinvledacc }}
+{{ props.row.idinvledacc.description }}
 </q-td>
 <q-td key="idexpledacc" :props="props">
-{{ props.row.idexpledacc }}
+{{ props.row.idexpledacc.description }}
 </q-td>
 <q-td key="idaccaccwitsoupurdec" :props="props">
-{{ props.row.idaccaccwitsoupurdec }}
+{{ props.row.idaccaccwitsoupurdec.description }}
 </q-td>
 <q-td key="idaccaccwitsounonrep" :props="props">
-{{ props.row.idaccaccwitsounonrep }}
+{{ props.row.idaccaccwitsounonrep.description }}
 </q-td>
 <q-td key="idcoscen" :props="props">
-{{ props.row.idcoscen }}
+{{ props.row.idcoscen.description }}
 </q-td>
 <q-td key="iddecwitcon" :props="props">
-{{ props.row.iddecwitcon }}
+{{ props.row.iddecwitcon.description }}
 </q-td>
 <q-td key="idnonfilwitcon" :props="props">
-{{ props.row.idnonfilwitcon }}
+{{ props.row.idnonfilwitcon.description }}
 </q-td>
 <q-td key="idledaccentrremdeb" :props="props">
-{{ props.row.idledaccentrremdeb }}
+{{ props.row.idledaccentrremdeb.description }}
 </q-td>
 <q-td key="identremcredelacc" :props="props">
-{{ props.row.identremcredelacc }}
+{{ props.row.identremcredelacc.description }}
 </q-td>
 <q-td key="idledaccdeboutrem" :props="props">
-{{ props.row.idledaccdeboutrem }}
+{{ props.row.idledaccdeboutrem.description }}
 </q-td>
 <q-td key="idoutremcreledacc" :props="props">
-{{ props.row.idoutremcreledacc }}
+{{ props.row.idoutremcreledacc.description }}
 </q-td>
 <q-td key="status" :props="props">
   {{ states[props.row.status] }}
@@ -116,124 +116,196 @@ lazy-rules
 />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idledaccinc"
-label="Cuenta contable Ingreso *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+  white
+  color="blue"
+  v-model="idledaccinc"
+  label="Cuenta contable Ingreso *"
+  @filter="filterFnAccountCatalog"
+  :options="filterOptionsAccountCatalog"
+  option-value="id"
+  option-label="description"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idinvledacc"
-label="Cuenta contable de Inventario *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+  white
+  color="blue"
+  v-model="idinvledacc"
+  label="Cuenta contable de Inventario  *"
+  @filter="filterFnAccountCatalog"
+  :options="filterOptionsAccountCatalog"
+  option-value="id"
+  option-label="description"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idexpledacc"
-label="Cuenta contable de Gasto *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+  white
+  color="blue"
+  v-model="idexpledacc"
+  label="Cuenta contable de Gasto  *"
+  @filter="filterFnAccountCatalog"
+  :options="filterOptionsAccountCatalog"
+  option-value="id"
+  option-label="description"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idaccaccwitsoupurdec"
-label="Cuenta contable de retención en la fuente compras-Declarantes *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+  white
+  color="blue"
+  v-model="idaccaccwitsoupurdec"
+  label="Cuenta contable de retención en la fuente compras-Declarantes *"
+  @filter="filterFnAccountCatalog"
+  :options="filterOptionsAccountCatalog"
+  option-value="id"
+  option-label="description"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idaccaccwitsounonrep"
-label="Cuenta contable de retención en la fuente compras-No Declarantes *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+  white
+  color="blue"
+  v-model="idaccaccwitsounonrep"
+  label="Cuenta contable de retención en la fuente compras-No Declarantes *"
+  @filter="filterFnAccountCatalog"
+  :options="filterOptionsAccountCatalog"
+  option-value="id"
+  option-label="description"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idcoscen"
-label="Centro de costos *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+  white
+  color="blue"
+  v-model="idcoscen"
+  label="Centro de costos *"
+  @filter="filterFnCostCenter"
+  :options="filterOptionsCostCenter"
+  option-value="id"
+  option-label="description"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="iddecwitcon"
-label="Concepto de retención – Declarantes *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+  white
+  color="blue"
+  v-model="iddecwitcon"
+  label="Concepto de retención – Declarantes *"
+  @filter="filterFnRetentionConcept"
+  :options="filterOptionsRetentionConcept"
+  option-value="id"
+  option-label="description"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idnonfilwitcon"
-label="Concepto de retención – No Declarantes *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+  white
+  color="blue"
+  v-model="idnonfilwitcon"
+  label="Concepto de retención – No Declarantes *"
+  @filter="filterFnRetentionConcept"
+  :options="filterOptionsRetentionConcept"
+  option-value="id"
+  option-label="description"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idledaccentrremdeb"
-label="Cuenta contable debito de remisión de entrada *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+  white
+  color="blue"
+  v-model="idledaccentrremdeb"
+  label="Cuenta contable debito de remisión de entrada *"
+  @filter="filterFnAccountCatalog"
+  :options="filterOptionsAccountCatalog"
+  option-value="id"
+  option-label="description"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="identremcredelacc"
-label="Cuenta contable crédito de remisión de entrada *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+  white
+  color="blue"
+  v-model="identremcredelacc"
+  label="Cuenta contable crédito de remisión de entrada  *"
+  @filter="filterFnAccountCatalog"
+  :options="filterOptionsAccountCatalog"
+  option-value="id"
+  option-label="description"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idledaccdeboutrem"
-label="Cuenta contable debito de remisión de salida *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+  white
+  color="blue"
+  v-model="idledaccdeboutrem"
+  label="Cuenta contable debito de remisión de salida *"
+  @filter="filterFnAccountCatalog"
+  :options="filterOptionsAccountCatalog"
+  option-value="id"
+  option-label="description"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idoutremcreledacc"
-label="Cuenta contable crédito de remisión de salida *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+  white
+  color="blue"
+  v-model="idoutremcreledacc"
+  label="Cuenta contable crédito de remisión de salida *"
+  @filter="filterFnAccountCatalog"
+  :options="filterOptionsAccountCatalog"
+  option-value="id"
+  option-label="description"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 </div>
 <div class="row justify-around">
@@ -298,6 +370,12 @@ export default defineComponent({
     const identremcredelacc = ref(null)
     const idledaccdeboutrem = ref(null)
     const idoutremcreledacc = ref(null)
+    const dataCostCenter = ref([])
+    const filterOptionsCostCenter = ref(dataCostCenter)
+    const dataAccountCatalog = ref([])
+    const filterOptionsAccountCatalog = ref(dataAccountCatalog)
+    const dataRetentionConcept = ref([])
+    const filterOptionsRetentionConcept = ref(dataRetentionConcept)
     const role = ref(null)
     const active = ref(false)
     const myForm = ref(null)
@@ -328,11 +406,34 @@ export default defineComponent({
     ])
     onMounted(() => {
       getInvaccpars()
+      getCostCenter()
+      getAccountCatalog()
+      getRetentionConcept()
     })
     const getInvaccpars = async () => {
       visible.value = true
       const { data } = await api.get(path)
       dataInvaccpars.value = data
+      visible.value = false
+    }
+    const getCostCenter = async () => {
+      visible.value = true
+      const { data } = await api.get('/acccostcenterss')
+      dataCostCenter.value = data
+      console.log('centro de costos')
+      console.log(dataCostCenter.value)
+      visible.value = false
+    }
+    const getAccountCatalog = async () => {
+      visible.value = true
+      const { data } = await api.get('/account-catalog')
+      dataAccountCatalog.value = data.filter(catalogo => catalogo.level === 3)
+      visible.value = false
+    }
+    const getRetentionConcept = async () => {
+      visible.value = true
+      const { data } = await api.get('/retention-concepts')
+      dataRetentionConcept.value = data
       visible.value = false
     }
     const creating = () => {
@@ -451,6 +552,42 @@ export default defineComponent({
         })
       })
     }
+    const filterFnCostCenter = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsCostCenter.value = dataCostCenter.value
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsCostCenter.value = dataCostCenter.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+      })
+    }
+    const filterFnAccountCatalog = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsAccountCatalog.value = dataAccountCatalog.value
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsAccountCatalog.value = dataAccountCatalog.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+      })
+    }
+    const filterFnRetentionConcept = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsRetentionConcept.value = dataRetentionConcept.value
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsRetentionConcept.value = dataRetentionConcept.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+      })
+    }
     return {
       dialog,
       dataInvaccpars,
@@ -483,7 +620,16 @@ export default defineComponent({
       onEditing,
       id,
       onDelete,
-      states
+      states,
+      dataAccountCatalog,
+      filterFnAccountCatalog,
+      filterOptionsAccountCatalog,
+      dataCostCenter,
+      filterOptionsCostCenter,
+      filterFnCostCenter,
+      dataRetentionConcept,
+      filterOptionsRetentionConcept,
+      filterFnRetentionConcept
     }
   }
 })

@@ -25,31 +25,31 @@
 {{ props.row.description }}
 </q-td>
 <q-td key="idledacc" :props="props">
-{{ props.row.idledacc }}
+{{ props.row.idledacc.description }}
 </q-td>
 <q-td key="idadmdepacc" :props="props">
-{{ props.row.idadmdepacc }}
+{{ props.row.idadmdepacc.description }}
 </q-td>
 <q-td key="idweldepacc" :props="props">
-{{ props.row.idweldepacc }}
+{{ props.row.idweldepacc.description }}
 </q-td>
 <q-td key="idaccdepacc" :props="props">
-{{ props.row.idaccdepacc }}
+{{ props.row.idaccdepacc.description }}
 </q-td>
 <q-td key="idaccmovgoowar" :props="props">
-{{ props.row.idaccmovgoowar }}
+{{ props.row.idaccmovgoowar.description }}
 </q-td>
 <q-td key="idacclos" :props="props">
-{{ props.row.idacclos }}
+{{ props.row.idacclos.description }}
 </q-td>
 <q-td key="idaccoutusedue" :props="props">
-{{ props.row.idaccoutusedue }}
+{{ props.row.idaccoutusedue.description }}
 </q-td>
 <q-td key="idacccomowe" :props="props">
-{{ props.row.idacccomowe }}
+{{ props.row.idacccomowe.description }}
 </q-td>
 <q-td key="idcrecomacc" :props="props">
-{{ props.row.idcrecomacc }}
+{{ props.row.idcrecomacc.description }}
 </q-td>
 <q-td key="status" :props="props">
   {{ states[props.row.status] }}
