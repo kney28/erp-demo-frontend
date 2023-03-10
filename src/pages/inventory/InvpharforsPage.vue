@@ -207,7 +207,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar la Formas farmacéuticas: ' + row.id + '?',
+        message: '¿Está seguro que desea eliminar la Forma farmacéutica: ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'

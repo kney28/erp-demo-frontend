@@ -226,7 +226,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar la unidades de medidas: ' + row.id + '?',
+        message: '¿Está seguro que desea eliminar la unidad de medida: ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'

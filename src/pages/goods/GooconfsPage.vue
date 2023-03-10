@@ -107,24 +107,36 @@ lazy-rules
 />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idgoocla"
-label="Clasificación de Bienes *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+    white
+    color="blue"
+    v-model="idgoocla"
+    label="Clasificación de Bienes *"
+    @filter="filterFnGooClass"
+    :options="filterOptionsGooClass"
+    option-value="id"
+    option-label="description"
+    emit-value
+    map-options
+    lazy-rules
+    :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idaccpar"
-label="Parametrización Contable *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+    white
+    color="blue"
+    v-model="idaccpar"
+    label="Parametrización Contable *"
+    @filter="filterFnGooPars"
+    :options="filterOptionsGooPars"
+    option-value="id"
+    option-label="description"
+    emit-value
+    map-options
+    lazy-rules
+    :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
 <q-select
@@ -276,6 +288,10 @@ export default defineComponent({
     const id = ref(null)
     const filter = ref(null)
     const dataGooconfs = ref([])
+    const dataGooClass = ref([])
+    const dataGooPars = ref([])
+    const filterOptionsGooClass = ref(dataGooClass)
+    const filterOptionsGooPars = ref(dataGooPars)
     const code = ref(null)
     const state = ref(STATUS)
     const typegoods = ref(TYPEGOODS)
@@ -319,11 +335,25 @@ export default defineComponent({
     ])
     onMounted(() => {
       getGooconfs()
+      getGooClass()
+      getGooPars()
     })
     const getGooconfs = async () => {
       visible.value = true
       const { data } = await api.get(path)
       dataGooconfs.value = data
+      visible.value = false
+    }
+    const getGooClass = async () => {
+      visible.value = true
+      const { data } = await api.get('/goods/gooclas')
+      dataGooClass.value = data
+      visible.value = false
+    }
+    const getGooPars = async () => {
+      visible.value = true
+      const { data } = await api.get('/goods/goopars')
+      dataGooPars.value = data
       visible.value = false
     }
     const creating = () => {
@@ -430,6 +460,30 @@ export default defineComponent({
         })
       })
     }
+    const filterFnGooClass = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsGooClass.value = dataGooClass.value
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsGooClass.value = dataGooClass.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+      })
+    }
+    const filterFnGooPars = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsGooPars.value = dataGooPars.value
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsGooPars.value = dataGooPars.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+      })
+    }
     return {
       dialog,
       dataGooconfs,
@@ -463,7 +517,13 @@ export default defineComponent({
       residualvaluetype,
       gendeps,
       gendep,
-      typeusefullife
+      typeusefullife,
+      dataGooClass,
+      filterOptionsGooClass,
+      filterFnGooClass,
+      dataGooPars,
+      filterOptionsGooPars,
+      filterFnGooPars
     }
   }
 })

@@ -24,8 +24,8 @@
 <q-td key="description" :props="props">
 {{ props.row.description }}
 </q-td>
-<q-td key="idactacc" :props="props">
-{{ props.row.idactacc }}
+<q-td key="idledacc" :props="props">
+{{ props.row.idledacc }}
 </q-td>
 <q-td key="idadmdepacc" :props="props">
 {{ props.row.idadmdepacc }}
@@ -110,7 +110,7 @@ lazy-rules
   <q-select
   white
   color="blue"
-  v-model="idactacc"
+  v-model="idledacc"
   label="Cuenta Activo *"
   @filter="filterFnAccountCatalog"
   :options="filterOptionsAccountCatalog"
@@ -303,7 +303,7 @@ export default defineComponent({
     const dataAccountCatalog = ref([])
     const filterOptionsAccountCatalog = ref(dataAccountCatalog)
     const description = ref(null)
-    const idactacc = ref(null)
+    const idledacc = ref(null)
     const idadmdepacc = ref(null)
     const idweldepacc = ref(null)
     const idaccdepacc = ref(null)
@@ -324,7 +324,7 @@ export default defineComponent({
     const columns = ref([
       { name: 'code', align: 'center', label: 'Codigo', field: 'code', sortable: true },
       { name: 'description', align: 'center', label: 'Descripción', field: 'description', sortable: true },
-      { name: 'idactacc', align: 'center', label: 'Cuenta Activo', field: 'idactacc', sortable: true },
+      { name: 'idledacc', align: 'center', label: 'Cuenta Activo', field: 'idledacc', sortable: true },
       { name: 'idadmdepacc', align: 'center', label: 'Cuenta Depreciación Administrativa', field: 'idadmdepacc', sortable: true },
       { name: 'idweldepacc', align: 'center', label: 'Cuenta Depreciación Asistencial', field: 'idweldepacc', sortable: true },
       { name: 'idaccdepacc', align: 'center', label: 'Cuenta Depreciación Acumulada', field: 'idaccdepacc', sortable: true },
@@ -344,7 +344,7 @@ export default defineComponent({
     const getAccountCatalog = async () => {
       visible.value = true
       const { data } = await api.get('/account-catalog')
-      dataAccountCatalog.value = data.filter(catalogo => catalogo.level === 5)
+      dataAccountCatalog.value = data.filter(catalogo => catalogo.level === 3)
       visible.value = false
     }
     const getGoopars = async () => {
@@ -360,7 +360,7 @@ export default defineComponent({
     const onReset = () => {
       code.value = null
       description.value = null
-      idactacc.value = null
+      idledacc.value = null
       idadmdepacc.value = null
       idweldepacc.value = null
       idaccdepacc.value = null
@@ -378,7 +378,7 @@ export default defineComponent({
           api.post(path, {
             code: code.value,
             description: description.value,
-            idactacc: idactacc.value,
+            idledacc: idledacc.value,
             idadmdepacc: idadmdepacc.value,
             idweldepacc: idweldepacc.value,
             idaccdepacc: idaccdepacc.value,
@@ -402,7 +402,7 @@ export default defineComponent({
       id.value = row.id
       code.value = row.code
       description.value = row.description
-      idactacc.value = row.idactacc
+      idledacc.value = row.idledacc
       idadmdepacc.value = row.idadmdepacc
       idweldepacc.value = row.idweldepacc
       idaccdepacc.value = row.idaccdepacc
@@ -421,7 +421,7 @@ export default defineComponent({
           api.patch(path + '/' + id.value, {
             code: code.value,
             description: description.value,
-            idactacc: idactacc.value,
+            idledacc: idledacc.value,
             idadmdepacc: idadmdepacc.value,
             idweldepacc: idweldepacc.value,
             idaccdepacc: idaccdepacc.value,
@@ -441,7 +441,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar la parametrizacion contable: ' + row.id + '?',
+        message: '¿Está seguro que desea eliminar la parametrizacion contable: ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -483,7 +483,7 @@ export default defineComponent({
       filter,
       code,
       description,
-      idactacc,
+      idledacc,
       idadmdepacc,
       idweldepacc,
       idaccdepacc,

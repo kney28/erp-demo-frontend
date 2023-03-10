@@ -1504,7 +1504,7 @@
                     v-ripple
                   >
                     <q-item-section avatar>
-                      <q-icon name="variables" />
+                      <q-icon name="new_label" />
                     </q-item-section>
 
                     <q-item-section>
@@ -1555,7 +1555,7 @@
                     v-ripple
                   >
                     <q-item-section avatar>
-                      <q-icon name="labs" />
+                      <q-icon name="science" />
                     </q-item-section>
 
                     <q-item-section>

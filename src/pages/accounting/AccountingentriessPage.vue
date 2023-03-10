@@ -252,7 +252,7 @@ export default defineComponent({
       consecutive.value = row.consecutive
       datedocument.value = row.datedocument
       detail.value = row.detail
-      condition.value = row.statusdocument
+      condition.value = row.condition
     }
     const onEditing = () => {
       myForm.value.validate().then(async success => {

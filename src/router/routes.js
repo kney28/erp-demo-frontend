@@ -80,8 +80,8 @@ const routes = [
       { path: '/medicalappointments/appofficess', name: 'appofficess', component: () => import('pages/medical-appointments/AppofficessPage.vue') },
       { path: '/medicalappointments/appreacans', name: 'appreacans', component: () => import('pages/medical-appointments/AppreacansPage.vue') },
 
-      { path: '/inventory/invaccpars', name: 'invaccpars', component: () => import('pages/inventory/Invaccpars.vue') },
-      { path: '/inventory/invunitsmeas', name: 'invunitsmeas', component: () => import('pages/inventory/Invunitsmeas.vue') },
+      { path: '/inventory/invaccpars', name: 'invaccpars', component: () => import('pages/inventory/InvaccparsPage.vue') },
+      { path: '/inventory/invunitsmeas', name: 'invunitsmeas', component: () => import('pages/inventory/InvunitsmeasPage.vue') },
       { path: '/inventory/invmanufroless', name: 'invmanufroless', component: () => import('pages/inventory/InvmanufrolessPage.vue') },
       { path: '/inventory/invcums', name: 'invcums', component: () => import('pages/inventory/InvcumsPage.vue') },
       { path: '/inventory/invpharfors', name: 'invpharfors', component: () => import('pages/inventory/InvpharforsPage.vue') }

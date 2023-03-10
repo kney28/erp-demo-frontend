@@ -24,11 +24,11 @@
 <q-td key="description" :props="props">
 {{ props.row.description }}
 </q-td>
-<q-td key="type" :props="props">
-  {{ typerol[props.row.type-1].description }}
+<q-td key="roltype" :props="props">
+  {{ typerol[props.row.roltype].description }}
 </q-td>
 <q-td key="status" :props="props">
-  {{ state[props.row.status] }}
+  {{ states[props.row.status] }}
 </q-td>
 <q-td key="edit" :props="props">
 <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
@@ -86,7 +86,7 @@ lazy-rules
 <q-select
 white
 color="blue"
-v-model="type"
+v-model="roltype"
 label="Tipo Rol *"
 option-label="description"
 option-value="id"
@@ -151,7 +151,7 @@ export default defineComponent({
     const code = ref(null)
     const states = ref(STATUS)
     const typerol = ref(ROLTYPE)
-    const type = ref(null)
+    const roltype = ref(null)
     const description = ref(null)
     const role = ref(null)
     const active = ref(false)
@@ -165,7 +165,7 @@ export default defineComponent({
     const columns = ref([
       { name: 'code', align: 'center', label: 'Código', field: 'code', sortable: true },
       { name: 'description', align: 'center', label: 'Descripción', field: 'description', sortable: true },
-      { name: 'type', align: 'center', label: 'Tipo de rol', field: 'type', sortable: true },
+      { name: 'roltype', align: 'center', label: 'Tipo de rol', field: 'roltype', sortable: true },
       { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
@@ -188,7 +188,7 @@ export default defineComponent({
       description.value = null
       isEditing.value = false
       active.value = false
-      type.value = false
+      roltype.value = null
     }
     const onSubmit = () => {
       myForm.value.validate().then(async success => {
@@ -196,7 +196,7 @@ export default defineComponent({
           api.post(path, {
             code: code.value,
             description: description.value,
-            type: type.value,
+            roltype: roltype.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
@@ -212,7 +212,7 @@ export default defineComponent({
       id.value = row.id
       code.value = row.code
       description.value = row.description
-      type.value = row.type
+      roltype.value = row.roltype
       if (row.status === ACTIVE) {
         active.value = true
       }
@@ -223,7 +223,7 @@ export default defineComponent({
           api.patch(path + '/' + id.value, {
             code: code.value,
             description: description.value,
-            type: type.value,
+            roltype: roltype.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
@@ -235,7 +235,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar los roles: ' + row.id + '?',
+        message: '¿Está seguro que desea eliminar los roles: ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -273,7 +273,7 @@ export default defineComponent({
       onDelete,
       states,
       typerol,
-      type
+      roltype
     }
   }
 })
