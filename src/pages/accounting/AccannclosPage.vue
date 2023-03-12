@@ -4,9 +4,9 @@
 <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
 <div>
 <q-space />
-<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Accinicialrun" :rows="dataAccinicialruns" :filter="filter" :columns="columns" row-key="name" >
+<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Accannclo" :rows="dataAccannclos" :filter="filter" :columns="columns" row-key="name" >
 <template v-slot:top-left>
-<q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
+<q-btn unelevated rounded icon="add" color="primary" @click="onAlert" label="Agregar"/>
 <q-space />
 </template>
 <template v-slot:top-right>
@@ -18,8 +18,14 @@
 </template>
 <template v-slot:body="props">
 <q-tr :props="props">
-<q-td key="accval" :props="props">
-{{ props.row.accval }}
+<q-td key="code" :props="props">
+{{ props.row.code }}
+</q-td>
+<q-td key="validity" :props="props">
+{{ props.row.validity }}
+</q-td>
+<q-td key="month" :props="props">
+{{ props.row.month }}
 </q-td>
 <q-td key="edit" :props="props">
 <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
@@ -57,11 +63,43 @@ Los campos marcados con (*) son obligatorios
 <q-input
 white
 color="blue"
-v-model="accval"
-label="Vigencia *"
+v-model="code"
+label="Codigo *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
+</div>
+<div class="col-md-4">
+  <q-select
+  white
+  color="blue"
+  v-model="validity"
+  label="Vigencia *"
+  @filter="filterFnValidity"
+  :options="filterOptionsValidity"
+  option-value="id"
+  option-label="status"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
+</div>
+<div class="col-md-4">
+  <q-select
+  white
+  color="blue"
+  v-model="month"
+  label="Meses *"
+  @filter="filterFnAccountBalances"
+  :options="filterOptionsAccountCatalog"
+  option-value="id"
+  option-label="month"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 </div>
 </q-form>
@@ -93,15 +131,21 @@ import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
 export default defineComponent({
-  name: 'AccinicialrunsPage',
+  name: 'AccannclosPage',
   setup () {
-    const path = 'accounting/accinicialruns'
+    const path = '/accounting/accannclos'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)
     const filter = ref(null)
-    const dataAccinicialruns = ref([])
-    const accval = ref(null)
+    const dataAccannclos = ref([])
+    const dataValidity = ref([])
+    const filterOptionsValidity = ref(dataValidity)
+    const dataAccountBalances = ref([])
+    const filterOptionsAccountBalances = ref(dataAccountBalances)
+    const code = ref(null)
+    const validity = ref(null)
+    const month = ref(null)
     const role = ref(null)
     const active = ref(false)
     const myForm = ref(null)
@@ -112,19 +156,33 @@ export default defineComponent({
     })
     const isEditing = ref(false)
     const columns = ref([
-      { name: 'accval', align: 'center', label: 'Vigencia', field: 'accval', sortable: true },
+      { name: 'code', align: 'center', label: 'Codigo', field: 'code', sortable: true },
+      { name: 'validity', align: 'center', label: 'Validar', field: 'validity', sortable: true },
+      { name: 'month', align: 'center', label: 'Meses', field: 'month', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
     onMounted(() => {
-      getAccinicialruns()
+      getAccannclos()
+      getValidity()
+      getAccountBalances()
     })
-    const getAccinicialruns = async () => {
-      console.log('hola')
+    const getAccannclos = async () => {
       visible.value = true
       const { data } = await api.get(path)
-      console.log('hola 2')
-      dataAccinicialruns.value = data
+      dataAccannclos.value = data
+      visible.value = false
+    }
+    const getValidity = async () => {
+      visible.value = true
+      const { data } = await api.get('/configuration/validity')
+      dataValidity.value = data
+      visible.value = false
+    }
+    const getAccountBalances = async () => {
+      visible.value = true
+      const { data } = await api.get('/account-balances')
+      dataAccountBalances.value = data
       visible.value = false
     }
     const creating = () => {
@@ -132,7 +190,9 @@ export default defineComponent({
       dialog.value = true
     }
     const onReset = () => {
-      accval.value = null
+      code.value = null
+      validity.value = null
+      month.value = null
       isEditing.value = false
       active.value = false
     }
@@ -140,10 +200,12 @@ export default defineComponent({
       myForm.value.validate().then(async success => {
         if (success) {
           api.post(path, {
-            accval: accval.value
+            code: code.value,
+            validity: validity.value,
+            month: month.value
           }).then(() => {
             dialog.value = false
-            getAccinicialruns()
+            getAccannclos()
           })
         }
       })
@@ -153,16 +215,20 @@ export default defineComponent({
       dialog.value = true
       isEditing.value = true
       id.value = row.id
-      accval.value = row.accval
+      code.value = row.code
+      validity.value = row.validity
+      month.value = row.month
     }
     const onEditing = () => {
       myForm.value.validate().then(async success => {
         if (success) {
           api.patch(path + '/' + id.value, {
-            accval: accval.value
+            code: code.value,
+            validity: validity.value,
+            month: month.value
           }).then(() => {
             dialog.value = false
-            getAccinicialruns()
+            getAccannclos()
           })
         }
       })
@@ -170,7 +236,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar la ejecución inicial: ' + row.id + '?',
+        message: '¿Está seguro que desea eliminar el cierre anual: ' + row.code + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -182,13 +248,49 @@ export default defineComponent({
       }).onOk(() => {
         api.delete(path + '/' + row.id).then(response => {
           dialog.value = false
-          getAccinicialruns()
+          getAccannclos()
         })
+      })
+    }
+    const onAlert = () => {
+      $q.dialog({
+        title: 'Cierre Anual',
+        message: 'Se va proceder a realizar el cierre anual. Recuerde que una vez que se realice este proceso no se podrá realizar ningún tipo de movimiento en la vigencia.',
+        ok: {
+          label: 'Ok',
+          color: 'positive'
+        }
+      }).onOk(() => {
+        creating()
+      })
+    }
+    const filterFnAccountBalances = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsAccountBalances.value = dataAccountBalances.value
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsAccountBalances.value = dataAccountBalances.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+      })
+    }
+    const filterFnValidity = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsValidity.value = dataValidity.value
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsValidity.value = dataValidity.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
       })
     }
     return {
       dialog,
-      dataAccinicialruns,
+      dataAccannclos,
       isEditing,
       role,
       active,
@@ -198,13 +300,22 @@ export default defineComponent({
       columns,
       visible,
       filter,
-      accval,
+      code,
+      validity,
+      month,
       onReset,
       onSubmit,
       editing,
       onEditing,
       id,
-      onDelete
+      onDelete,
+      dataAccountBalances,
+      filterFnAccountBalances,
+      filterOptionsAccountBalances,
+      dataValidity,
+      filterFnValidity,
+      filterOptionsValidity,
+      onAlert
     }
   }
 })

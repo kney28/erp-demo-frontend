@@ -520,7 +520,7 @@
                     v-ripple
                   >
                     <q-item-section avatar>
-                      <q-icon name="format list bulleted" />
+                      <q-icon name="format_list_bulleted" />
                     </q-item-section>
 
                     <q-item-section>
@@ -528,6 +528,77 @@
                     </q-item-section>
                   </q-item>
 
+                  <q-item
+                    @click="setTabSelected('/accounting/accannclos', 'Cierre Anual')"
+                    active-class="tab-active"
+                    to="/accounting/accannclos"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="event_busy" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Cierre Anual
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/accounting/accannualclosingentrys', 'Asciento Cierre Anual')"
+                    active-class="tab-active"
+                    to="/accounting/accannualclosingentrys"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="event_busy" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Asciento Cierre Anual
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/accounting/accmontopes', 'Apertura Mensual')"
+                    active-class="tab-active"
+                    to="/accounting/accmontopes"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="open_in_new" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Apertura Mensual
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/accounting/accmonclos', 'Cierre Mensual')"
+                    active-class="tab-active"
+                    to="/accounting/accmonclos"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="disabled_by_default" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Cierre Mensual
+                    </q-item-section>
+                  </q-item>
                 </q-expansion-item>
                 <q-expansion-item
                   expand-separator
