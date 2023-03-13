@@ -4,7 +4,7 @@
 <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
 <div>
 <q-space />
-<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Invmanufroles" :rows="dataInvmanufroless" :filter="filter" :columns="columns" row-key="name" >
+<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Accbeginningbalances" :rows="dataAccbeginningbalancess" :filter="filter" :columns="columns" row-key="name" >
 <template v-slot:top-left>
 <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
 <q-space />
@@ -21,11 +21,8 @@
 <q-td key="code" :props="props">
 {{ props.row.code }}
 </q-td>
-<q-td key="description" :props="props">
-{{ props.row.description }}
-</q-td>
-<q-td key="roltype" :props="props">
-  {{ typerol[props.row.roltype-1].description }}
+<q-td key="idaccountvalidity" :props="props">
+{{ props.row.idaccountvalidity }}
 </q-td>
 <q-td key="status" :props="props">
   {{ states[props.row.status] }}
@@ -67,39 +64,26 @@ Los campos marcados con (*) son obligatorios
 white
 color="blue"
 v-model="code"
-label="Código *"
+label="Codigo *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="description"
-label="Descripción *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
-</div>
-<div class="col-md-4">
-<q-select
-white
-color="blue"
-v-model="roltype"
-label="Tipo Rol *"
-option-label="description"
-option-value="id"
-:options="typerol"
-stack-label
-use-input
-input-debounce="0"
-emit-value
-map-options
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
-</div>
+  <q-select
+  white
+  color="blue"
+  v-model="idaccountvalidity"
+  label="Vigencia *"
+  @filter="filterFnAccountingValidity"
+  :options="filterOptionsAccountingValidity"
+  option-value="id"
+  option-label="validity"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="row justify-around">
     <div class="col-md-3">
@@ -109,6 +93,7 @@ lazy-rules
     </div>
     <div class="col-md-3">
   </div>
+</div>
 </div>
 </q-form>
 </q-card-section>
@@ -138,21 +123,21 @@ lazy-rules
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-import { ACTIVE, INACTIVE, STATUS, ROLTYPE } from '../../constants/Constants'
+import { ACTIVE, INACTIVE, STATUS } from '../../constants/Constants'
 export default defineComponent({
-  name: 'InvmanufrolessPage',
+  name: 'AccbeginningbalancessPage',
   setup () {
-    const path = 'inventory/invmanufroless'
+    const path = 'accounting/accbeginningbalancess'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)
     const filter = ref(null)
-    const dataInvmanufroless = ref([])
+    const dataAccbeginningbalancess = ref([])
     const code = ref(null)
     const states = ref(STATUS)
-    const typerol = ref(ROLTYPE)
-    const roltype = ref(null)
-    const description = ref(null)
+    const idaccountvalidity = ref(null)
+    const dataAccountingValidity = ref([])
+    const filterOptionsAccountingValidity = ref(dataAccountingValidity)
     const role = ref(null)
     const active = ref(false)
     const myForm = ref(null)
@@ -163,20 +148,26 @@ export default defineComponent({
     })
     const isEditing = ref(false)
     const columns = ref([
-      { name: 'code', align: 'center', label: 'Código', field: 'code', sortable: true },
-      { name: 'description', align: 'center', label: 'Descripción', field: 'description', sortable: true },
-      { name: 'roltype', align: 'center', label: 'Tipo de rol', field: 'roltype', sortable: true },
+      { name: 'code', align: 'center', label: 'Codigo', field: 'code', sortable: true },
+      { name: 'idaccountvalidity', align: 'center', label: 'Vigencia', field: 'idaccountvalidity', sortable: true },
       { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
     onMounted(() => {
-      getInvmanufroless()
+      getAccbeginningbalancess()
+      getAccountingValidity()
     })
-    const getInvmanufroless = async () => {
+    const getAccbeginningbalancess = async () => {
       visible.value = true
       const { data } = await api.get(path)
-      dataInvmanufroless.value = data
+      dataAccbeginningbalancess.value = data
+      visible.value = false
+    }
+    const getAccountingValidity = async () => {
+      visible.value = true
+      const { data } = await api.get('/accountingvalidity')
+      dataAccountingValidity.value = data
       visible.value = false
     }
     const creating = () => {
@@ -185,22 +176,20 @@ export default defineComponent({
     }
     const onReset = () => {
       code.value = null
-      description.value = null
+      idaccountvalidity.value = null
       isEditing.value = false
       active.value = false
-      roltype.value = null
     }
     const onSubmit = () => {
       myForm.value.validate().then(async success => {
         if (success) {
           api.post(path, {
             code: code.value,
-            description: description.value,
-            roltype: roltype.value,
+            idaccountvalidity: idaccountvalidity.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getInvmanufroless()
+            getAccbeginningbalancess()
           })
         }
       })
@@ -211,8 +200,7 @@ export default defineComponent({
       isEditing.value = true
       id.value = row.id
       code.value = row.code
-      description.value = row.description
-      roltype.value = row.roltype
+      idaccountvalidity.value = row.idaccountvalidity
       if (row.status === ACTIVE) {
         active.value = true
       }
@@ -222,12 +210,11 @@ export default defineComponent({
         if (success) {
           api.patch(path + '/' + id.value, {
             code: code.value,
-            description: description.value,
-            roltype: roltype.value,
+            idaccountvalidity: idaccountvalidity.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getInvmanufroless()
+            getAccbeginningbalancess()
           })
         }
       })
@@ -235,7 +222,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar el rol: ' + row.typerol + '?',
+        message: '¿Está seguro que desea eliminar el saldo inicial: ' + row.code + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -247,13 +234,25 @@ export default defineComponent({
       }).onOk(() => {
         api.delete(path + '/' + row.id).then(response => {
           dialog.value = false
-          getInvmanufroless()
+          getAccbeginningbalancess()
         })
+      })
+    }
+    const filterFnAccountingValidity = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsAccountingValidity.value = dataAccountingValidity.value
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsAccountingValidity.value = dataAccountingValidity.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
       })
     }
     return {
       dialog,
-      dataInvmanufroless,
+      dataAccbeginningbalancess,
       isEditing,
       role,
       active,
@@ -264,16 +263,17 @@ export default defineComponent({
       visible,
       filter,
       code,
-      description,
+      idaccountvalidity,
       onReset,
       onSubmit,
       editing,
       onEditing,
       id,
       onDelete,
-      states,
-      typerol,
-      roltype
+      filterFnAccountingValidity,
+      filterOptionsAccountingValidity,
+      dataAccountingValidity,
+      states
     }
   }
 })

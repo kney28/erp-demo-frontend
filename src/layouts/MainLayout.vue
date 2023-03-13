@@ -599,6 +599,60 @@
                       Cierre Mensual
                     </q-item-section>
                   </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/accounting/accbeginningbalancess', 'Saldo inicial')"
+                    active-class="tab-active"
+                    to="/accounting/accbeginningbalancess"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="real_estate_agent" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Saldo inicial ejecucion inicial
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/accounting/accbeginningbalancesdets', 'Saldo inicial detalle')"
+                    active-class="tab-active"
+                    to="/accounting/accbeginningbalancesdets"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="settings" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Saldo inicial detalle
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/accounting/accbeginningbalancesdet2s', 'Saldo inicial detalle')"
+                    active-class="tab-active"
+                    to="/accounting/accbeginningbalancesdet2s"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="settings" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Saldo inicial detalle
+                    </q-item-section>
+                  </q-item>
                 </q-expansion-item>
                 <q-expansion-item
                   expand-separator

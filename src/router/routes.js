@@ -66,6 +66,9 @@ const routes = [
       { path: '/accounting/accannualclosingentrys', name: 'accannualclosingentrys', component: () => import('pages/accounting/AccannualclosingentrysPage.vue') },
       { path: '/accounting/accmontopes', name: 'accmontopes', component: () => import('pages/accounting/AccmontopesPage.vue') },
       { path: '/accounting/accmonclos', name: 'accmonclos', component: () => import('pages/accounting/AccmonclosPage.vue') },
+      { path: '/accounting/accbeginningbalancess', name: 'accbeginningbalancess', component: () => import('pages/accounting/AccbeginningbalancessPage.vue') },
+      { path: '/accounting/accbeginningbalancesdets', name: 'accbeginningbalancesdets', component: () => import('pages/accounting/AccbeginningbalancesdetsPage.vue') },
+      { path: '/accounting/accbeginningbalancesdet2s', name: 'accbeginningbalancesdet2s', component: () => import('pages/accounting/Accbeginningbalancesdet2sPage.vue') },
 
       { path: '/clinichistory/hcdignosess', name: 'hcdignosess', component: () => import('pages/clinic-history/HcdignosessPage.vue') },
       { path: '/clinichistory/hchealthpros', name: 'hchealthpros', component: () => import('pages/clinic-history/HchealthprosPage.vue') },

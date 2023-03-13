@@ -4,7 +4,7 @@
 <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
 <div>
 <q-space />
-<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Invmanufroles" :rows="dataInvmanufroless" :filter="filter" :columns="columns" row-key="name" >
+<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Accbeginningbalancesdet3" :rows="dataAccbeginningbalancesdet3s" :filter="filter" :columns="columns" row-key="name" >
 <template v-slot:top-left>
 <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
 <q-space />
@@ -21,15 +21,30 @@
 <q-td key="code" :props="props">
 {{ props.row.code }}
 </q-td>
-<q-td key="description" :props="props">
-{{ props.row.description }}
+<q-td key="idaccoentry" :props="props">
+{{ props.row.idaccoentry }}
 </q-td>
-<q-td key="roltype" :props="props">
-  {{ typerol[props.row.roltype-1].description }}
+<q-td key="idconcrete" :props="props">
+{{ props.row.idconcrete }}
 </q-td>
+<!--The next column is ENUM, please complete the code necessary
+<q-td key="nature" :props="props">
+{{ props.row.nature }}</q-td>-->
+<q-td key="basevalue" :props="props">
+{{ props.row.basevalue }}
+</q-td>
+<q-td key="withholdingperc" :props="props">
+{{ props.row.withholdingperc }}
+</q-td>
+<q-td key="holdvalue" :props="props">
+{{ props.row.holdvalue }}
+</q-td>
+<q-td key="retainedvalue" :props="props">
+{{ props.row.retainedvalue }}
+</q-td>
+<!--The next column is ENUM, please complete the code necessary
 <q-td key="status" :props="props">
-  {{ states[props.row.status] }}
-</q-td>
+{{ props.row.status }}</q-td>-->
 <q-td key="edit" :props="props">
 <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
 </q-td>
@@ -67,7 +82,7 @@ Los campos marcados con (*) son obligatorios
 white
 color="blue"
 v-model="code"
-label="Código *"
+label="code *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
@@ -76,39 +91,84 @@ lazy-rules
 <q-input
 white
 color="blue"
-v-model="description"
-label="Descripción *"
+v-model="idaccoentry"
+label="idaccoentry *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
 </div>
 <div class="col-md-4">
-<q-select
+<q-input
 white
 color="blue"
-v-model="roltype"
-label="Tipo Rol *"
-option-label="description"
-option-value="id"
-:options="typerol"
-stack-label
-use-input
-input-debounce="0"
-emit-value
-map-options
+v-model="idconcrete"
+label="idconcrete *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
 </div>
+<!--The next column is ENUM, please complete the code necessary
+//<div class="col-md-4">
+//<q-input
+//white
+//color="blue"
+//v-model="nature"
+//label="nature *"
+//lazy-rules
+//:rules="[ val => !!val || 'El campo es obligatorio']"
+///>
+//</div>-->
+<div class="col-md-4">
+<q-input
+white
+color="blue"
+v-model="basevalue"
+label="basevalue *"
+lazy-rules
+:rules="[ val => !!val || 'El campo es obligatorio']"
+/>
 </div>
-<div class="row justify-around">
-    <div class="col-md-3">
-    </div>
-    <div class="col-md-3">
-      <q-toggle v-model="active" label="Estado"/>
-    </div>
-    <div class="col-md-3">
-  </div>
+<div class="col-md-4">
+<q-input
+white
+color="blue"
+v-model="withholdingperc"
+label="withholdingperc *"
+lazy-rules
+:rules="[ val => !!val || 'El campo es obligatorio']"
+/>
+</div>
+<div class="col-md-4">
+<q-input
+white
+color="blue"
+v-model="holdvalue"
+label="holdvalue *"
+lazy-rules
+:rules="[ val => !!val || 'El campo es obligatorio']"
+/>
+</div>
+<div class="col-md-4">
+<q-input
+white
+color="blue"
+v-model="retainedvalue"
+label="retainedvalue *"
+lazy-rules
+:rules="[ val => !!val || 'El campo es obligatorio']"
+/>
+</div>
+<!--The next column is ENUM, please complete the code necessary
+//<div class="col-md-4">
+//<q-input
+//white
+//color="blue"
+//v-model="status"
+//label="status *"
+//lazy-rules
+//:rules="[ val => !!val || 'El campo es obligatorio']"
+///>
+//</div>-->
 </div>
 </q-form>
 </q-card-section>
@@ -138,21 +198,22 @@ lazy-rules
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-import { ACTIVE, INACTIVE, STATUS, ROLTYPE } from '../../constants/Constants'
 export default defineComponent({
-  name: 'InvmanufrolessPage',
+  name: 'Accbeginningbalancesdet3sPage',
   setup () {
-    const path = 'inventory/invmanufroless'
+    const path = '/accbeginningbalancesdet3s'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)
     const filter = ref(null)
-    const dataInvmanufroless = ref([])
+    const dataAccbeginningbalancesdet3s = ref([])
     const code = ref(null)
-    const states = ref(STATUS)
-    const typerol = ref(ROLTYPE)
-    const roltype = ref(null)
-    const description = ref(null)
+    const idaccoentry = ref(null)
+    const idconcrete = ref(null)
+    const basevalue = ref(null)
+    const withholdingperc = ref(null)
+    const holdvalue = ref(null)
+    const retainedvalue = ref(null)
     const role = ref(null)
     const active = ref(false)
     const myForm = ref(null)
@@ -163,20 +224,25 @@ export default defineComponent({
     })
     const isEditing = ref(false)
     const columns = ref([
-      { name: 'code', align: 'center', label: 'Código', field: 'code', sortable: true },
-      { name: 'description', align: 'center', label: 'Descripción', field: 'description', sortable: true },
-      { name: 'roltype', align: 'center', label: 'Tipo de rol', field: 'roltype', sortable: true },
-      { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
+      { name: 'code', align: 'center', label: 'code', field: 'code', sortable: true },
+      { name: 'idaccoentry', align: 'center', label: 'idaccoentry', field: 'idaccoentry', sortable: true },
+      { name: 'idconcrete', align: 'center', label: 'idconcrete', field: 'idconcrete', sortable: true },
+      { name: 'nature', align: 'center', label: 'nature', field: 'nature', sortable: true },
+      { name: 'basevalue', align: 'center', label: 'basevalue', field: 'basevalue', sortable: true },
+      { name: 'withholdingperc', align: 'center', label: 'withholdingperc', field: 'withholdingperc', sortable: true },
+      { name: 'holdvalue', align: 'center', label: 'holdvalue', field: 'holdvalue', sortable: true },
+      { name: 'retainedvalue', align: 'center', label: 'retainedvalue', field: 'retainedvalue', sortable: true },
+      { name: 'status', align: 'center', label: 'status', field: 'status', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
     onMounted(() => {
-      getInvmanufroless()
+      getAccbeginningbalancesdet3s()
     })
-    const getInvmanufroless = async () => {
+    const getAccbeginningbalancesdet3s = async () => {
       visible.value = true
       const { data } = await api.get(path)
-      dataInvmanufroless.value = data
+      dataAccbeginningbalancesdet3s.value = data
       visible.value = false
     }
     const creating = () => {
@@ -185,22 +251,29 @@ export default defineComponent({
     }
     const onReset = () => {
       code.value = null
-      description.value = null
+      idaccoentry.value = null
+      idconcrete.value = null
+      basevalue.value = null
+      withholdingperc.value = null
+      holdvalue.value = null
+      retainedvalue.value = null
       isEditing.value = false
       active.value = false
-      roltype.value = null
     }
     const onSubmit = () => {
       myForm.value.validate().then(async success => {
         if (success) {
           api.post(path, {
             code: code.value,
-            description: description.value,
-            roltype: roltype.value,
-            status: active.value ? ACTIVE : INACTIVE
+            idaccoentry: idaccoentry.value,
+            idconcrete: idconcrete.value,
+            basevalue: basevalue.value,
+            withholdingperc: withholdingperc.value,
+            holdvalue: holdvalue.value,
+            retainedvalue: retainedvalue.value,
           }).then(() => {
             dialog.value = false
-            getInvmanufroless()
+            getAccbeginningbalancesdet3s()
           })
         }
       })
@@ -211,31 +284,35 @@ export default defineComponent({
       isEditing.value = true
       id.value = row.id
       code.value = row.code
-      description.value = row.description
-      roltype.value = row.roltype
-      if (row.status === ACTIVE) {
-        active.value = true
-      }
+      idaccoentry.value = row.idaccoentry
+      idconcrete.value = row.idconcrete
+      basevalue.value = row.basevalue
+      withholdingperc.value = row.withholdingperc
+      holdvalue.value = row.holdvalue
+      retainedvalue.value = row.retainedvalue
     }
     const onEditing = () => {
       myForm.value.validate().then(async success => {
         if (success) {
           api.patch(path + '/' + id.value, {
             code: code.value,
-            description: description.value,
-            roltype: roltype.value,
-            status: active.value ? ACTIVE : INACTIVE
+            idaccoentry: idaccoentry.value,
+            idconcrete: idconcrete.value,
+            basevalue: basevalue.value,
+            withholdingperc: withholdingperc.value,
+            holdvalue: holdvalue.value,
+            retainedvalue: retainedvalue.value,
           }).then(() => {
             dialog.value = false
-            getInvmanufroless()
+            getAccbeginningbalancesdet3s()
           })
         }
       })
     }
     const onDelete = (row) => {
       $q.dialog({
-        title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar el rol: ' + row.typerol + '?',
+        title: 'Confirmaci�n',
+        message: '�Est� seguro que desea eliminar la accbeginningbalancesdet3: ' + row.id + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -247,13 +324,13 @@ export default defineComponent({
       }).onOk(() => {
         api.delete(path + '/' + row.id).then(response => {
           dialog.value = false
-          getInvmanufroless()
+          getAccbeginningbalancesdet3s()
         })
       })
     }
     return {
       dialog,
-      dataInvmanufroless,
+      dataAccbeginningbalancesdet3s,
       isEditing,
       role,
       active,
@@ -264,16 +341,18 @@ export default defineComponent({
       visible,
       filter,
       code,
-      description,
+      idaccoentry,
+      idconcrete,
+      basevalue,
+      withholdingperc,
+      holdvalue,
+      retainedvalue,
       onReset,
       onSubmit,
       editing,
       onEditing,
       id,
       onDelete,
-      states,
-      typerol,
-      roltype
     }
   }
 })
