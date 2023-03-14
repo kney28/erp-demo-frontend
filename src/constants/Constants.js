@@ -559,3 +559,8 @@ export const ROLTYPE = [
   { id: 1, description: 'FABRICANTE' },
   { id: 2, description: 'IMPORTADOR' }
 ]
+
+export const NATURES = [
+  { id: 1, description: 'DÉBITO' },
+  { id: 2, description: 'CRÉDITO' }
+]

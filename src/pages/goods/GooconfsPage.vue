@@ -25,10 +25,10 @@
 {{ props.row.description }}
 </q-td>
 <q-td key="idgoocla" :props="props">
-{{ props.row.idgoocla }}
+{{ props.row.idgoocla.description }}
 </q-td>
 <q-td key="idaccpar" :props="props">
-{{ props.row.idaccpar }}
+{{ props.row.idaccpar.description }}
 </q-td>
 <q-td key="tipgoo" :props="props">
 {{ typegoods[props.row.tipgoo-1].description  }}

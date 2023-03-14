@@ -653,6 +653,24 @@
                       Saldo inicial detalle
                     </q-item-section>
                   </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/accounting/accbeginningbalancesdet3s', 'Saldo inicial Subdetalle')"
+                    active-class="tab-active"
+                    to="/accounting/accbeginningbalancesdet3s"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="settings_applications" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Saldo inicial Subdetalle
+                    </q-item-section>
+                  </q-item>
                 </q-expansion-item>
                 <q-expansion-item
                   expand-separator
