@@ -28,10 +28,10 @@
 {{ typecocept[props.row.type-1].description  }}
 </q-td>
 <q-td key="idledacc" :props="props">
-{{ props.row.idledacc }}
+{{ props.row.idledacc.description }}
 </q-td>
-<q-td key="selection" :props="props">
-{{ selections[props.row.selection-1].description  }}
+<q-td key="conappl" :props="props">
+{{ selections[props.row.conappl-1].description  }}
 </q-td>
 <q-td key="status" :props="props">
   {{ states[props.row.status] }}
@@ -126,7 +126,7 @@ lazy-rules
 <q-select
 white
 color="blue"
-v-model="selection"
+v-model="conappl"
 label="Concepto aplica IVA *"
 option-label="description"
 option-value="id"
@@ -194,7 +194,7 @@ export default defineComponent({
     const typecocept = ref(CONCEPTTYPE)
     const type = ref(null)
     const selections = ref(SELECTION)
-    const selection = ref(null)
+    const conappl = ref(null)
     const code = ref(null)
     const description = ref(null)
     const idledacc = ref(null)
@@ -212,7 +212,7 @@ export default defineComponent({
       { name: 'description', align: 'center', label: 'Descripción', field: 'description', sortable: true },
       { name: 'type', align: 'center', label: 'Tipo', field: 'type', sortable: true },
       { name: 'idledacc', align: 'center', label: 'Cuenta Contable', field: 'idledacc', sortable: true },
-      { name: 'selection', align: 'center', label: 'Concepto aplica IVA', field: 'selection', sortable: true },
+      { name: 'conappl', align: 'center', label: 'Concepto aplica IVA', field: 'conappl', sortable: true },
       { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
@@ -230,7 +230,7 @@ export default defineComponent({
     const getAccountCatalog = async () => {
       visible.value = true
       const { data } = await api.get('/account-catalog')
-      dataAccountCatalog.value = data.filter(catalogo => catalogo.level === 5)
+      dataAccountCatalog.value = data
       visible.value = false
     }
     const creating = () => {
@@ -243,7 +243,7 @@ export default defineComponent({
       idledacc.value = null
       isEditing.value = false
       type.value = null
-      selection.value = null
+      conappl.value = null
       active.value = false
     }
     const onSubmit = () => {
@@ -253,7 +253,7 @@ export default defineComponent({
             code: code.value,
             description: description.value,
             type: type.value,
-            selection: selection.value,
+            conappl: conappl.value,
             idledacc: idledacc.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
@@ -271,7 +271,7 @@ export default defineComponent({
       code.value = row.code
       description.value = row.description
       type.value = row.type
-      selection.value = row.selection
+      conappl.value = row.conappl
       idledacc.value = row.idledacc
       if (row.status === ACTIVE) {
         active.value = true
@@ -284,7 +284,7 @@ export default defineComponent({
             code: code.value,
             description: description.value,
             type: type.value,
-            selection: selection.value,
+            conappl: conappl.value,
             idledacc: idledacc.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
@@ -297,7 +297,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar la Conceptos contrapartida–CXP y Notas: ' + row.id + '?',
+        message: '¿Está seguro que desea eliminar la Conceptos contrapartida–CXP y Notas: ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -350,7 +350,7 @@ export default defineComponent({
       typecocept,
       type,
       selections,
-      selection,
+      conappl,
       filterOptionsAccountCatalog,
       dataAccountCatalog,
       filterFnAccountCatalog

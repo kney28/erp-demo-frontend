@@ -93,7 +93,7 @@ lazy-rules
     @filter="filterFnAccountThirPerson"
     :options="filterOptionsAccountThirPerson"
     option-value="id"
-    option-label="code"
+    option-label="fullname"
     emit-value
     map-options
     lazy-rules

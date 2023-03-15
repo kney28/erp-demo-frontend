@@ -96,6 +96,22 @@ lazy-rules
 />
 </div>
 <div class="col-md-4">
+  <q-select
+  white
+  color="blue"
+  v-model="idheadquarters"
+  label="Sede *"
+  @filter="filterFnHeadquarter"
+  :options="filterOptionsHeadquarter"
+  option-value="id"
+  option-label="description"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
+</div>
+<div class="col-md-4">
 <q-select
 white
 color="blue"
@@ -164,6 +180,8 @@ export default defineComponent({
     const emeroffices = ref(EMEROFFICE)
     const emeroffice = ref(null)
     const dataAppofficess = ref([])
+    const dataHeadquarter = ref([])
+    const filterOptionsHeadquarter = ref(dataHeadquarter)
     const code = ref(null)
     const description = ref(null)
     const idheadquarters = ref(null)
@@ -187,11 +205,18 @@ export default defineComponent({
     ])
     onMounted(() => {
       getAppofficess()
+      getHeadquarter()
     })
     const getAppofficess = async () => {
       visible.value = true
       const { data } = await api.get(path)
       dataAppofficess.value = data
+      visible.value = false
+    }
+    const getHeadquarter = async () => {
+      visible.value = true
+      const { data } = await api.get('/admissions/headquarters')
+      dataHeadquarter.value = data
       visible.value = false
     }
     const creating = () => {
@@ -254,7 +279,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar el consultorio: ' + row.id + '?',
+        message: '¿Está seguro que desea eliminar el consultorio: ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -268,6 +293,18 @@ export default defineComponent({
           dialog.value = false
           getAppofficess()
         })
+      })
+    }
+    const filterFnHeadquarter = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsHeadquarter.value = dataHeadquarter.value
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsHeadquarter.value = dataHeadquarter.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
       })
     }
     return {
@@ -293,7 +330,10 @@ export default defineComponent({
       onDelete,
       states,
       emeroffices,
-      emeroffice
+      emeroffice,
+      filterFnHeadquarter,
+      dataHeadquarter,
+      filterOptionsHeadquarter
     }
   }
 })

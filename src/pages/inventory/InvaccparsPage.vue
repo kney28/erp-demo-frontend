@@ -420,8 +420,6 @@ export default defineComponent({
       visible.value = true
       const { data } = await api.get('/acccostcenterss')
       dataCostCenter.value = data
-      console.log('centro de costos')
-      console.log(dataCostCenter.value)
       visible.value = false
     }
     const getAccountCatalog = async () => {
@@ -461,6 +459,7 @@ export default defineComponent({
     const onSubmit = () => {
       myForm.value.validate().then(async success => {
         if (success) {
+          console.log(idcoscen.value)
           api.post(path, {
             code: code.value,
             description: description.value,

@@ -25,7 +25,7 @@
 {{ props.row.description }}
 </q-td>
 <q-td key="typglo" :props="props">
-{{ typegloss[props.row.typglo-1].description  }}
+{{ typegloss[props.row.typglo].description  }}
 </q-td>
 <q-td key="status" :props="props">
   {{ states[props.row.status] }}
@@ -86,7 +86,7 @@ lazy-rules
 <q-select
 white
 color="blue"
-v-model="type"
+v-model="typglo"
 label="Tipo de glosa *"
 option-label="description"
 option-value="id"
@@ -149,7 +149,7 @@ export default defineComponent({
     const filter = ref(null)
     const states = ref(STATUS)
     const typegloss = ref(TYPEGLOSS)
-    const type = ref(null)
+    const typglo = ref(null)
     const dataCxcaccrecs = ref([])
     const code = ref(null)
     const description = ref(null)
@@ -187,7 +187,7 @@ export default defineComponent({
       code.value = null
       description.value = null
       isEditing.value = false
-      type.value = null
+      typglo.value = null
       active.value = false
     }
     const onSubmit = () => {
@@ -195,7 +195,7 @@ export default defineComponent({
         if (success) {
           api.post(path, {
             code: code.value,
-            type: type.value,
+            typglo: typglo.value,
             description: description.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
@@ -211,7 +211,7 @@ export default defineComponent({
       isEditing.value = true
       id.value = row.id
       code.value = row.code
-      type.value = row.type
+      typglo.value = row.typglo
       description.value = row.description
       if (row.status === ACTIVE) {
         active.value = true
@@ -223,7 +223,7 @@ export default defineComponent({
           api.patch(path + '/' + id.value, {
             code: code.value,
             description: description.value,
-            type: type.value,
+            typglo: typglo.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
@@ -235,7 +235,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar el concepto de glosa: ' + row.id + '?',
+        message: '¿Está seguro que desea eliminar el concepto de glosa: ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -273,7 +273,7 @@ export default defineComponent({
       onDelete,
       states,
       typegloss,
-      type
+      typglo
     }
   }
 })

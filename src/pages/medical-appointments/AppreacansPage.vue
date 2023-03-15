@@ -207,7 +207,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar el motivo de la cancelación: ' + row.id + '?',
+        message: '¿Está seguro que desea eliminar el motivo de la cancelación: ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'

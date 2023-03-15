@@ -28,7 +28,7 @@
 {{ typecocept[props.row.type-1].description  }}
 </q-td>
 <q-td key="idledacc" :props="props">
-{{ props.row.idledacc }}
+{{ props.row.idledacc.description }}
 </q-td>
 <q-td key="status" :props="props">
   {{ states[props.row.status] }}
@@ -206,7 +206,7 @@ export default defineComponent({
     const getAccountCatalog = async () => {
       visible.value = true
       const { data } = await api.get('/account-catalog')
-      dataAccountCatalog.value = data.filter(catalogo => catalogo.level === 5)
+      dataAccountCatalog.value = data
       visible.value = false
     }
     const creating = () => {
@@ -269,7 +269,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar los conceptos contrapartida CXC y Notas: ' + row.id + '?',
+        message: '¿Está seguro que desea eliminar los conceptos contrapartida CXC y Notas: ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -295,6 +295,7 @@ export default defineComponent({
       update(() => {
         const needle = val.toLowerCase()
         filterOptionsAccountCatalog.value = dataAccountCatalog.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+        console.log(filterOptionsAccountCatalog.value)
       })
     }
     return {

@@ -235,7 +235,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar el rol: ' + row.typerol + '?',
+        message: '¿Está seguro que desea eliminar el rol: ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'
