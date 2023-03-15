@@ -8,7 +8,7 @@ const routes = [
       { path: '/users', name: 'users', component: () => import('pages/UsersPage.vue') },
       { path: '/profiles', name: 'profiles', component: () => import('pages/ProfilePage.vue') },
       { path: '/neighborhoods', name: 'neighborhoods', component: () => import('pages/NeighborhoodsPage.vue') },
-      { path: '/validities', name: 'validities', component: () => import('pages/ValidityPage.vue') },
+      { path: '/configuration/validities', name: 'validities', component: () => import('pages/configuration/ValidityPage.vue') },
       { path: '/companies', name: 'companies', component: () => import('pages/CompanyPage.vue') },
       { path: '/changePasswords', name: 'changePasswords', component: () => import('pages/ChangePasswordPage.vue') },
       { path: '/logsAudits', name: 'logsAudits', component: () => import('pages/LogAuditPage.vue') },
@@ -31,6 +31,7 @@ const routes = [
       { path: '/thirds', name: 'thirds', component: () => import('pages/ThirdsPage.vue') },
 
       { path: '/billing/careservices', name: 'careservices', component: () => import('pages/billing/CareservicesPage.vue') },
+      { path: '/billing/numerationdian', name: 'numerationDIAN', component: () => import('pages/billing/NumerationdiansPage.vue') },
 
       { path: '/hospitalization/beds', name: 'beds', component: () => import('pages/hospitalization/BedsPage.vue') },
       { path: '/hospitalization/fees', name: 'fees', component: () => import('pages/hospitalization/FeesPage.vue') },
@@ -38,13 +39,38 @@ const routes = [
       { path: '/hospitalization/locations', name: 'locations', component: () => import('pages/hospitalization/LocationsPage.vue') },
 
       { path: '/configuration/holidays', name: 'holidays', component: () => import('pages/configuration/HolidayssPage.vue') },
+      { path: '/configuration/permissionss', name: 'permissionss', component: () => import('pages/configuration/PermissionssPage.vue') },
 
       { path: '/admissions/headquarters', name: 'headquarters', component: () => import('pages/admissions/HeadquarterssPage.vue') },
       { path: '/admissions/healthproviders', name: 'healthproviders', component: () => import('pages/admissions/HealthproviderssPage.vue') },
       { path: '/admissions/charges', name: 'charges', component: () => import('pages/admissions/ChargesPage.vue') },
       { path: '/admissions/groundsdenialcares', name: 'groundsdenialcares', component: () => import('pages/admissions/GroundsdenialcaresPage.vue') },
       { path: '/admissions/sisbenlevels', name: 'sisbenlevels', component: () => import('pages/admissions/SisbenlevelsPage.vue') },
-      { path: '/admissions/specialpopulations', name: 'specialpopulations', component: () => import('pages/admissions/SpecialpopulationsPage.vue') }
+      { path: '/admissions/specialpopulations', name: 'specialpopulations', component: () => import('pages/admissions/SpecialpopulationsPage.vue') },
+
+      { path: '/hiring/categoriescupss', name: 'categoriescupss', component: () => import('pages/hiring/CategoriescupssPage.vue') },
+      { path: '/hiring/entitytemplates', name: 'entitytemplates', component: () => import('pages/hiring/EntitytemplatesPage.vue') },
+      { path: '/hiring/parameterizationcupss', name: 'parameterizationcupss', component: () => import('pages/hiring/ParameterizationcupssPage.vue') },
+      { path: '/hiring/subcatcupss', name: 'subcatcupss', component: () => import('pages/hiring/SubcatcupssPage.vue') },
+      { path: '/hiring/subgruposcupss', name: 'subgruposcupss', component: () => import('pages/hiring/SubgruposcupssPage.vue') },
+
+      { path: '/accounting/acccongens', name: 'acccongens', component: () => import('pages/accounting/AcccongensPage.vue') },
+      { path: '/accounting/accountingtermss', name: 'accountingtermss', component: () => import('pages/accounting/AccountingtermssPage.vue') },
+      { path: '/accounting/acccostcenterss', name: 'Acccostcenterss', component: () => import('pages/accounting/AcccostcenterssPage.vue') },
+      { path: '/accounting/accbalmovs', name: 'Accbalmovs', component: () => import('pages/accounting/AccbalmovsPage.vue') },
+
+      { path: '/clinichistory/hcdignosess', name: 'hcdignosess', component: () => import('pages/clinic-history/HcdignosessPage.vue') },
+      { path: '/clinichistory/hchealthpros', name: 'hchealthpros', component: () => import('pages/clinic-history/HchealthprosPage.vue') },
+      { path: '/clinichistory/hcspecialtiess', name: 'hcspecialtiess', component: () => import('pages/clinic-history/HcspecialtiessPage.vue') },
+
+      { path: '/goods/goopars', name: 'goopars', component: () => import('pages/goods/GooparsPage.vue') },
+      { path: '/goods/gooconfs', name: 'gooconfs', component: () => import('pages/goods/GooconfsPage.vue') },
+      { path: '/goods/gooclas', name: 'gooclas', component: () => import('pages/goods/GooclasPage.vue') },
+
+      { path: '/treasury/tsnotcons', name: 'tsnotcons', component: () => import('pages/treasury/TsnotconsPage.vue') },
+      { path: '/treasury/tsboxess', name: 'tsboxess', component: () => import('pages/treasury/TsboxessPage.vue') },
+      { path: '/treasury/tsbankss', name: 'tsbankss', component: () => import('pages/treasury/TsbankssPage.vue') },
+      { path: '/treasury/tsconpays', name: 'tsconpays', component: () => import('pages/treasury/TsconpaysPage.vue') }
     ]
   },
   { path: '/login', name: 'login', component: () => import('src/pages/LoginPage2.vue') },

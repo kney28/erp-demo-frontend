@@ -4,7 +4,7 @@
 <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
 <div>
 <q-space />
-<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Careservice" :rows="dataCareservices" :filter="filter" :columns="columns" row-key="name" >
+<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" title="Careservice" :rows="dataCareservices" :filter="filter" :columns="columns" row-key="name" >
 <template v-slot:top-left>
 <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
 <q-space />
@@ -407,7 +407,7 @@ export default defineComponent({
     }
     const getHeadquarters = async () => {
       visible.value = true
-      const { data } = await api.get('/headquarters')
+      const { data } = await api.get('/admissions/headquarters')
       dataHeadquarters.value = data
       visible.value = false
     }

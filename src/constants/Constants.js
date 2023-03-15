@@ -379,3 +379,153 @@ export const LISTSISBENLEVELSUBGROUP = [
   { id: 50, description: 'D20' },
   { id: 51, description: 'D21' }
 ]
+
+export const TIPOFACTURACION = [
+  { id: 1, description: 'En computador' },
+  { id: 2, description: 'Máquina registradora' },
+  { id: 3, description: 'Electrónica' }
+]
+
+export const OPTIONPERMISSIONS = [
+  { id: 1, description: 'Configuración - Maestros - Configuración General' },
+  { id: 2, description: 'Configuración - Maestros - Perfiles' },
+  { id: 3, description: 'Configuración - Maestros - Usuarios' },
+  { id: 4, description: 'Configuración - Maestros - Paises' }
+]
+
+export const CONSECONTVALIPROCESS = [
+  { id: 1, description: 'Gestión Presupuestal' },
+  { id: 2, description: 'Gestión Contable' }
+]
+
+export const CONSECONTVALIOPTION = [
+  { id: 1, description: 'Programación Presupuestal Ingresos' },
+  { id: 2, description: 'Adiciones/Reducciones Presupuestales Ingresos' },
+  { id: 3, description: 'Traslados Presupuestales Ingresos' },
+  { id: 4, description: 'Recaudos' },
+  { id: 5, description: 'Ajustes Recaudos' },
+  { id: 6, description: 'Programación Presupuestal Gastos' },
+  { id: 7, description: 'Adiciones/Reducciones Presupuestales Gastos' },
+  { id: 8, description: 'Traslados Presupuestales Gastos' },
+  { id: 9, description: 'Solicitudes Disponibilidades Presupuestales' },
+  { id: 10, description: 'Disponibilidades Presupuestales' },
+  { id: 11, description: 'Ajustes Disponibilidades Presupuestal' },
+  { id: 12, description: 'Compromisos' },
+  { id: 13, description: 'Ajustes Compromisos' },
+  { id: 14, description: 'Reservas Presupuestales' },
+  { id: 15, description: 'Ajustes Reservas Presupuestales' },
+  { id: 16, description: 'Obligaciones' },
+  { id: 17, description: 'Ajustes Obligaciones' },
+  { id: 18, description: 'Cuentas por Pagar Presupuestales' },
+  { id: 19, description: 'Ajustes Cuentas por Pagar Presupuestales' },
+  { id: 20, description: 'Pagos' },
+  { id: 21, description: 'Ajustes Pagos' },
+  { id: 22, description: 'Asientos Contables' }
+]
+
+export const MES = [
+  { id: 1, description: 'ENERO' },
+  { id: 2, description: 'FEBRERO' },
+  { id: 3, description: 'MARZO' },
+  { id: 4, description: 'ABRIL' },
+  { id: 5, description: 'MAYO' },
+  { id: 6, description: 'JUNIO' },
+  { id: 7, description: 'JULIO' },
+  { id: 8, description: 'AGOSTO' },
+  { id: 9, description: 'SEPTIEMBRE' },
+  { id: 10, description: 'OCTUBRE' },
+  { id: 11, description: 'NOVIEMBRE' },
+  { id: 12, description: 'DICIEMBRE' }
+]
+
+export const LISTREDONDING = [
+  { id: 1, description: 'SIN REDONDEO' },
+  { id: 2, description: 'AL PESO' }
+]
+
+export const LISTSTATUSCOUNTING = [
+  { id: 1, description: 'ACTIVO' },
+  { id: 2, description: 'INACTIVO' }
+]
+
+export const LISINUSOCOUNTING = [
+  { id: 1, description: 'SI' },
+  { id: 2, description: 'NO' }
+]
+
+export const TYPESEX = [
+  { id: 1, description: 'NINGUNA' },
+  { id: 2, description: 'FEMENINO' },
+  { id: 3, description: 'MASCULINO' },
+  { id: 4, description: 'AMBOS' }
+]
+
+export const TYPEPROF = [
+  { id: 1, description: 'MÉDICOGENERAL' },
+  { id: 2, description: 'MÉDICO ESPECIALISTA' },
+  { id: 3, description: 'ENFERMERA' },
+  { id: 4, description: 'AUXILIAR DE ENFERMERÍA' },
+  { id: 5, description: 'ODONTÓLOGO GENERAL' },
+  { id: 6, description: 'ODONTÓLOGO ESPECIALISTA' },
+  { id: 7, description: 'HIGIENISTA' },
+  { id: 8, description: 'NUTRICIONISTA' },
+  { id: 9, description: 'PSICOLOGÍA' },
+  { id: 10, description: 'TRABAJADORA SOCIAL' },
+  { id: 11, description: 'BACTERIÓLOGO' },
+  { id: 12, description: 'TERAPISTA' },
+  { id: 13, description: 'OPTÓMETRA' },
+  { id: 13, description: 'QUÍMICO FARMACÉUTICO' }
+]
+
+export const TYPECONT = [
+  { id: 1, description: 'VINCULACIÓN LEGAL Y REGLAMENTARIA' },
+  { id: 2, description: 'CONTRATO DE PRESTACIÓN DE SERVICIOS' },
+  { id: 3, description: 'TERCERIZACIÓN LABORAL ' },
+  { id: 4, description: 'CONTRATO INDIVIDUAL DE TRABAJO' },
+  { id: 5, description: 'CONTRATO COLECTIVO DE TRABAJO' }
+]
+
+export const TYPEGOODS = [
+  { id: 1, description: 'MUEBLE' },
+  { id: 2, description: 'INMUEBLE' }
+]
+
+export const RESIDUALVALUETYPE = [
+  { id: 1, description: 'VALOR' },
+  { id: 2, description: 'PORCENTAJE' }
+]
+
+export const GENDEP = [
+  { id: 1, description: 'SI' },
+  { id: 2, description: 'NO' }
+]
+
+export const TYPEUSEFULLIFE = [
+  { id: 1, description: 'AÑOS' },
+  { id: 2, description: 'MESES' }
+]
+
+export const MINORMAJOR = [
+  { id: 1, description: 'Mayor' },
+  { id: 2, description: 'Menor' }
+]
+
+export const findBy = function (arrayName, column) {
+  /*
+    permite crear solo un array de objetos tanto para mostrar
+    en los porp.row y para ser utilizado en los select
+    y asi evitar crear dos objetos diferentes
+    ej:
+     DOCUMENTTYPE
+     LISTDOCUMENTTYPE
+     solo crear (LISTDOCUMENTTYPE[{}])
+    * Devolverá un array que coincida con el valor de la llave id
+    * argumentos de la función.
+    @param arrayName recibe un array en el cual buscar por id
+    @param column recibe el id en cuestion
+    Ej:
+    findById(LISTDOCUMENTTYPE, props.row.documenttype)[0].description
+  */
+  const results = arrayName.filter(function (arrayNom) { return arrayNom.id === column })
+  return results
+}
