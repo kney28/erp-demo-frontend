@@ -65,7 +65,12 @@ const routes = [
 
       { path: '/goods/goopars', name: 'goopars', component: () => import('pages/goods/GooparsPage.vue') },
       { path: '/goods/gooconfs', name: 'gooconfs', component: () => import('pages/goods/GooconfsPage.vue') },
-      { path: '/goods/gooclas', name: 'gooclas', component: () => import('pages/goods/GooclasPage.vue') }
+      { path: '/goods/gooclas', name: 'gooclas', component: () => import('pages/goods/GooclasPage.vue') },
+
+      { path: '/treasury/tsnotcons', name: 'tsnotcons', component: () => import('pages/treasury/TsnotconsPage.vue') },
+      { path: '/treasury/tsboxess', name: 'tsboxess', component: () => import('pages/treasury/TsboxessPage.vue') },
+      { path: '/treasury/tsbankss', name: 'tsbankss', component: () => import('pages/treasury/TsbankssPage.vue') },
+      { path: '/treasury/tsconpays', name: 'tsconpays', component: () => import('pages/treasury/TsconpaysPage.vue') }
     ]
   },
   { path: '/login', name: 'login', component: () => import('src/pages/LoginPage2.vue') },
