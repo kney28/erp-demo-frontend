@@ -93,6 +93,10 @@ const routes = [
       { path: '/inventory/invmanufroless', name: 'invmanufroless', component: () => import('pages/inventory/InvmanufrolessPage.vue') },
       { path: '/inventory/invcums', name: 'invcums', component: () => import('pages/inventory/InvcumsPage.vue') },
       { path: '/inventory/invpharfors', name: 'invpharfors', component: () => import('pages/inventory/InvpharforsPage.vue') }
+      { path: '/treasury/tsnotcons', name: 'tsnotcons', component: () => import('pages/treasury/TsnotconsPage.vue') },
+      { path: '/treasury/tsboxess', name: 'tsboxess', component: () => import('pages/treasury/TsboxessPage.vue') },
+      { path: '/treasury/tsbankss', name: 'tsbankss', component: () => import('pages/treasury/TsbankssPage.vue') },
+      { path: '/treasury/tsconpays', name: 'tsconpays', component: () => import('pages/treasury/TsconpaysPage.vue') }
     ]
   },
   { path: '/login', name: 'login', component: () => import('src/pages/LoginPage2.vue') },

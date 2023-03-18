@@ -564,3 +564,27 @@ export const NATURES = [
   { id: 1, description: 'DÉBITO' },
   { id: 2, description: 'CRÉDITO' }
 ]
+export const MINORMAJOR = [
+  { id: 1, description: 'Mayor' },
+  { id: 2, description: 'Menor' }
+]
+
+export const findBy = function (arrayName, column) {
+  /*
+    permite crear solo un array de objetos tanto para mostrar
+    en los porp.row y para ser utilizado en los select
+    y asi evitar crear dos objetos diferentes
+    ej:
+     DOCUMENTTYPE
+     LISTDOCUMENTTYPE
+     solo crear (LISTDOCUMENTTYPE[{}])
+    * Devolverá un array que coincida con el valor de la llave id
+    * argumentos de la función.
+    @param arrayName recibe un array en el cual buscar por id
+    @param column recibe el id en cuestion
+    Ej:
+    findById(LISTDOCUMENTTYPE, props.row.documenttype)[0].description
+  */
+  const results = arrayName.filter(function (arrayNom) { return arrayNom.id === column })
+  return results
+}

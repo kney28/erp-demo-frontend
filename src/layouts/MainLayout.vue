@@ -1625,6 +1625,84 @@
                 expand-separator
                 icon="checklist"
                 label="Tesorería">
+                <q-expansion-item
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  expand-separator
+                  icon="engineering"
+                  label="Maestros">
+                  <q-item
+                    @click="setTabSelected('/treasury/tsnotcons', 'Conceptos de notas')"
+                    active-class="tab-active"
+                    to="/treasury/tsnotcons"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-notes-medical" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Conceptos de notas
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/treasury/tsboxess', 'Cajas')"
+                    active-class="tab-active"
+                    to="/treasury/tsboxess"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-cash-register" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Cajas
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/treasury/tsbankss', 'Bancos')"
+                    active-class="tab-active"
+                    to="/treasury/tsbankss"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-building-columns" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Bancos
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/treasury/tsconpays', 'Conceptos de pago')"
+                    active-class="tab-active"
+                    to="/treasury/tsconpays"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-receipt" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Conceptos de pago
+                    </q-item-section>
+                  </q-item>
+                </q-expansion-item>
               </q-expansion-item>
 
               <q-expansion-item
