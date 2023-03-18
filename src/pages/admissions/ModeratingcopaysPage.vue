@@ -4,7 +4,7 @@
       <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
         <div>
           <q-space />
-          <q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination"
+          <q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]"
             title="Moderatingcopay" :rows="dataModeratingcopays" :filter="filter" :columns="columns" row-key="name">
             <template v-slot:top-left>
               <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar" />
@@ -500,7 +500,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '!Está seguro que desea eliminar la moderatingcopay: ' + row.id + '?',
+        message: '!Está seguro que desea eliminar el concepto: ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'

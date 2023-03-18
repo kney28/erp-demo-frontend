@@ -577,7 +577,7 @@ export const TYPE = [
 ]
 
 export const TYPEADMIN = [
-  { id: '0', description: 'EPS' },
+  { id: 0, description: 'EPS' },
   { id: 1, description: 'EAS' },
   { id: 2, description: 'ARS' },
   { id: 3, description: 'ARP' },
