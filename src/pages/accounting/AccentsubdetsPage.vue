@@ -4,7 +4,7 @@
 <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
 <div>
 <q-space />
-<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Hcdignoses" :rows="dataHcdignosess" :filter="filter" :columns="columns" row-key="name" >
+<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Accentsubdet" :rows="dataAccentsubdets" :filter="filter" :columns="columns" row-key="name" >
 <template v-slot:top-left>
 <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
 <q-space />
@@ -21,17 +21,19 @@
 <q-td key="code" :props="props">
 {{ props.row.code }}
 </q-td>
-<q-td key="description" :props="props">
-{{ props.row.description }}
+<q-td key="conret" :props="props">
+{{ props.row.conret }}
 </q-td>
-<q-td key="sex" :props="props">
-{{ typesex[props.row.sex-1].word  }}
+<q-td key="nature" :props="props">
+{{ natures[props.row.nature-1].description }}</q-td>
+<q-td key="basevalue" :props="props">
+{{ props.row.basevalue }}
 </q-td>
-<q-td key="lowlimage" :props="props">
-{{ props.row.lowlimage }}
+<q-td key="withholdingpercentage" :props="props">
+{{ props.row.withholdingpercentage }}
 </q-td>
-<q-td key="upplimage" :props="props">
-{{ props.row.upplimage }}
+<q-td key="holdvalue" :props="props">
+{{ props.row.holdvalue }}
 </q-td>
 <q-td key="status" :props="props">
   {{ states[props.row.status] }}
@@ -73,30 +75,36 @@ Los campos marcados con (*) son obligatorios
 white
 color="blue"
 v-model="code"
-label="Codigo *"
+label="codigo *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="description"
-label="Descripción *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+    white
+    color="blue"
+    v-model="conret"
+    label="Concepto Retención *"
+    @filter="filterRetentionConcept"
+    :options="filterOptionsRetentionConcept"
+    option-value="id"
+    option-label="fullname"
+    emit-value
+    map-options
+    lazy-rules
+    :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
 <q-select
 white
 color="blue"
-v-model="sex"
-label="Sexo *"
+v-model="nature"
+label="Naturaleza *"
 option-label="description"
 option-value="id"
-:options="typesex"
+:options="natures"
 stack-label
 use-input
 input-debounce="0"
@@ -110,8 +118,8 @@ lazy-rules
 <q-input
 white
 color="blue"
-v-model="lowlimage"
-label="Edad límite inferior *"
+v-model="basevalue"
+label="valor base *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
@@ -120,17 +128,31 @@ lazy-rules
 <q-input
 white
 color="blue"
-v-model="upplimage"
-label="Edad límite superior *"
+v-model="withholdingpercentage"
+label="Porcentaje Retención *"
+lazy-rules
+:rules="[ val => !!val || 'El campo es obligatorio']"
+/>
+</div>
+<div class="col-md-4">
+<q-input
+white
+color="blue"
+v-model="holdvalue"
+label="Valor Retenido *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
 </div>
 </div>
 <div class="row justify-around">
-<div class="col-md-3">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-3">
       <q-toggle v-model="active" label="Estado"/>
     </div>
+    <div class="col-md-3">
+  </div>
 </div>
 </q-form>
 </q-card-section>
@@ -160,23 +182,26 @@ lazy-rules
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-import { ACTIVE, INACTIVE, STATUS, TYPESEX } from '../../constants/Constants'
+import { ACTIVE, INACTIVE, STATUS, NATURE } from '../../constants/Constants'
 export default defineComponent({
-  name: 'HcdignosessPage',
+  name: 'AccentsubdetsPage',
   setup () {
-    const path = '/clinict-history/hcdignosess'
+    const path = 'accounting/accentsubdets'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)
     const filter = ref(null)
-    const dataHcdignosess = ref([])
+    const dataAccentsubdets = ref([])
     const code = ref(null)
-    const typesex = ref(TYPESEX)
-    const sex = ref(null)
     const states = ref(STATUS)
-    const description = ref(null)
-    const lowlimage = ref(null)
-    const upplimage = ref(null)
+    const natures = ref(NATURE)
+    const nature = ref(null)
+    const conret = ref(null)
+    const dataRetentionConcept = ref([])
+    const filterOptionsRetentionConcept = ref(dataRetentionConcept)
+    const basevalue = ref(null)
+    const withholdingpercentage = ref(null)
+    const holdvalue = ref(null)
     const role = ref(null)
     const active = ref(false)
     const myForm = ref(null)
@@ -188,21 +213,29 @@ export default defineComponent({
     const isEditing = ref(false)
     const columns = ref([
       { name: 'code', align: 'center', label: 'Codigo', field: 'code', sortable: true },
-      { name: 'description', align: 'center', label: 'Descripción', field: 'description', sortable: true },
-      { name: 'sex', align: 'center', label: 'Sexo', field: 'sex', sortable: true },
-      { name: 'lowlimage', align: 'center', label: 'Edad límite inferior', field: 'lowlimage', sortable: true },
-      { name: 'upplimage', align: 'center', label: 'Edad límite superior', field: 'upplimage', sortable: true },
+      { name: 'conret', align: 'center', label: 'Concepto Retención', field: 'conret', sortable: true },
+      { name: 'nature', align: 'center', label: 'Naturaleza', field: 'nature', sortable: true },
+      { name: 'basevalue', align: 'center', label: 'Valor Base', field: 'basevalue', sortable: true },
+      { name: 'withholdingpercentage', align: 'center', label: 'Porcentaje Retención', field: 'withholdingpercentage', sortable: true },
+      { name: 'holdvalue', align: 'center', label: 'Valor Retenido', field: 'holdvalue', sortable: true },
       { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
     onMounted(() => {
-      getHcdignosess()
+      getAccentsubdets()
+      getRetentionConcept()
     })
-    const getHcdignosess = async () => {
+    const getAccentsubdets = async () => {
       visible.value = true
       const { data } = await api.get(path)
-      dataHcdignosess.value = data
+      dataAccentsubdets.value = data
+      visible.value = false
+    }
+    const getRetentionConcept = async () => {
+      visible.value = true
+      const { data } = await api.get('/retention-concepts')
+      dataRetentionConcept.value = data
       visible.value = false
     }
     const creating = () => {
@@ -211,10 +244,11 @@ export default defineComponent({
     }
     const onReset = () => {
       code.value = null
-      description.value = null
-      sex.value = null
-      lowlimage.value = null
-      upplimage.value = null
+      conret.value = null
+      nature.value = null
+      basevalue.value = null
+      withholdingpercentage.value = null
+      holdvalue.value = null
       isEditing.value = false
       active.value = false
     }
@@ -223,14 +257,15 @@ export default defineComponent({
         if (success) {
           api.post(path, {
             code: code.value,
-            description: description.value,
-            sex: sex.value,
-            lowlimage: lowlimage.value,
-            upplimage: upplimage.value,
+            conret: conret.value,
+            basevalue: basevalue.value,
+            withholdingpercentage: withholdingpercentage.value,
+            holdvalue: holdvalue.value,
+            nature: nature.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getHcdignosess()
+            getAccentsubdets()
           })
         }
       })
@@ -241,10 +276,11 @@ export default defineComponent({
       isEditing.value = true
       id.value = row.id
       code.value = row.code
-      sex.value = row.sex
-      description.value = row.description
-      lowlimage.value = row.lowlimage
-      upplimage.value = row.upplimage
+      nature.value = row.nature
+      conret.value = row.conret
+      basevalue.value = row.basevalue
+      withholdingpercentage.value = row.withholdingpercentage
+      holdvalue.value = row.holdvalue
       if (row.status === ACTIVE) {
         active.value = true
       }
@@ -254,14 +290,15 @@ export default defineComponent({
         if (success) {
           api.patch(path + '/' + id.value, {
             code: code.value,
-            description: description.value,
-            lowlimage: lowlimage.value,
-            sex: sex.value,
-            upplimage: upplimage.value,
+            conret: conret.value,
+            basevalue: basevalue.value,
+            nature: nature.value,
+            withholdingpercentage: withholdingpercentage.value,
+            holdvalue: holdvalue.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getHcdignosess()
+            getAccentsubdets()
           })
         }
       })
@@ -269,7 +306,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar el diagnostico: ' + row.description + '?',
+        message: '¿Está seguro que desea eliminar el sub formulario de detalles: ' + row.id + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -281,13 +318,25 @@ export default defineComponent({
       }).onOk(() => {
         api.delete(path + '/' + row.id).then(response => {
           dialog.value = false
-          getHcdignosess()
+          getAccentsubdets()
         })
+      })
+    }
+    const filterRetentionConcept = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsRetentionConcept.value = dataRetentionConcept.value
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsRetentionConcept.value = dataRetentionConcept.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
       })
     }
     return {
       dialog,
-      dataHcdignosess,
+      dataAccentsubdets,
       isEditing,
       role,
       active,
@@ -298,18 +347,23 @@ export default defineComponent({
       visible,
       filter,
       code,
-      description,
-      lowlimage,
-      upplimage,
+      conret,
+      basevalue,
+      withholdingpercentage,
+      holdvalue,
       onReset,
       onSubmit,
       editing,
       onEditing,
       id,
       onDelete,
-      sex,
-      typesex,
-      states
+      states,
+      natures,
+      nature,
+      getRetentionConcept,
+      dataRetentionConcept,
+      filterRetentionConcept,
+      filterOptionsRetentionConcept
     }
   }
 })

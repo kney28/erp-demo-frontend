@@ -454,10 +454,9 @@ export const LISINUSOCOUNTING = [
 ]
 
 export const TYPESEX = [
-  { id: 1, description: 'NINGUNA' },
-  { id: 2, description: 'FEMENINO' },
-  { id: 3, description: 'MASCULINO' },
-  { id: 4, description: 'AMBOS' }
+  { id: 1, description: 'FEMENINO', word: 'M' },
+  { id: 2, description: 'MASCULINO', word: 'H' },
+  { id: 3, description: 'AMBOS', word: 'A' }
 ]
 
 export const TYPEPROF = [
@@ -505,6 +504,66 @@ export const TYPEUSEFULLIFE = [
   { id: 2, description: 'MESES' }
 ]
 
+export const NATURE = [
+  { id: 1, description: 'DÉBITO' },
+  { id: 2, description: 'CRÉDITO' }
+]
+
+export const STATEDOCUMENT = [
+  { id: 1, description: 'SIN APROBAR' },
+  { id: 2, description: 'APROBADO' },
+  { id: 3, description: 'DEROGADO' }
+]
+
+export const TYPEGLOSS = [
+  { id: 1, description: 'NINGUNO' },
+  { id: 2, description: 'FACTURACIÓN' },
+  { id: 3, description: 'TARIFAS' },
+  { id: 4, description: 'AUTORIZACIÓN' },
+  { id: 5, description: 'COBERTURA' },
+  { id: 6, description: 'PERTINENCIA' },
+  { id: 7, description: 'DEVOLUCIÓN' },
+  { id: 8, description: 'RESPUESTA' }
+]
+
+export const COCEPTTYPE = [
+  { id: 1, description: 'NINGUNO' },
+  { id: 2, description: 'CUENTAS POR COBRAR' },
+  { id: 3, description: 'NOTAS' }
+]
+
+export const CONCEPTTYPE = [
+  { id: 0, description: 'NINGUNO' },
+  { id: 1, description: 'CUENTAS POR PAGAR' },
+  { id: 2, description: 'NOTAS' }
+]
+
+export const SELECTION = [
+  { id: 1, description: 'SI' },
+  { id: 2, description: 'NO' }
+]
+
+export const PROVIDERTYPE = [
+  { id: 1, description: 'NINGUNO' },
+  { id: 2, description: 'PRODUCTOS' },
+  { id: 3, description: 'SERVICIOS' },
+  { id: 4, description: 'AMBOS' }
+]
+
+export const EMEROFFICE = [
+  { id: 1, description: 'SI' },
+  { id: 2, description: 'NO' }
+]
+
+export const ROLTYPE = [
+  { id: 1, description: 'FABRICANTE' },
+  { id: 2, description: 'IMPORTADOR' }
+]
+
+export const NATURES = [
+  { id: 1, description: 'DÉBITO' },
+  { id: 2, description: 'CRÉDITO' }
+]
 export const MINORMAJOR = [
   { id: 1, description: 'Mayor' },
   { id: 2, description: 'Menor' }

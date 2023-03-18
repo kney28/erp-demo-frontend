@@ -4,7 +4,7 @@
 <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
 <div>
 <q-space />
-<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Hchealthpro" :rows="dataHchealthpros" :filter="filter" :columns="columns" row-key="name" >
+<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Accbeginningbalancesdet3" :rows="dataAccbeginningbalancesdet3s" :filter="filter" :columns="columns" row-key="name" >
 <template v-slot:top-left>
 <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
 <q-space />
@@ -21,28 +21,29 @@
 <q-td key="code" :props="props">
 {{ props.row.code }}
 </q-td>
-<q-td key="description" :props="props">
-{{ props.row.description }}
+<q-td key="idaccoentry" :props="props">
+{{ props.row.idaccoentry }}
 </q-td>
-<q-td key="typheapro" :props="props">
-{{ typeprofs[props.row.typeprof].description  }}
+<q-td key="idconcrete" :props="props">
+{{ props.row.idconcrete }}
 </q-td>
-<q-td key="idthird" :props="props">
-{{ props.row.idthird }}
+<q-td key="nature" :props="props">
+{{ natures[props.row.nature-1].description }}
 </q-td>
-<q-td key="businesscard" :props="props">
-{{ props.row.businesscard }}
+<q-td key="basevalue" :props="props">
+{{ props.row.basevalue }}
 </q-td>
-<q-td key="conttyp" :props="props">
-{{ typeconts[props.row.typecont].description  }}</q-td>
-<q-td key="idspecialty" :props="props">
-{{ props.row.idspecialty }}
+<q-td key="withholdingperc" :props="props">
+{{ props.row.withholdingperc }}
 </q-td>
-<q-td key="digsig" :props="props">
-{{ digsig[props.row.digsig] }}
+<q-td key="holdvalue" :props="props">
+{{ props.row.holdvalue }}
+</q-td>
+<q-td key="retainedvalue" :props="props">
+{{ props.row.retainedvalue }}
 </q-td>
 <q-td key="status" :props="props">
-  {{ state[props.row.status] }}
+  {{ states[props.row.status] }}
 </q-td>
 <q-td key="edit" :props="props">
 <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
@@ -87,24 +88,56 @@ lazy-rules
 />
 </div>
 <div class="col-md-4">
+  <q-select
+  white
+  color="blue"
+  v-model="idaccoentry"
+  label="Asiento Contable Detalle *"
+  @filter="filterFnAccountingSeat"
+  :options="filterOptionsAccountingSeat"
+  option-value="id"
+  option-label="detail"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
+</div>
+<div class="col-md-4">
 <q-input
 white
 color="blue"
-v-model="description"
-label="Descripción  *"
+v-model="idconcrete"
+label="idconcrete *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
 </div>
 <div class="col-md-4">
+  <q-select
+  white
+  color="blue"
+  v-model="idconcrete"
+  label="Concepto Retención *"
+  @filter="filterFnRetentionConcept"
+  :options="filterOptionsRetentionConcept"
+  option-value="id"
+  option-label="description"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
+</div>
+<div class="col-md-4">
 <q-select
 white
 color="blue"
-v-model="typeprof"
-label="Tipo de profesional en salud *"
+v-model="nature"
+label="Naturaleza *"
 option-label="description"
 option-value="id"
-:options="typeprofs"
+:options="natures"
 stack-label
 use-input
 input-debounce="0"
@@ -115,75 +148,44 @@ lazy-rules
 />
 </div>
 <div class="col-md-4">
-  <q-select
-    white
-    color="blue"
-    v-model="idthird"
-    label="Tercero *"
-    @filter="filterFnAccountThirPerson"
-    :options="filterOptionsAccountThirPerson"
-    option-value="id"
-    option-label="fullname"
-    emit-value
-    map-options
-    lazy-rules
-    :rules="[ val => !!val || 'El campo es obligatorio']"
-  />
+<q-input
+white
+color="blue"
+v-model="basevalue"
+label="Valor Base *"
+lazy-rules
+:rules="[ val => !!val || 'El campo es obligatorio']"
+/>
 </div>
 <div class="col-md-4">
 <q-input
 white
 color="blue"
-v-model="businesscard"
-label="Tarjeta Profesional *"
+v-model="withholdingperc"
+label="Porcentaje Retención *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
-</div>
-<div class="col-md-4">
-<q-select
-white
-color="blue"
-v-model="typecont"
-label="Tipo de Contratación *"
-option-label="description"
-option-value="id"
-:options="typeconts"
-stack-label
-use-input
-input-debounce="0"
-emit-value
-map-options
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
-</div>
-<div class="col-md-4">
-  <q-select
-    white
-    color="blue"
-    v-model="idspecialty"
-    label="Especialidad *"
-    @filter="filterFnAccountHcSpecialtiess"
-    :options="filterOptionsAccountHcSpecialtiess"
-    option-value="id"
-    option-label="code"
-    emit-value
-    map-options
-    lazy-rules
-    :rules="[ val => !!val || 'El campo es obligatorio']"
-  />
 </div>
 <div class="col-md-4">
 <q-input
 white
 color="blue"
-v-model="digsig"
-label="Descripción de Especialidad *"
+v-model="holdvalue"
+label="Mantener Valor *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
 </div>
+<div class="col-md-4">
+<q-input
+white
+color="blue"
+v-model="retainedvalue"
+label="Valor Retenido *"
+lazy-rules
+:rules="[ val => !!val || 'El campo es obligatorio']"
+/>
 </div>
 <div class="row justify-around">
     <div class="col-md-3">
@@ -193,6 +195,7 @@ lazy-rules
     </div>
     <div class="col-md-3">
   </div>
+</div>
 </div>
 </q-form>
 </q-card-section>
@@ -222,31 +225,30 @@ lazy-rules
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-import { ACTIVE, INACTIVE, STATUS, TYPECONT, TYPEPROF } from '../../constants/Constants'
+import { ACTIVE, INACTIVE, STATUS, NATURE } from '../../constants/Constants'
 export default defineComponent({
-  name: 'HchealthprosPage',
+  name: 'Accbeginningbalancesdet3sPage',
   setup () {
-    const path = '/clinict-history/hchealthpros'
+    const path = 'accounting/accbeginningbalancesdet3s'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)
     const filter = ref(null)
-    const dataHchealthpros = ref([])
+    const dataAccbeginningbalancesdet3s = ref([])
+    const states = ref(STATUS)
+    const natures = ref(NATURE)
+    const nature = ref(null)
+    const dataAccountingSeat = ref([])
+    const filterOptionsAccountingSeat = ref(dataAccountingSeat)
+    const dataRetentionConcept = ref([])
+    const filterOptionsRetentionConcept = ref(dataRetentionConcept)
     const code = ref(null)
-    const state = ref(STATUS)
-    const typeconts = ref(TYPECONT)
-    const typecont = ref(null)
-    const typeprofs = ref(TYPEPROF)
-    const typeprof = ref(null)
-    const description = ref(null)
-    const idthird = ref(null)
-    const dataAccountThirPerson = ref([])
-    const filterOptionsAccountThirPerson = ref(dataAccountThirPerson)
-    const dataAccountHcSpecialtiess = ref([])
-    const filterOptionsAccountHcSpecialtiess = ref(dataAccountHcSpecialtiess)
-    const businesscard = ref(null)
-    const idspecialty = ref(null)
-    const digsig = ref(null)
+    const idaccoentry = ref(null)
+    const idconcrete = ref(null)
+    const basevalue = ref(null)
+    const withholdingperc = ref(null)
+    const holdvalue = ref(null)
+    const retainedvalue = ref(null)
     const role = ref(null)
     const active = ref(false)
     const myForm = ref(null)
@@ -258,37 +260,38 @@ export default defineComponent({
     const isEditing = ref(false)
     const columns = ref([
       { name: 'code', align: 'center', label: 'Codigo', field: 'code', sortable: true },
-      { name: 'description', align: 'center', label: 'Descripción', field: 'description', sortable: true },
-      { name: 'typheapro', align: 'center', label: 'Tipo de profesional en salud', field: 'typheapro', sortable: true },
-      { name: 'idthird', align: 'center', label: 'Tercero', field: 'idthird', sortable: true },
-      { name: 'businesscard', align: 'center', label: 'Tarjeta Profesional', field: 'businesscard', sortable: true },
-      { name: 'conttyp', align: 'center', label: 'Tipo de Contratación', field: 'conttyp', sortable: true },
-      { name: 'idspecialty', align: 'center', label: 'Especialidad', field: 'idspecialty', sortable: true },
-      { name: 'digsig', align: 'center', label: 'Descripción de Especialidad', field: 'digsig', sortable: true },
+      { name: 'idaccoentry', align: 'center', label: 'Asiento Contable Detalle', field: 'idaccoentry', sortable: true },
+      { name: 'idconcrete', align: 'center', label: 'Concepto Retención', field: 'idconcrete', sortable: true },
+      { name: 'nature', align: 'center', label: 'Naturaleza', field: 'nature', sortable: true },
+      { name: 'basevalue', align: 'center', label: 'Valor Base', field: 'basevalue', sortable: true },
+      { name: 'withholdingperc', align: 'center', label: 'Porcentaje Retención', field: 'withholdingperc', sortable: true },
+      { name: 'holdvalue', align: 'center', label: 'Mantener Valor', field: 'holdvalue', sortable: true },
+      { name: 'retainedvalue', align: 'center', label: 'Valor Retenido', field: 'retainedvalue', sortable: true },
       { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
     onMounted(() => {
-      getHchealthpros()
-      getAccountThirPerson()
+      getAccbeginningbalancesdet3s()
+      getAccountingSeat()
+      getRetentionConcept()
     })
-    const getAccountThirPerson = async () => {
-      visible.value = true
-      const { data } = await api.get('/thirdperson')
-      dataAccountThirPerson.value = data
-      visible.value = false
-    }
-    const getAccountHcSpecialtiess = async () => {
-      visible.value = true
-      const { data } = await api.get('/clinict-history/hcspecialtiess')
-      dataAccountHcSpecialtiess.value = data
-      visible.value = false
-    }
-    const getHchealthpros = async () => {
+    const getAccbeginningbalancesdet3s = async () => {
       visible.value = true
       const { data } = await api.get(path)
-      dataHchealthpros.value = data
+      dataAccbeginningbalancesdet3s.value = data
+      visible.value = false
+    }
+    const getAccountingSeat = async () => {
+      visible.value = true
+      const { data } = await api.get('/accountingseats')
+      dataAccountingSeat.value = data
+      visible.value = false
+    }
+    const getRetentionConcept = async () => {
+      visible.value = true
+      const { data } = await api.get('/retention-concepts')
+      dataRetentionConcept.value = data
       visible.value = false
     }
     const creating = () => {
@@ -297,11 +300,13 @@ export default defineComponent({
     }
     const onReset = () => {
       code.value = null
-      description.value = null
-      idthird.value = null
-      businesscard.value = null
-      idspecialty.value = null
-      digsig.value = null
+      idaccoentry.value = null
+      idconcrete.value = null
+      basevalue.value = null
+      withholdingperc.value = null
+      holdvalue.value = null
+      nature.value = null
+      retainedvalue.value = null
       isEditing.value = false
       active.value = false
     }
@@ -310,15 +315,17 @@ export default defineComponent({
         if (success) {
           api.post(path, {
             code: code.value,
-            description: description.value,
-            idthird: idthird.value,
-            businesscard: businesscard.value,
-            idspecialty: idspecialty.value,
-            digsig: digsig.value,
+            idaccoentry: idaccoentry.value,
+            idconcrete: idconcrete.value,
+            basevalue: basevalue.value,
+            withholdingperc: withholdingperc.value,
+            holdvalue: holdvalue.value,
+            retainedvalue: retainedvalue.value,
+            nature: nature.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getHchealthpros()
+            getAccbeginningbalancesdet3s()
           })
         }
       })
@@ -329,11 +336,13 @@ export default defineComponent({
       isEditing.value = true
       id.value = row.id
       code.value = row.code
-      description.value = row.description
-      idthird.value = row.idthird
-      businesscard.value = row.businesscard
-      idspecialty.value = row.idspecialty
-      digsig.value = row.digsig
+      idaccoentry.value = row.idaccoentry
+      idconcrete.value = row.idconcrete
+      basevalue.value = row.basevalue
+      withholdingperc.value = row.withholdingperc
+      holdvalue.value = row.holdvalue
+      retainedvalue.value = row.retainedvalue
+      nature.value = row.nature
       if (row.status === ACTIVE) {
         active.value = true
       }
@@ -343,15 +352,17 @@ export default defineComponent({
         if (success) {
           api.patch(path + '/' + id.value, {
             code: code.value,
-            description: description.value,
-            idthird: idthird.value,
-            businesscard: businesscard.value,
-            idspecialty: idspecialty.value,
-            digsig: digsig.value,
+            idaccoentry: idaccoentry.value,
+            idconcrete: idconcrete.value,
+            basevalue: basevalue.value,
+            withholdingperc: withholdingperc.value,
+            holdvalue: holdvalue.value,
+            retainedvalue: retainedvalue.value,
+            nature: nature.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getHchealthpros()
+            getAccbeginningbalancesdet3s()
           })
         }
       })
@@ -359,7 +370,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar el profesional de la salud: ' + row.id + '?',
+        message: '¿Está seguro que desea eliminar el subdetalle: ' + row.code + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -371,39 +382,37 @@ export default defineComponent({
       }).onOk(() => {
         api.delete(path + '/' + row.id).then(response => {
           dialog.value = false
-          getHchealthpros()
+          getAccbeginningbalancesdet3s()
         })
       })
     }
-
-    const filterFnAccountThirPerson = (val, update) => {
+    const filterFnAccountingSeat = (val, update) => {
       if (val === '') {
         update(() => {
-          filterOptionsAccountThirPerson.value = dataAccountThirPerson.value
+          filterOptionsAccountingSeat.value = dataAccountingSeat.value
         })
         return
       }
       update(() => {
         const needle = val.toLowerCase()
-        filterOptionsAccountThirPerson.value = dataAccountThirPerson.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+        filterOptionsAccountingSeat.value = dataAccountingSeat.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
       })
     }
-
-    const filterFnAccountHcSpecialtiess = (val, update) => {
+    const filterFnRetentionConcept = (val, update) => {
       if (val === '') {
         update(() => {
-          filterOptionsAccountHcSpecialtiess.value = dataAccountHcSpecialtiess.value
+          filterOptionsRetentionConcept.value = dataRetentionConcept.value
         })
         return
       }
       update(() => {
         const needle = val.toLowerCase()
-        filterOptionsAccountHcSpecialtiess.value = dataAccountHcSpecialtiess.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+        filterOptionsRetentionConcept.value = dataRetentionConcept.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
       })
     }
     return {
       dialog,
-      dataHchealthpros,
+      dataAccbeginningbalancesdet3s,
       isEditing,
       role,
       active,
@@ -414,29 +423,27 @@ export default defineComponent({
       visible,
       filter,
       code,
-      description,
-      idthird,
-      businesscard,
-      idspecialty,
-      digsig,
+      idaccoentry,
+      idconcrete,
+      basevalue,
+      withholdingperc,
+      holdvalue,
+      retainedvalue,
       onReset,
       onSubmit,
       editing,
       onEditing,
       id,
       onDelete,
-      state,
-      typeconts,
-      typecont,
-      typeprofs,
-      typeprof,
-      dataAccountThirPerson,
-      filterFnAccountThirPerson,
-      filterOptionsAccountThirPerson,
-      getAccountHcSpecialtiess,
-      dataAccountHcSpecialtiess,
-      filterFnAccountHcSpecialtiess,
-      filterOptionsAccountHcSpecialtiess
+      states,
+      natures,
+      nature,
+      filterFnRetentionConcept,
+      filterOptionsRetentionConcept,
+      dataRetentionConcept,
+      filterFnAccountingSeat,
+      filterOptionsAccountingSeat,
+      dataAccountingSeat
     }
   }
 })
