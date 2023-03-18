@@ -865,6 +865,42 @@
                       Población especial
                     </q-item-section>
                   </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/admissions/moderatingcopays', 'Copagos y cuotas moderadoras')"
+                    active-class="tab-active"
+                    to="/admissions/moderatingcopays"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-hand-holding-dollar"/>
+                    </q-item-section>
+
+                    <q-item-section>
+                      Copagos y cuotas moderadoras
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/admissions/healthadministrators', 'Administradoras de Salud')"
+                    active-class="tab-active"
+                    to="/admissions/healthadministrators"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-regular fa-hospital"/>
+                    </q-item-section>
+
+                    <q-item-section>
+                      Administradoras de Salud
+                    </q-item-section>
+                  </q-item>
                 </q-expansion-item>
                 <q-expansion-item
                   expand-separator
