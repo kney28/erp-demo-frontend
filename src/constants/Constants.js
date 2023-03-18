@@ -569,6 +569,36 @@ export const MINORMAJOR = [
   { id: 2, description: 'Menor' }
 ]
 
+export const TYPE = [
+  { id: 1, description: 'Cuota Moderadora' },
+  { id: 2, description: 'Copago' },
+  { id: 3, description: 'Régimen subsidiado' },
+  { id: 4, description: 'Vinculados' }
+]
+
+export const TYPEADMIN = [
+  { id: 0, description: 'EPS' },
+  { id: 1, description: 'EAS' },
+  { id: 2, description: 'ARS' },
+  { id: 3, description: 'ARP' },
+  { id: 4, description: 'MP' },
+  { id: 5, description: 'ESE' },
+  { id: 6, description: 'EEPS' },
+  { id: 7, description: 'IPS' },
+  { id: 8, description: 'EMP' },
+  { id: 9, description: 'PPN' },
+  { id: 10, description: 'PPJ' },
+  { id: 11, description: 'OTRAS' },
+  { id: 12, description: 'EPS_S' }
+]
+
+export const TYPEIDENT = [
+  { id: 1, description: 'NIT' },
+  { id: 2, description: 'Municipio' },
+  { id: 3, description: 'Departamento' },
+  { id: 4, description: 'Distrito' }
+]
+
 export const findBy = function (arrayName, column) {
   /*
     permite crear solo un array de objetos tanto para mostrar
