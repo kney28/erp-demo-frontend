@@ -1668,6 +1668,38 @@
                   icon="engineering"
                   label="Maestros">
                   <q-item
+                    @click="setTabSelected('/treasury/tscasreccons', 'Conceptos de Recibos de Caja')"
+                    active-class="tab-active"
+                    to="/treasury/tscasreccons"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="receipt" />
+                    </q-item-section>
+                    <q-item-section>
+                      Conceptos de Recibos de Caja
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/treasury/tsdiscons', 'Conceptos de Egreso')"
+                    active-class="tab-active"
+                    to="/treasury/tsdiscons"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="receipt" />
+                    </q-item-section>
+                    <q-item-section>
+                      Conceptos de Egreso
+                    </q-item-section>
+                  </q-item>
+                  <q-item
                     @click="setTabSelected('/treasury/tsnotcons', 'Conceptos de notas')"
                     active-class="tab-active"
                     to="/treasury/tsnotcons"

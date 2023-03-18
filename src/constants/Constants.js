@@ -453,6 +453,23 @@ export const LISINUSOCOUNTING = [
   { id: 2, description: 'NO' }
 ]
 
+export const OPTIONSINTERFACECXC = [
+  { id: 1, description: 'Ninguno' },
+  { id: 2, description: 'CXC' },
+  { id: 3, description: 'Anticipos' }
+]
+
+export const OPTIONNATURE = [
+  { id: 1, description: 'Ninguno' },
+  { id: 2, description: 'Debito' },
+  { id: 3, description: 'Credito' }
+]
+
+export const OPTIONSINTERFACECXP = [
+  { id: 1, description: 'Ninguno' },
+  { id: 2, description: 'CXP' },
+  { id: 3, description: 'Anticipos' }
+]
 export const TYPESEX = [
   { id: 1, description: 'FEMENINO', word: 'M' },
   { id: 2, description: 'MASCULINO', word: 'H' },
