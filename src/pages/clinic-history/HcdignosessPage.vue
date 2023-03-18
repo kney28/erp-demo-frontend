@@ -126,6 +126,8 @@ lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
 </div>
+</div>
+<div class="row justify-around">
 <div class="col-md-3">
       <q-toggle v-model="active" label="Estado"/>
     </div>
@@ -267,7 +269,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar el diagnostico: ' + row.id + '?',
+        message: '¿Está seguro que desea eliminar el diagnostico: ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'

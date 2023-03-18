@@ -25,7 +25,7 @@
 {{ props.row.description }}
 </q-td>
 <q-td key="type" :props="props">
-{{ typecocept[props.row.type-1].description  }}
+{{ typecocept[props.row.type].description  }}
 </q-td>
 <q-td key="idledacc" :props="props">
 {{ props.row.idledacc.description }}
@@ -97,9 +97,6 @@ label="Tipo *"
 option-label="description"
 option-value="id"
 :options="typecocept"
-stack-label
-use-input
-input-debounce="0"
 emit-value
 map-options
 lazy-rules

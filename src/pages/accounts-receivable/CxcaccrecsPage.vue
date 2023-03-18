@@ -4,7 +4,7 @@
 <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
 <div>
 <q-space />
-<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Cxcaccrec" :rows="dataCxcaccrecs" :filter="filter" :columns="columns" row-key="name" >
+<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" title="Cxcaccrec" :rows="dataCxcaccrecs" :filter="filter" :columns="columns" row-key="name" >
 <template v-slot:top-left>
 <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
 <q-space />
@@ -25,7 +25,7 @@
 {{ props.row.description }}
 </q-td>
 <q-td key="typglo" :props="props">
-{{ typegloss[props.row.typglo].description  }}
+{{ typegloss[props.row.typglo - 1].description  }}
 </q-td>
 <q-td key="status" :props="props">
   {{ states[props.row.status] }}

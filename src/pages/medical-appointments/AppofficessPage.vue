@@ -4,7 +4,7 @@
 <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
 <div>
 <q-space />
-<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Appoffices" :rows="dataAppofficess" :filter="filter" :columns="columns" row-key="name" >
+<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" title="Appoffices" :rows="dataAppofficess" :filter="filter" :columns="columns" row-key="name" >
 <template v-slot:top-left>
 <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
 <q-space />
@@ -25,10 +25,10 @@
 {{ props.row.description }}
 </q-td>
 <q-td key="idheadquarters" :props="props">
-{{ props.row.idheadquarters }}
+{{ props.row.idheadquarters.description }}
 </q-td>
 <q-td key="emeroffice" :props="props">
-{{ emeroffices[props.row.emeroffice].description }}
+{{ emeroffices[props.row.emeroffice - 1].description }}
 </q-td>
 <q-td key="status" :props="props">
   {{ states[props.row.status] }}
@@ -81,16 +81,6 @@ white
 color="blue"
 v-model="description"
 label="Descripción *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
-</div>
-<div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idheadquarters"
-label="Sede *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
