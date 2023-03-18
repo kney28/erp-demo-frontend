@@ -1,0 +1,450 @@
+<template>
+<q-page class="q-pa-md q-gutter-sm">
+<div>
+<transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
+<div>
+<q-space />
+<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Accbeginningbalancesdet3" :rows="dataAccbeginningbalancesdet3s" :filter="filter" :columns="columns" row-key="name" >
+<template v-slot:top-left>
+<q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
+<q-space />
+</template>
+<template v-slot:top-right>
+<q-input dense debounce="300" v-model="filter" placeholder="Buscar">
+<template v-slot:append>
+<q-icon name="search" />
+</template>
+</q-input>
+</template>
+<template v-slot:body="props">
+<q-tr :props="props">
+<q-td key="code" :props="props">
+{{ props.row.code }}
+</q-td>
+<q-td key="idaccoentry" :props="props">
+{{ props.row.idaccoentry }}
+</q-td>
+<q-td key="idconcrete" :props="props">
+{{ props.row.idconcrete }}
+</q-td>
+<q-td key="nature" :props="props">
+{{ natures[props.row.nature-1].description }}
+</q-td>
+<q-td key="basevalue" :props="props">
+{{ props.row.basevalue }}
+</q-td>
+<q-td key="withholdingperc" :props="props">
+{{ props.row.withholdingperc }}
+</q-td>
+<q-td key="holdvalue" :props="props">
+{{ props.row.holdvalue }}
+</q-td>
+<q-td key="retainedvalue" :props="props">
+{{ props.row.retainedvalue }}
+</q-td>
+<q-td key="status" :props="props">
+  {{ states[props.row.status] }}
+</q-td>
+<q-td key="edit" :props="props">
+<q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
+</q-td>
+<q-td key="delete" :props="props">
+<q-btn round size="xs" color="negative" icon="delete_forever" v-on:click="onDelete(props.row)" />
+</q-td>
+</q-tr>
+</template>
+</q-table>
+</div>
+</transition>
+<q-inner-loading :showing="visible">
+<q-spinner-pie color="primary" size="70px"/>
+</q-inner-loading>
+</div>
+<q-dialog v-model="dialog" persistent>
+<q-card style="width: 700px; max-width: 80vw;">
+<q-linear-progress :value="10" color="blue" />
+<q-card-section class="row items-center">
+<div class="text-h6"> </div>
+<q-space />
+<q-btn icon="close" flat round dense v-close-popup />
+</q-card-section>
+<q-banner class="bg-grey-3">
+<template v-slot:avatar>
+<q-icon name="warning" color="warning" />
+</template>
+Los campos marcados con (*) son obligatorios
+</q-banner>
+<q-card-section>
+<q-form ref="myForm" @submit.prevent="">
+<div class="row justify-around">
+<div class="col-md-4">
+<q-input
+white
+color="blue"
+v-model="code"
+label="Codigo *"
+lazy-rules
+:rules="[ val => !!val || 'El campo es obligatorio']"
+/>
+</div>
+<div class="col-md-4">
+  <q-select
+  white
+  color="blue"
+  v-model="idaccoentry"
+  label="Asiento Contable Detalle *"
+  @filter="filterFnAccountingSeat"
+  :options="filterOptionsAccountingSeat"
+  option-value="id"
+  option-label="detail"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
+</div>
+<div class="col-md-4">
+<q-input
+white
+color="blue"
+v-model="idconcrete"
+label="idconcrete *"
+lazy-rules
+:rules="[ val => !!val || 'El campo es obligatorio']"
+/>
+</div>
+<div class="col-md-4">
+  <q-select
+  white
+  color="blue"
+  v-model="idconcrete"
+  label="Concepto Retención *"
+  @filter="filterFnRetentionConcept"
+  :options="filterOptionsRetentionConcept"
+  option-value="id"
+  option-label="description"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
+</div>
+<div class="col-md-4">
+<q-select
+white
+color="blue"
+v-model="nature"
+label="Naturaleza *"
+option-label="description"
+option-value="id"
+:options="natures"
+stack-label
+use-input
+input-debounce="0"
+emit-value
+map-options
+lazy-rules
+:rules="[ val => !!val || 'El campo es obligatorio']"
+/>
+</div>
+<div class="col-md-4">
+<q-input
+white
+color="blue"
+v-model="basevalue"
+label="Valor Base *"
+lazy-rules
+:rules="[ val => !!val || 'El campo es obligatorio']"
+/>
+</div>
+<div class="col-md-4">
+<q-input
+white
+color="blue"
+v-model="withholdingperc"
+label="Porcentaje Retención *"
+lazy-rules
+:rules="[ val => !!val || 'El campo es obligatorio']"
+/>
+</div>
+<div class="col-md-4">
+<q-input
+white
+color="blue"
+v-model="holdvalue"
+label="Mantener Valor *"
+lazy-rules
+:rules="[ val => !!val || 'El campo es obligatorio']"
+/>
+</div>
+<div class="col-md-4">
+<q-input
+white
+color="blue"
+v-model="retainedvalue"
+label="Valor Retenido *"
+lazy-rules
+:rules="[ val => !!val || 'El campo es obligatorio']"
+/>
+</div>
+<div class="row justify-around">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-3">
+      <q-toggle v-model="active" label="Estado"/>
+    </div>
+    <div class="col-md-3">
+  </div>
+</div>
+</div>
+</q-form>
+</q-card-section>
+<div class="row justify-between">
+<q-card-actions align="left" class="bg-white text-teal">
+</q-card-actions>
+<q-card-actions align="right" class="bg-white text-teal">
+<div v-if="!isEditing">
+<q-btn round icon="save" @click.prevent="onSubmit" color="primary"/>
+<q-tooltip>Guardar datos</q-tooltip>
+</div>
+<div v-else>
+<q-btn round icon="save" @click.prevent="onEditing" color="primary"/>
+<q-tooltip>Editar datos</q-tooltip>
+</div> &nbsp;
+<div>
+<q-btn round icon="cancel" v-close-popup color="negative"/>
+<q-tooltip>Cancelar</q-tooltip>
+</div>
+</q-card-actions>
+</div>
+</q-card>
+</q-dialog>
+</q-page>
+</template>
+<script>
+import { defineComponent, ref, onMounted } from 'vue'
+import { useQuasar } from 'quasar'
+import { api } from 'boot/axios'
+import { ACTIVE, INACTIVE, STATUS, NATURE } from '../../constants/Constants'
+export default defineComponent({
+  name: 'Accbeginningbalancesdet3sPage',
+  setup () {
+    const path = 'accounting/accbeginningbalancesdet3s'
+    const dialog = ref(false)
+    const visible = ref(false)
+    const id = ref(null)
+    const filter = ref(null)
+    const dataAccbeginningbalancesdet3s = ref([])
+    const states = ref(STATUS)
+    const natures = ref(NATURE)
+    const nature = ref(null)
+    const dataAccountingSeat = ref([])
+    const filterOptionsAccountingSeat = ref(dataAccountingSeat)
+    const dataRetentionConcept = ref([])
+    const filterOptionsRetentionConcept = ref(dataRetentionConcept)
+    const code = ref(null)
+    const idaccoentry = ref(null)
+    const idconcrete = ref(null)
+    const basevalue = ref(null)
+    const withholdingperc = ref(null)
+    const holdvalue = ref(null)
+    const retainedvalue = ref(null)
+    const role = ref(null)
+    const active = ref(false)
+    const myForm = ref(null)
+    const $q = useQuasar()
+    const pagination = ref({
+      page: 1,
+      rowsPerPage: 10
+    })
+    const isEditing = ref(false)
+    const columns = ref([
+      { name: 'code', align: 'center', label: 'Codigo', field: 'code', sortable: true },
+      { name: 'idaccoentry', align: 'center', label: 'Asiento Contable Detalle', field: 'idaccoentry', sortable: true },
+      { name: 'idconcrete', align: 'center', label: 'Concepto Retención', field: 'idconcrete', sortable: true },
+      { name: 'nature', align: 'center', label: 'Naturaleza', field: 'nature', sortable: true },
+      { name: 'basevalue', align: 'center', label: 'Valor Base', field: 'basevalue', sortable: true },
+      { name: 'withholdingperc', align: 'center', label: 'Porcentaje Retención', field: 'withholdingperc', sortable: true },
+      { name: 'holdvalue', align: 'center', label: 'Mantener Valor', field: 'holdvalue', sortable: true },
+      { name: 'retainedvalue', align: 'center', label: 'Valor Retenido', field: 'retainedvalue', sortable: true },
+      { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
+      { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
+      { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
+    ])
+    onMounted(() => {
+      getAccbeginningbalancesdet3s()
+      getAccountingSeat()
+      getRetentionConcept()
+    })
+    const getAccbeginningbalancesdet3s = async () => {
+      visible.value = true
+      const { data } = await api.get(path)
+      dataAccbeginningbalancesdet3s.value = data
+      visible.value = false
+    }
+    const getAccountingSeat = async () => {
+      visible.value = true
+      const { data } = await api.get('/accountingseats')
+      dataAccountingSeat.value = data
+      visible.value = false
+    }
+    const getRetentionConcept = async () => {
+      visible.value = true
+      const { data } = await api.get('/retention-concepts')
+      dataRetentionConcept.value = data
+      visible.value = false
+    }
+    const creating = () => {
+      onReset()
+      dialog.value = true
+    }
+    const onReset = () => {
+      code.value = null
+      idaccoentry.value = null
+      idconcrete.value = null
+      basevalue.value = null
+      withholdingperc.value = null
+      holdvalue.value = null
+      nature.value = null
+      retainedvalue.value = null
+      isEditing.value = false
+      active.value = false
+    }
+    const onSubmit = () => {
+      myForm.value.validate().then(async success => {
+        if (success) {
+          api.post(path, {
+            code: code.value,
+            idaccoentry: idaccoentry.value,
+            idconcrete: idconcrete.value,
+            basevalue: basevalue.value,
+            withholdingperc: withholdingperc.value,
+            holdvalue: holdvalue.value,
+            retainedvalue: retainedvalue.value,
+            nature: nature.value,
+            status: active.value ? ACTIVE : INACTIVE
+          }).then(() => {
+            dialog.value = false
+            getAccbeginningbalancesdet3s()
+          })
+        }
+      })
+    }
+    const editing = (row) => {
+      onReset()
+      dialog.value = true
+      isEditing.value = true
+      id.value = row.id
+      code.value = row.code
+      idaccoentry.value = row.idaccoentry
+      idconcrete.value = row.idconcrete
+      basevalue.value = row.basevalue
+      withholdingperc.value = row.withholdingperc
+      holdvalue.value = row.holdvalue
+      retainedvalue.value = row.retainedvalue
+      nature.value = row.nature
+      if (row.status === ACTIVE) {
+        active.value = true
+      }
+    }
+    const onEditing = () => {
+      myForm.value.validate().then(async success => {
+        if (success) {
+          api.patch(path + '/' + id.value, {
+            code: code.value,
+            idaccoentry: idaccoentry.value,
+            idconcrete: idconcrete.value,
+            basevalue: basevalue.value,
+            withholdingperc: withholdingperc.value,
+            holdvalue: holdvalue.value,
+            retainedvalue: retainedvalue.value,
+            nature: nature.value,
+            status: active.value ? ACTIVE : INACTIVE
+          }).then(() => {
+            dialog.value = false
+            getAccbeginningbalancesdet3s()
+          })
+        }
+      })
+    }
+    const onDelete = (row) => {
+      $q.dialog({
+        title: 'Confirmación',
+        message: '¿Está seguro que desea eliminar el subdetalle: ' + row.code + '?',
+        ok: {
+          label: 'Si',
+          color: 'positive'
+        },
+        cancel: {
+          label: 'No',
+          color: 'negative'
+        }
+      }).onOk(() => {
+        api.delete(path + '/' + row.id).then(response => {
+          dialog.value = false
+          getAccbeginningbalancesdet3s()
+        })
+      })
+    }
+    const filterFnAccountingSeat = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsAccountingSeat.value = dataAccountingSeat.value
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsAccountingSeat.value = dataAccountingSeat.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+      })
+    }
+    const filterFnRetentionConcept = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsRetentionConcept.value = dataRetentionConcept.value
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsRetentionConcept.value = dataRetentionConcept.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+      })
+    }
+    return {
+      dialog,
+      dataAccbeginningbalancesdet3s,
+      isEditing,
+      role,
+      active,
+      myForm,
+      pagination,
+      creating,
+      columns,
+      visible,
+      filter,
+      code,
+      idaccoentry,
+      idconcrete,
+      basevalue,
+      withholdingperc,
+      holdvalue,
+      retainedvalue,
+      onReset,
+      onSubmit,
+      editing,
+      onEditing,
+      id,
+      onDelete,
+      states,
+      natures,
+      nature,
+      filterFnRetentionConcept,
+      filterOptionsRetentionConcept,
+      dataRetentionConcept,
+      filterFnAccountingSeat,
+      filterOptionsAccountingSeat,
+      dataAccountingSeat
+    }
+  }
+})
+</script>

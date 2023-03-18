@@ -455,6 +455,222 @@
                       Saldos iniciales
                     </q-item-section>
                   </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/accounting/accinicialruns', 'Ejecución inicial')"
+                    active-class="tab-active"
+                    to="/accounting/accinicialruns"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="description" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Ejecución inicial
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/accounting/accountingentriess', 'Principal')"
+                    active-class="tab-active"
+                    to="/accounting/accountingentriess"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="archive" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Principal
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/accounting/accountingentriesdets', 'Detalle')"
+                    active-class="tab-active"
+                    to="/accounting/accountingentriesdets"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="details" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Detalle
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/accounting/accentsubdets', 'Subformulario detalle')"
+                    active-class="tab-active"
+                    to="/accounting/accentsubdets"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="format_list_bulleted" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Subformulario Detalle
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/accounting/accannclos', 'Cierre Anual')"
+                    active-class="tab-active"
+                    to="/accounting/accannclos"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="event_busy" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Cierre Anual
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/accounting/accannualclosingentrys', 'Asciento Cierre Anual')"
+                    active-class="tab-active"
+                    to="/accounting/accannualclosingentrys"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="event_busy" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Asciento Cierre Anual
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/accounting/accmontopes', 'Apertura Mensual')"
+                    active-class="tab-active"
+                    to="/accounting/accmontopes"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="open_in_new" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Apertura Mensual
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/accounting/accmonclos', 'Cierre Mensual')"
+                    active-class="tab-active"
+                    to="/accounting/accmonclos"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="disabled_by_default" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Cierre Mensual
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/accounting/accbeginningbalancess', 'Saldo inicial')"
+                    active-class="tab-active"
+                    to="/accounting/accbeginningbalancess"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="real_estate_agent" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Saldo inicial ejecucion inicial
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/accounting/accbeginningbalancesdets', 'Saldo inicial detalle')"
+                    active-class="tab-active"
+                    to="/accounting/accbeginningbalancesdets"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="settings" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Saldo inicial detalle
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/accounting/accbeginningbalancesdet2s', 'Saldo inicial detalle')"
+                    active-class="tab-active"
+                    to="/accounting/accbeginningbalancesdet2s"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="settings" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Saldo inicial detalle
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/accounting/accbeginningbalancesdet3s', 'Saldo inicial Subdetalle')"
+                    active-class="tab-active"
+                    to="/accounting/accbeginningbalancesdet3s"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="settings_applications" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Saldo inicial Subdetalle
+                    </q-item-section>
+                  </q-item>
                 </q-expansion-item>
                 <q-expansion-item
                   expand-separator
@@ -567,6 +783,173 @@
                 expand-separator
                 icon="real_estate_agent"
                 label="Bienes">
+                <q-expansion-item
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  expand-separator
+                  icon="engineering"
+                  label="Maestros">
+
+                  <q-item
+                    @click="setTabSelected('/goods/goopars', 'Parametrizaciones Contables')"
+                    active-class="tab-active"
+                    to="/goods/goopars"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="groups" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Parametrizaciones Contables
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/goods/gooconfs', 'Configuración de bienes')"
+                    active-class="tab-active"
+                    to="/goods/gooconfs"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fact_check" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Configuración de bienes
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/goods/gooclas', 'Clasificación de bienes')"
+                    active-class="tab-active"
+                    to="/goods/gooclas"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="collections_bookmark" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Clasificación de bienes
+                    </q-item-section>
+                  </q-item>
+                </q-expansion-item>
+
+                <q-expansion-item
+                  expand-separator
+                  icon="account_tree"
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  label="Procedimientos">
+                    <q-item
+                      @click="setTabSelected('/accountingEntries', 'Asientos contables')"
+                      active-class="tab-active"
+                      to="/accountingEntries"
+                      exact
+                      class="q-ma-sm navigation-item"
+                      clickable
+                      v-ripple
+                    >
+                      <q-item-section avatar>
+                        <q-icon name="account_balance_wallet" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        Asientos contables
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item
+                      @click="setTabSelected('/monthlyClosure', 'Cierres mensuales')"
+                      active-class="tab-active"
+                      to="/monthlyClosure"
+                      exact
+                      class="q-ma-sm navigation-item"
+                      clickable
+                      v-ripple
+                    >
+                      <q-item-section avatar>
+                        <q-icon name="lock" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        Cierres mensuales
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item
+                      @click="setTabSelected('/monthlyOpening', 'Apertura mensual')"
+                      active-class="tab-active"
+                      to="/monthlyOpening"
+                      exact
+                      class="q-ma-sm navigation-item"
+                      clickable
+                      v-ripple
+                    >
+                      <q-item-section avatar>
+                        <q-icon name="lock_open" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        Apertura mensual
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item
+                      @click="setTabSelected('/yearSeatClosure', 'Asiento cierre anual')"
+                      active-class="tab-active"
+                      to="/yearSeatClosure"
+                      exact
+                      class="q-ma-sm navigation-item"
+                      clickable
+                      v-ripple
+                    >
+                      <q-item-section avatar>
+                        <q-icon name="lock" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        Asiento cierre anual
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item
+                      @click="setTabSelected('/yearClosure', 'Cierre anual')"
+                      active-class="tab-active"
+                      to="/yearClosure"
+                      exact
+                      class="q-ma-sm navigation-item"
+                      clickable
+                      v-ripple
+                    >
+                      <q-item-section avatar>
+                        <q-icon name="lock" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        Cierre anual
+                      </q-item-section>
+                    </q-item>
+
+                </q-expansion-item>
+
+                <q-expansion-item
+                  expand-separator
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  icon="analytics"
+                  label="Reportes">
+                </q-expansion-item>
               </q-expansion-item>
 
               <q-expansion-item
@@ -698,6 +1081,42 @@
                       Población especial
                     </q-item-section>
                   </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/admissions/moderatingcopays', 'Copagos y cuotas moderadoras')"
+                    active-class="tab-active"
+                    to="/admissions/moderatingcopays"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-hand-holding-dollar"/>
+                    </q-item-section>
+
+                    <q-item-section>
+                      Copagos y cuotas moderadoras
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/admissions/healthadministrators', 'Administradoras de Salud')"
+                    active-class="tab-active"
+                    to="/admissions/healthadministrators"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-regular fa-hospital"/>
+                    </q-item-section>
+
+                    <q-item-section>
+                      Administradoras de Salud
+                    </q-item-section>
+                  </q-item>
                 </q-expansion-item>
                 <q-expansion-item
                   expand-separator
@@ -719,6 +1138,62 @@
                 expand-separator
                 icon="medical_services"
                 label="Citas médicas">
+                <q-expansion-item
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  expand-separator
+                  icon="engineering"
+                  label="Maestros">
+                  <q-item
+                    @click="setTabSelected('/medicalappointments/appreacans', 'Motivo de la cancelación')"
+                    active-class="tab-active"
+                    to="/medicalappointments/appreacans"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-stairs" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Motivo de la cancelación
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/medicalappointments/appofficess', 'Consultorio')"
+                    active-class="tab-active"
+                    to="/medicalappointments/appofficess"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-people-group" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Consultorio
+                    </q-item-section>
+                  </q-item>
+                </q-expansion-item>
+
+                <q-expansion-item
+                  expand-separator
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  icon="account_tree"
+                  label="Procedimientos">
+                </q-expansion-item>
+                <q-expansion-item
+                  expand-separator
+                  icon="analytics"
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  label="Reportes">
+                </q-expansion-item>
               </q-expansion-item>
 
               <q-expansion-item
@@ -906,6 +1381,173 @@
                 expand-separator
                 icon="description"
                 label="Historias clínicas">
+                <q-expansion-item
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  expand-separator
+                  icon="engineering"
+                  label="Maestros">
+
+                  <q-item
+                    @click="setTabSelected('/clinichistory/hcdignosess', 'Diagnosticos')"
+                    active-class="tab-active"
+                    to="/clinichistory/hcdignosess"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="groups" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Diagnosticos
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/clinichistory/hchealthpros', 'Profesionales de la salud')"
+                    active-class="tab-active"
+                    to="/clinichistory/hchealthpros"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fact_check" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Profesionales de la salud
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/clinichistory/hcspecialtiess', 'Especialidades')"
+                    active-class="tab-active"
+                    to="/clinichistory/hcspecialtiess"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="collections_bookmark" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Especialidades
+                    </q-item-section>
+                  </q-item>
+                </q-expansion-item>
+
+                <q-expansion-item
+                  expand-separator
+                  icon="account_tree"
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  label="Procedimientos">
+                    <q-item
+                      @click="setTabSelected('/accountingEntries', 'Asientos contables')"
+                      active-class="tab-active"
+                      to="/accountingEntries"
+                      exact
+                      class="q-ma-sm navigation-item"
+                      clickable
+                      v-ripple
+                    >
+                      <q-item-section avatar>
+                        <q-icon name="account_balance_wallet" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        Asientos contables
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item
+                      @click="setTabSelected('/monthlyClosure', 'Cierres mensuales')"
+                      active-class="tab-active"
+                      to="/monthlyClosure"
+                      exact
+                      class="q-ma-sm navigation-item"
+                      clickable
+                      v-ripple
+                    >
+                      <q-item-section avatar>
+                        <q-icon name="lock" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        Cierres mensuales
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item
+                      @click="setTabSelected('/monthlyOpening', 'Apertura mensual')"
+                      active-class="tab-active"
+                      to="/monthlyOpening"
+                      exact
+                      class="q-ma-sm navigation-item"
+                      clickable
+                      v-ripple
+                    >
+                      <q-item-section avatar>
+                        <q-icon name="lock_open" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        Apertura mensual
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item
+                      @click="setTabSelected('/yearSeatClosure', 'Asiento cierre anual')"
+                      active-class="tab-active"
+                      to="/yearSeatClosure"
+                      exact
+                      class="q-ma-sm navigation-item"
+                      clickable
+                      v-ripple
+                    >
+                      <q-item-section avatar>
+                        <q-icon name="lock" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        Asiento cierre anual
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item
+                      @click="setTabSelected('/yearClosure', 'Cierre anual')"
+                      active-class="tab-active"
+                      to="/yearClosure"
+                      exact
+                      class="q-ma-sm navigation-item"
+                      clickable
+                      v-ripple
+                    >
+                      <q-item-section avatar>
+                        <q-icon name="lock" />
+                      </q-item-section>
+
+                      <q-item-section>
+                        Cierre anual
+                      </q-item-section>
+                    </q-item>
+
+                </q-expansion-item>
+
+                <q-expansion-item
+                  expand-separator
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  icon="analytics"
+                  label="Reportes">
+                </q-expansion-item>
               </q-expansion-item>
 
               <q-expansion-item
@@ -1037,7 +1679,6 @@
                     <q-item-section avatar>
                       <q-icon name="receipt" />
                     </q-item-section>
-
                     <q-item-section>
                       Conceptos de Recibos de Caja
                     </q-item-section>
@@ -1054,9 +1695,79 @@
                     <q-item-section avatar>
                       <q-icon name="receipt" />
                     </q-item-section>
-
                     <q-item-section>
                       Conceptos de Egreso
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/treasury/tsnotcons', 'Conceptos de notas')"
+                    active-class="tab-active"
+                    to="/treasury/tsnotcons"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-notes-medical" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Conceptos de notas
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/treasury/tsboxess', 'Cajas')"
+                    active-class="tab-active"
+                    to="/treasury/tsboxess"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-cash-register" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Cajas
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/treasury/tsbankss', 'Bancos')"
+                    active-class="tab-active"
+                    to="/treasury/tsbankss"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-building-columns" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Bancos
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/treasury/tsconpays', 'Conceptos de pago')"
+                    active-class="tab-active"
+                    to="/treasury/tsconpays"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-receipt" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Conceptos de pago
                     </q-item-section>
                   </q-item>
                 </q-expansion-item>
@@ -1066,18 +1777,241 @@
                 expand-separator
                 icon="inventory"
                 label="Inventarios">
+                <q-expansion-item
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  expand-separator
+                  icon="engineering"
+                  label="Maestros">
+                  <q-item
+                    @click="setTabSelected('/inventory/invaccpars', 'Parametrizacion')"
+                    active-class="tab-active"
+                    to="/inventory/invaccpars"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="new_label" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Parametrizacion
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/inventory/invunitsmeas', 'Unidades de medidas')"
+                    active-class="tab-active"
+                    to="/inventory/invunitsmeas"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="straighten" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Unidades de medidas
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/inventory/invmanufroless', 'Roles')"
+                    active-class="tab-active"
+                    to="/inventory/invmanufroless"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="groups" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Roles
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/inventory/invcums', 'Inventarios CUM')"
+                    active-class="tab-active"
+                    to="/inventory/invcums"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="science" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Inventarios CUM
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/inventory/invpharfors', 'Formas farmacéuticas')"
+                    active-class="tab-active"
+                    to="/inventory/invpharfors"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="article" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Formas farmacéuticas
+                    </q-item-section>
+                  </q-item>
+                </q-expansion-item>
+                <q-expansion-item
+                  expand-separator
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  icon="account_tree"
+                  label="Procedimientos">
+                </q-expansion-item>
+                <q-expansion-item
+                  expand-separator
+                  icon="analytics"
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  label="Reportes">
+                </q-expansion-item>
               </q-expansion-item>
 
               <q-expansion-item
                 expand-separator
                 icon="work"
                 label="Cuentas por cobrar">
+                <q-expansion-item
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  expand-separator
+                  icon="engineering"
+                  label="Maestros">
+
+                  <q-item
+                    @click="setTabSelected('/accountsreceivable/cxcaccrecs', 'Concepto de glosa')"
+                    active-class="tab-active"
+                    to="/accountsreceivable/cxcaccrecs"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="groups" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Concepto de glosa
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/accountsreceivable/cxccoucons', 'Conceptos contrapartida–CXC y Notas')"
+                    active-class="tab-active"
+                    to="/accountsreceivable/cxccoucons"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fact_check" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Conceptos contrapartida–CXC y Notas
+                    </q-item-section>
+                  </q-item>
+                </q-expansion-item>
+
+                <q-expansion-item
+                  expand-separator
+                  icon="account_tree"
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  label="Procedimientos">
+                </q-expansion-item>
+
+                <q-expansion-item
+                  expand-separator
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  icon="analytics"
+                  label="Reportes">
+                </q-expansion-item>
               </q-expansion-item>
 
               <q-expansion-item
                 expand-separator
                 icon="payments"
                 label="Cuentas por pagar">
+                <q-expansion-item
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  expand-separator
+                  icon="engineering"
+                  label="Maestros">
+                  <q-item
+                    @click="setTabSelected('/accountspayable/cxpcoucons', 'Conceptos contrapartida–CXP y Notas')"
+                    active-class="tab-active"
+                    to="/accountspayable/cxpcoucons"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="groups" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Conceptos contrapartida–CXP y Notas
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/accountspayable/cxpproviderss', 'Proveedores')"
+                    active-class="tab-active"
+                    to="/accountspayable/cxpproviderss"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fact_check" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Proveedores
+                    </q-item-section>
+                  </q-item>
+                </q-expansion-item>
+
+                <q-expansion-item
+                  expand-separator
+                  icon="account_tree"
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  label="Procedimientos">
+                </q-expansion-item>
+
+                <q-expansion-item
+                  expand-separator
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  icon="analytics"
+                  label="Reportes">
+                </q-expansion-item>
               </q-expansion-item>
 
             </q-list>

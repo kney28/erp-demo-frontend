@@ -470,3 +470,168 @@ export const OPTIONSINTERFACECXP = [
   { id: 2, description: 'CXP' },
   { id: 3, description: 'Anticipos' }
 ]
+export const TYPESEX = [
+  { id: 1, description: 'FEMENINO', word: 'M' },
+  { id: 2, description: 'MASCULINO', word: 'H' },
+  { id: 3, description: 'AMBOS', word: 'A' }
+]
+
+export const TYPEPROF = [
+  { id: 1, description: 'MÉDICOGENERAL' },
+  { id: 2, description: 'MÉDICO ESPECIALISTA' },
+  { id: 3, description: 'ENFERMERA' },
+  { id: 4, description: 'AUXILIAR DE ENFERMERÍA' },
+  { id: 5, description: 'ODONTÓLOGO GENERAL' },
+  { id: 6, description: 'ODONTÓLOGO ESPECIALISTA' },
+  { id: 7, description: 'HIGIENISTA' },
+  { id: 8, description: 'NUTRICIONISTA' },
+  { id: 9, description: 'PSICOLOGÍA' },
+  { id: 10, description: 'TRABAJADORA SOCIAL' },
+  { id: 11, description: 'BACTERIÓLOGO' },
+  { id: 12, description: 'TERAPISTA' },
+  { id: 13, description: 'OPTÓMETRA' },
+  { id: 13, description: 'QUÍMICO FARMACÉUTICO' }
+]
+
+export const TYPECONT = [
+  { id: 1, description: 'VINCULACIÓN LEGAL Y REGLAMENTARIA' },
+  { id: 2, description: 'CONTRATO DE PRESTACIÓN DE SERVICIOS' },
+  { id: 3, description: 'TERCERIZACIÓN LABORAL ' },
+  { id: 4, description: 'CONTRATO INDIVIDUAL DE TRABAJO' },
+  { id: 5, description: 'CONTRATO COLECTIVO DE TRABAJO' }
+]
+
+export const TYPEGOODS = [
+  { id: 1, description: 'MUEBLE' },
+  { id: 2, description: 'INMUEBLE' }
+]
+
+export const RESIDUALVALUETYPE = [
+  { id: 1, description: 'VALOR' },
+  { id: 2, description: 'PORCENTAJE' }
+]
+
+export const GENDEP = [
+  { id: 1, description: 'SI' },
+  { id: 2, description: 'NO' }
+]
+
+export const TYPEUSEFULLIFE = [
+  { id: 1, description: 'AÑOS' },
+  { id: 2, description: 'MESES' }
+]
+
+export const NATURE = [
+  { id: 1, description: 'DÉBITO' },
+  { id: 2, description: 'CRÉDITO' }
+]
+
+export const STATEDOCUMENT = [
+  { id: 1, description: 'SIN APROBAR' },
+  { id: 2, description: 'APROBADO' },
+  { id: 3, description: 'DEROGADO' }
+]
+
+export const TYPEGLOSS = [
+  { id: 1, description: 'NINGUNO' },
+  { id: 2, description: 'FACTURACIÓN' },
+  { id: 3, description: 'TARIFAS' },
+  { id: 4, description: 'AUTORIZACIÓN' },
+  { id: 5, description: 'COBERTURA' },
+  { id: 6, description: 'PERTINENCIA' },
+  { id: 7, description: 'DEVOLUCIÓN' },
+  { id: 8, description: 'RESPUESTA' }
+]
+
+export const COCEPTTYPE = [
+  { id: 1, description: 'NINGUNO' },
+  { id: 2, description: 'CUENTAS POR COBRAR' },
+  { id: 3, description: 'NOTAS' }
+]
+
+export const CONCEPTTYPE = [
+  { id: 0, description: 'NINGUNO' },
+  { id: 1, description: 'CUENTAS POR PAGAR' },
+  { id: 2, description: 'NOTAS' }
+]
+
+export const SELECTION = [
+  { id: 1, description: 'SI' },
+  { id: 2, description: 'NO' }
+]
+
+export const PROVIDERTYPE = [
+  { id: 1, description: 'NINGUNO' },
+  { id: 2, description: 'PRODUCTOS' },
+  { id: 3, description: 'SERVICIOS' },
+  { id: 4, description: 'AMBOS' }
+]
+
+export const EMEROFFICE = [
+  { id: 1, description: 'SI' },
+  { id: 2, description: 'NO' }
+]
+
+export const ROLTYPE = [
+  { id: 1, description: 'FABRICANTE' },
+  { id: 2, description: 'IMPORTADOR' }
+]
+
+export const NATURES = [
+  { id: 1, description: 'DÉBITO' },
+  { id: 2, description: 'CRÉDITO' }
+]
+export const MINORMAJOR = [
+  { id: 1, description: 'Mayor' },
+  { id: 2, description: 'Menor' }
+]
+
+export const TYPE = [
+  { id: 1, description: 'Cuota Moderadora' },
+  { id: 2, description: 'Copago' },
+  { id: 3, description: 'Régimen subsidiado' },
+  { id: 4, description: 'Vinculados' }
+]
+
+export const TYPEADMIN = [
+  { id: 0, description: 'EPS' },
+  { id: 1, description: 'EAS' },
+  { id: 2, description: 'ARS' },
+  { id: 3, description: 'ARP' },
+  { id: 4, description: 'MP' },
+  { id: 5, description: 'ESE' },
+  { id: 6, description: 'EEPS' },
+  { id: 7, description: 'IPS' },
+  { id: 8, description: 'EMP' },
+  { id: 9, description: 'PPN' },
+  { id: 10, description: 'PPJ' },
+  { id: 11, description: 'OTRAS' },
+  { id: 12, description: 'EPS_S' }
+]
+
+export const TYPEIDENT = [
+  { id: 1, description: 'NIT' },
+  { id: 2, description: 'Municipio' },
+  { id: 3, description: 'Departamento' },
+  { id: 4, description: 'Distrito' }
+]
+
+export const findBy = function (arrayName, column) {
+  /*
+    permite crear solo un array de objetos tanto para mostrar
+    en los porp.row y para ser utilizado en los select
+    y asi evitar crear dos objetos diferentes
+    ej:
+     DOCUMENTTYPE
+     LISTDOCUMENTTYPE
+     solo crear (LISTDOCUMENTTYPE[{}])
+    * Devolverá un array que coincida con el valor de la llave id
+    * argumentos de la función.
+    @param arrayName recibe un array en el cual buscar por id
+    @param column recibe el id en cuestion
+    Ej:
+    findById(LISTDOCUMENTTYPE, props.row.documenttype)[0].description
+  */
+  const results = arrayName.filter(function (arrayNom) { return arrayNom.id === column })
+  return results
+}
