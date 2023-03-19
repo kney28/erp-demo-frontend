@@ -25,19 +25,19 @@
 {{ props.row.description }}
 </q-td>
 <q-td key="idgoocla" :props="props">
-{{ props.row.idgoocla }}
+{{ props.row.idgoocla.description }}
 </q-td>
 <q-td key="idaccpar" :props="props">
-{{ props.row.idaccpar }}
+{{ props.row.idaccpar.description }}
 </q-td>
 <q-td key="tipgoo" :props="props">
-{{ typegoods[props.row.tipgoo].description  }}
+{{ typegoods[props.row.tipgoo-1].description  }}
 </q-td>
 <q-td key="gendep" :props="props">
-{{ gendeps[props.row.gendep].description  }}
+{{ gendeps[props.row.gendep-1].description  }}
 </q-td>
 <q-td key="typuselif" :props="props">
-{{ typeusefullife[props.row.typuselif].description }}
+{{ typeusefullife[props.row.typuselif-1].description }}
 </q-td>
 <q-td key="uselif" :props="props">
 {{ props.row.uselif }}
@@ -46,13 +46,13 @@
 {{ props.row.coniva }}
 </q-td>
 <q-td key="resvaltyp" :props="props">
-{{ residualvaluetype[props.row.resvaltyp].description }}
+{{ residualvaluetype[props.row.resvaltyp-1].description }}
 </q-td>
 <q-td key="resval" :props="props">
 {{ props.row.resval }}
 </q-td>
 <q-td key="status" :props="props">
-{{ status[props.row.state].description  }}
+  {{ state[props.row.status] }}
 </q-td>
 <q-td key="edit" :props="props">
 <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
@@ -107,24 +107,36 @@ lazy-rules
 />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idgoocla"
-label="Clasificación de Bienes *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+    white
+    color="blue"
+    v-model="idgoocla"
+    label="Clasificación de Bienes *"
+    @filter="filterFnGooClass"
+    :options="filterOptionsGooClass"
+    option-value="id"
+    option-label="description"
+    emit-value
+    map-options
+    lazy-rules
+    :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="idaccpar"
-label="Parametrización Contable *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
+  <q-select
+    white
+    color="blue"
+    v-model="idaccpar"
+    label="Parametrización Contable *"
+    @filter="filterFnGooPars"
+    :options="filterOptionsGooPars"
+    option-value="id"
+    option-label="description"
+    emit-value
+    map-options
+    lazy-rules
+    :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
 </div>
 <div class="col-md-4">
 <q-select
@@ -185,7 +197,7 @@ lazy-rules
 white
 color="blue"
 v-model="uselif"
-label="uselif *"
+label="Vida Útil *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
@@ -228,24 +240,15 @@ lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
 </div>
-<div class="col-md-4">
-<q-select
-white
-color="blue"
-v-model="state"
-label="Estado *"
-option-label="description"
-option-value="id"
-:options="status"
-stack-label
-use-input
-input-debounce="0"
-emit-value
-map-options
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
 </div>
+<div class="row justify-around">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-3">
+      <q-toggle v-model="active" label="Estado"/>
+    </div>
+    <div class="col-md-3">
+  </div>
 </div>
 </q-form>
 </q-card-section>
@@ -275,7 +278,7 @@ lazy-rules
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-import { STATUS, TYPEGOODS, RESIDUALVALUETYPE, GENDEP, TYPEUSEFULLIFE } from '../../constants/Constants'
+import { ACTIVE, INACTIVE, STATUS, TYPEGOODS, RESIDUALVALUETYPE, GENDEP, TYPEUSEFULLIFE } from '../../constants/Constants'
 export default defineComponent({
   name: 'GooconfsPage',
   setup () {
@@ -285,9 +288,12 @@ export default defineComponent({
     const id = ref(null)
     const filter = ref(null)
     const dataGooconfs = ref([])
+    const dataGooClass = ref([])
+    const dataGooPars = ref([])
+    const filterOptionsGooClass = ref(dataGooClass)
+    const filterOptionsGooPars = ref(dataGooPars)
     const code = ref(null)
-    const status = ref(STATUS)
-    const state = ref(null)
+    const state = ref(STATUS)
     const typegoods = ref(TYPEGOODS)
     const tipgoo = ref(null)
     const residualvaluetype = ref(RESIDUALVALUETYPE)
@@ -323,17 +329,31 @@ export default defineComponent({
       { name: 'coniva', align: 'center', label: 'Concepto de IVA', field: 'coniva', sortable: true },
       { name: 'resvaltyp', align: 'center', label: 'Tipo Valor Residual', field: 'resvaltyp', sortable: true },
       { name: 'resval', align: 'center', label: 'Valor Residual', field: 'resval', sortable: true },
-      { name: 'state', align: 'center', label: 'Estado', field: 'state', sortable: true },
+      { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
     onMounted(() => {
       getGooconfs()
+      getGooClass()
+      getGooPars()
     })
     const getGooconfs = async () => {
       visible.value = true
       const { data } = await api.get(path)
       dataGooconfs.value = data
+      visible.value = false
+    }
+    const getGooClass = async () => {
+      visible.value = true
+      const { data } = await api.get('/goods/gooclas')
+      dataGooClass.value = data
+      visible.value = false
+    }
+    const getGooPars = async () => {
+      visible.value = true
+      const { data } = await api.get('/goods/goopars')
+      dataGooPars.value = data
       visible.value = false
     }
     const creating = () => {
@@ -343,7 +363,6 @@ export default defineComponent({
     const onReset = () => {
       code.value = null
       description.value = null
-      state.value = null
       tipgoo.value = null
       gendep.value = null
       idgoocla.value = null
@@ -364,14 +383,14 @@ export default defineComponent({
             description: description.value,
             idgoocla: idgoocla.value,
             idaccpar: idaccpar.value,
-            state: state.value,
             tipgoo: tipgoo.value,
             gendep: gendep.value,
             typuselif: typuselif.value,
             uselif: uselif.value,
             coniva: coniva.value,
             resvaltyp: resvaltyp.value,
-            resval: resval.value
+            resval: resval.value,
+            status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
             getGooconfs()
@@ -393,9 +412,11 @@ export default defineComponent({
       coniva.value = row.coniva
       resvaltyp.value = row.resvaltyp
       resval.value = row.resval
-      state.value = row.state
       tipgoo.value = row.tipgoo
       gendep.value = row.gendep
+      if (row.status === ACTIVE) {
+        active.value = true
+      }
     }
     const onEditing = () => {
       myForm.value.validate().then(async success => {
@@ -410,9 +431,9 @@ export default defineComponent({
             coniva: coniva.value,
             resvaltyp: resvaltyp.value,
             resval: resval.value,
-            state: state.value,
             tipgoo: tipgoo.value,
-            gendep: gendep.value
+            gendep: gendep.value,
+            status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
             getGooconfs()
@@ -437,6 +458,30 @@ export default defineComponent({
           dialog.value = false
           getGooconfs()
         })
+      })
+    }
+    const filterFnGooClass = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsGooClass.value = dataGooClass.value
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsGooClass.value = dataGooClass.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+      })
+    }
+    const filterFnGooPars = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsGooPars.value = dataGooPars.value
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsGooPars.value = dataGooPars.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
       })
     }
     return {
@@ -466,14 +511,19 @@ export default defineComponent({
       onEditing,
       id,
       onDelete,
-      status,
       state,
       typegoods,
       tipgoo,
       residualvaluetype,
       gendeps,
       gendep,
-      typeusefullife
+      typeusefullife,
+      dataGooClass,
+      filterOptionsGooClass,
+      filterFnGooClass,
+      dataGooPars,
+      filterOptionsGooPars,
+      filterFnGooPars
     }
   }
 })

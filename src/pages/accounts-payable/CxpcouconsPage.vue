@@ -4,7 +4,7 @@
 <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
 <div>
 <q-space />
-<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Hcdignoses" :rows="dataHcdignosess" :filter="filter" :columns="columns" row-key="name" >
+<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Cxpcoucon" :rows="dataCxpcoucons" :filter="filter" :columns="columns" row-key="name" >
 <template v-slot:top-left>
 <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
 <q-space />
@@ -24,14 +24,14 @@
 <q-td key="description" :props="props">
 {{ props.row.description }}
 </q-td>
-<q-td key="sex" :props="props">
-{{ typesex[props.row.sex-1].word  }}
+<q-td key="type" :props="props">
+{{ typecocept[props.row.type].description  }}
 </q-td>
-<q-td key="lowlimage" :props="props">
-{{ props.row.lowlimage }}
+<q-td key="idledacc" :props="props">
+{{ props.row.idledacc.description }}
 </q-td>
-<q-td key="upplimage" :props="props">
-{{ props.row.upplimage }}
+<q-td key="conappl" :props="props">
+{{ selections[props.row.conappl-1].description  }}
 </q-td>
 <q-td key="status" :props="props">
   {{ states[props.row.status] }}
@@ -73,7 +73,7 @@ Los campos marcados con (*) son obligatorios
 white
 color="blue"
 v-model="code"
-label="Codigo *"
+label="Código *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
@@ -92,11 +92,42 @@ lazy-rules
 <q-select
 white
 color="blue"
-v-model="sex"
-label="Sexo *"
+v-model="type"
+label="Tipo *"
 option-label="description"
 option-value="id"
-:options="typesex"
+:options="typecocept"
+emit-value
+map-options
+lazy-rules
+:rules="[ val => !!val || 'El campo es obligatorio']"
+/>
+</div>
+<div class="col-md-4">
+  <q-select
+  white
+  color="blue"
+  v-model="idledacc"
+  label="Cuenta Contable *"
+  @filter="filterFnAccountCatalog"
+  :options="filterOptionsAccountCatalog"
+  option-value="id"
+  option-label="description"
+  emit-value
+  map-options
+  lazy-rules
+  :rules="[ val => !!val || 'El campo es obligatorio']"
+  />
+</div>
+<div class="col-md-4">
+<q-select
+white
+color="blue"
+v-model="conappl"
+label="Concepto aplica IVA *"
+option-label="description"
+option-value="id"
+:options="selections"
 stack-label
 use-input
 input-debounce="0"
@@ -106,31 +137,15 @@ lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
 </div>
-<div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="lowlimage"
-label="Edad límite inferior *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
-</div>
-<div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="upplimage"
-label="Edad límite superior *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
-</div>
 </div>
 <div class="row justify-around">
-<div class="col-md-3">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-3">
       <q-toggle v-model="active" label="Estado"/>
     </div>
+    <div class="col-md-3">
+  </div>
 </div>
 </q-form>
 </q-card-section>
@@ -160,23 +175,26 @@ lazy-rules
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-import { ACTIVE, INACTIVE, STATUS, TYPESEX } from '../../constants/Constants'
+import { ACTIVE, INACTIVE, STATUS, SELECTION, CONCEPTTYPE } from '../../constants/Constants'
 export default defineComponent({
-  name: 'HcdignosessPage',
+  name: 'CxpcouconsPage',
   setup () {
-    const path = '/clinict-history/hcdignosess'
+    const path = 'accounts-payable/cxpcoucons'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)
     const filter = ref(null)
-    const dataHcdignosess = ref([])
-    const code = ref(null)
-    const typesex = ref(TYPESEX)
-    const sex = ref(null)
+    const dataCxpcoucons = ref([])
+    const dataAccountCatalog = ref([])
+    const filterOptionsAccountCatalog = ref(dataAccountCatalog)
     const states = ref(STATUS)
+    const typecocept = ref(CONCEPTTYPE)
+    const type = ref(null)
+    const selections = ref(SELECTION)
+    const conappl = ref(null)
+    const code = ref(null)
     const description = ref(null)
-    const lowlimage = ref(null)
-    const upplimage = ref(null)
+    const idledacc = ref(null)
     const role = ref(null)
     const active = ref(false)
     const myForm = ref(null)
@@ -187,22 +205,29 @@ export default defineComponent({
     })
     const isEditing = ref(false)
     const columns = ref([
-      { name: 'code', align: 'center', label: 'Codigo', field: 'code', sortable: true },
+      { name: 'code', align: 'center', label: 'Código', field: 'code', sortable: true },
       { name: 'description', align: 'center', label: 'Descripción', field: 'description', sortable: true },
-      { name: 'sex', align: 'center', label: 'Sexo', field: 'sex', sortable: true },
-      { name: 'lowlimage', align: 'center', label: 'Edad límite inferior', field: 'lowlimage', sortable: true },
-      { name: 'upplimage', align: 'center', label: 'Edad límite superior', field: 'upplimage', sortable: true },
+      { name: 'type', align: 'center', label: 'Tipo', field: 'type', sortable: true },
+      { name: 'idledacc', align: 'center', label: 'Cuenta Contable', field: 'idledacc', sortable: true },
+      { name: 'conappl', align: 'center', label: 'Concepto aplica IVA', field: 'conappl', sortable: true },
       { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
     onMounted(() => {
-      getHcdignosess()
+      getCxpcoucons()
+      getAccountCatalog()
     })
-    const getHcdignosess = async () => {
+    const getCxpcoucons = async () => {
       visible.value = true
       const { data } = await api.get(path)
-      dataHcdignosess.value = data
+      dataCxpcoucons.value = data
+      visible.value = false
+    }
+    const getAccountCatalog = async () => {
+      visible.value = true
+      const { data } = await api.get('/account-catalog')
+      dataAccountCatalog.value = data
       visible.value = false
     }
     const creating = () => {
@@ -212,10 +237,10 @@ export default defineComponent({
     const onReset = () => {
       code.value = null
       description.value = null
-      sex.value = null
-      lowlimage.value = null
-      upplimage.value = null
+      idledacc.value = null
       isEditing.value = false
+      type.value = null
+      conappl.value = null
       active.value = false
     }
     const onSubmit = () => {
@@ -224,13 +249,13 @@ export default defineComponent({
           api.post(path, {
             code: code.value,
             description: description.value,
-            sex: sex.value,
-            lowlimage: lowlimage.value,
-            upplimage: upplimage.value,
+            type: type.value,
+            conappl: conappl.value,
+            idledacc: idledacc.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getHcdignosess()
+            getCxpcoucons()
           })
         }
       })
@@ -241,10 +266,10 @@ export default defineComponent({
       isEditing.value = true
       id.value = row.id
       code.value = row.code
-      sex.value = row.sex
       description.value = row.description
-      lowlimage.value = row.lowlimage
-      upplimage.value = row.upplimage
+      type.value = row.type
+      conappl.value = row.conappl
+      idledacc.value = row.idledacc
       if (row.status === ACTIVE) {
         active.value = true
       }
@@ -255,13 +280,13 @@ export default defineComponent({
           api.patch(path + '/' + id.value, {
             code: code.value,
             description: description.value,
-            lowlimage: lowlimage.value,
-            sex: sex.value,
-            upplimage: upplimage.value,
+            type: type.value,
+            conappl: conappl.value,
+            idledacc: idledacc.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getHcdignosess()
+            getCxpcoucons()
           })
         }
       })
@@ -269,7 +294,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar el diagnostico: ' + row.description + '?',
+        message: '¿Está seguro que desea eliminar la Conceptos contrapartida–CXP y Notas: ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -281,13 +306,25 @@ export default defineComponent({
       }).onOk(() => {
         api.delete(path + '/' + row.id).then(response => {
           dialog.value = false
-          getHcdignosess()
+          getCxpcoucons()
         })
+      })
+    }
+    const filterFnAccountCatalog = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsAccountCatalog.value = dataAccountCatalog.value
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsAccountCatalog.value = dataAccountCatalog.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
       })
     }
     return {
       dialog,
-      dataHcdignosess,
+      dataCxpcoucons,
       isEditing,
       role,
       active,
@@ -299,17 +336,21 @@ export default defineComponent({
       filter,
       code,
       description,
-      lowlimage,
-      upplimage,
+      idledacc,
       onReset,
       onSubmit,
       editing,
       onEditing,
       id,
       onDelete,
-      sex,
-      typesex,
-      states
+      states,
+      typecocept,
+      type,
+      selections,
+      conappl,
+      filterOptionsAccountCatalog,
+      dataAccountCatalog,
+      filterFnAccountCatalog
     }
   }
 })

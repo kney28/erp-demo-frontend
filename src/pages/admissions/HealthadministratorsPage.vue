@@ -5,9 +5,10 @@
         <div>
           <q-space />
           <q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]"
-            title="Hcspecialties" :rows="dataHcspecialtiess" :filter="filter" :columns="columns" row-key="name" >
+            title="Healthadministrator" :rows="dataHealthadministrators" :filter="filter" :columns="columns"
+            row-key="name">
             <template v-slot:top-left>
-              <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
+              <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar" />
               <q-space />
             </template>
             <template v-slot:top-right>
@@ -25,6 +26,15 @@
                 <q-td key="description" :props="props">
                   {{ props.row.description }}
                 </q-td>
+                <q-td key="idthird" :props="props">
+                  {{ props.row.idthird.document }} - {{ props.row.idthird.fullname }}
+                </q-td>
+                <q-td key="enttypman" :props="props">
+                  {{ enttypmanOptions[props.row.enttypman].description }}
+                </q-td>
+                <q-td key="idtiype" :props="props">
+                  {{ idtiypeOptions[props.row.idtiype - 1].description }}
+                </q-td>
                 <q-td key="status" :props="props">
                   {{ states[props.row.status] }}
                 </q-td>
@@ -40,7 +50,7 @@
         </div>
       </transition>
       <q-inner-loading :showing="visible">
-        <q-spinner-pie color="primary" size="70px"/>
+        <q-spinner-pie color="primary" size="70px" />
       </q-inner-loading>
     </div>
     <q-dialog v-model="dialog" persistent>
@@ -60,28 +70,65 @@
         <q-card-section>
           <q-form ref="myForm" @submit.prevent="">
             <div class="row justify-around">
-              <div class="col-md-6">
-                <q-input
+              <div class="col-md-4">
+                <q-input white color="blue" :readonly="readonlyState" v-model="code" label="Código *" lazy-rules
+                  :rules="[val => !!val || 'El campo es obligatorio']" />
+              </div>
+              <div class="col-md-4">
+                <q-input white color="blue" v-model="description" label="Descripción *" lazy-rules
+                  :rules="[val => !!val || 'El campo es obligatorio']" />
+              </div>
+              <div class="col-md-4">
+                  <q-select
                   white
                   color="blue"
-                  v-model="code"
-                  label="Codigo *"
+                  v-model="idthird"
+                  label="Tercero *"
+                  @filter="filterFnThird"
+                  :options="dataThirdOptions"
+                  option-value="id"
+                  :option-label="(e) => e.document +' - '+ e.fullname"
+                  emit-value
+                  map-options
                   lazy-rules
                   :rules="[ val => !!val || 'El campo es obligatorio']"
                 />
               </div>
-              <div class="col-md-6">
-                <q-input
+              <div class="col-md-6 col-xs-12">
+                <q-select
                   white
                   color="blue"
-                  v-model="description"
-                  label="Descripción *"
+                  v-model="enttypman"
+                  label="Tipo entidad administradora *"
+                  :options="enttypmanOptions"
+                  option-value="id"
+                  option-label="description"
+                  emit-value
+                  map-options
                   lazy-rules
                   :rules="[ val => !!val || 'El campo es obligatorio']"
                 />
               </div>
-              <div class="col-md-2">
-                <q-toggle v-model="active" label="Estado"/>
+              <div class="col-md-6 col-xs-12">
+                <q-select
+                  white
+                  color="blue"
+                  v-model="idtiype"
+                  label="Tipo  de  identificación *"
+                  :options="idtiypeOptions"
+                  option-value="id"
+                  option-label="description"
+                  emit-value
+                  map-options
+                  lazy-rules
+                  :rules="[ val => !!val || 'El campo es obligatorio']"
+                />
+              </div>
+              <div class="col-md-12 text-center">
+                <q-toggle
+                  v-model="active"
+                  label="Estado"
+                />
               </div>
             </div>
           </q-form>
@@ -91,15 +138,15 @@
           </q-card-actions>
           <q-card-actions align="right" class="bg-white text-teal">
             <div v-if="!isEditing">
-              <q-btn round icon="save" @click.prevent="onSubmit" color="primary"/>
+              <q-btn round icon="save" @click.prevent="onSubmit" color="primary" />
               <q-tooltip>Guardar datos</q-tooltip>
             </div>
             <div v-else>
-              <q-btn round icon="save" @click.prevent="onEditing" color="primary"/>
+              <q-btn round icon="save" @click.prevent="onEditing" color="primary" />
               <q-tooltip>Editar datos</q-tooltip>
             </div> &nbsp;
             <div>
-              <q-btn round icon="cancel" v-close-popup color="negative"/>
+              <q-btn round icon="cancel" v-close-popup color="negative" />
               <q-tooltip>Cancelar</q-tooltip>
             </div>
           </q-card-actions>
@@ -112,19 +159,27 @@
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-import { ACTIVE, INACTIVE, STATUS } from '../../constants/Constants'
+import { ACTIVE, INACTIVE, STATUS, TYPEADMIN, TYPEIDENT } from '../../constants/Constants'
 export default defineComponent({
-  name: 'HcspecialtiessPage',
+  name: 'HealthadministratorsPage',
   setup () {
-    const path = '/clinict-history/hcspecialtiess'
+    const path = 'admissions/healthadministrators'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)
     const filter = ref(null)
-    const dataHcspecialtiess = ref([])
+    const dataHealthadministrators = ref([])
+    const dataThird = ref([])
+    const dataThirdOptions = ref(dataThird)
     const code = ref(null)
-    const states = ref(STATUS)
     const description = ref(null)
+    const states = ref(STATUS)
+    const readonlyState = ref(false)
+    const idthird = ref(null)
+    const enttypman = ref(null)
+    const enttypmanOptions = ref(TYPEADMIN)
+    const idtiype = ref(null)
+    const idtiypeOptions = ref(TYPEIDENT)
     const role = ref(null)
     const active = ref(false)
     const myForm = ref(null)
@@ -135,28 +190,42 @@ export default defineComponent({
     })
     const isEditing = ref(false)
     const columns = ref([
-      { name: 'code', align: 'center', label: 'Codigo', field: 'code', sortable: true },
+      { name: 'code', align: 'center', label: 'Código', field: 'code', sortable: true },
       { name: 'description', align: 'center', label: 'Descripción', field: 'description', sortable: true },
+      { name: 'idthird', align: 'center', label: 'Tercero', field: 'idthird', sortable: true },
+      { name: 'enttypman', align: 'center', label: 'Tipo', field: 'enttypman', sortable: true },
+      { name: 'idtiype', align: 'center', label: 'Tipo de identificación', field: 'idtiype', sortable: true },
       { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
     onMounted(() => {
-      getHcspecialtiess()
+      getHealthadministrators()
+      getThird()
     })
-    const getHcspecialtiess = async () => {
+    const getThird = async () => {
+      visible.value = true
+      const { data } = await api.get('thirdperson')
+      dataThird.value = data
+      visible.value = false
+    }
+    const getHealthadministrators = async () => {
       visible.value = true
       const { data } = await api.get(path)
-      dataHcspecialtiess.value = data
+      dataHealthadministrators.value = data
       visible.value = false
     }
     const creating = () => {
       onReset()
       dialog.value = true
+      readonlyState.value = false
     }
     const onReset = () => {
       code.value = null
       description.value = null
+      idthird.value = null
+      enttypman.value = null
+      idtiype.value = null
       isEditing.value = false
       active.value = false
     }
@@ -166,10 +235,13 @@ export default defineComponent({
           api.post(path, {
             code: code.value,
             description: description.value,
+            idthird: idthird.value,
+            enttypman: enttypman.value,
+            idtiype: idtiype.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getHcspecialtiess()
+            getHealthadministrators()
           })
         }
       })
@@ -181,6 +253,10 @@ export default defineComponent({
       id.value = row.id
       code.value = row.code
       description.value = row.description
+      idthird.value = row.idthird
+      enttypman.value = row.enttypman
+      idtiype.value = row.idtiype
+      readonlyState.value = true
       if (row.status === ACTIVE) {
         active.value = true
       }
@@ -191,10 +267,13 @@ export default defineComponent({
           api.patch(path + '/' + id.value, {
             code: code.value,
             description: description.value,
+            idthird: idthird.value,
+            enttypman: enttypman.value,
+            idtiype: idtiype.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getHcspecialtiess()
+            getHealthadministrators()
           })
         }
       })
@@ -202,7 +281,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar la especialidad: ' + row.description + '?',
+        message: '!Está seguro que desea eliminar la administradora de salud: ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -214,13 +293,26 @@ export default defineComponent({
       }).onOk(() => {
         api.delete(path + '/' + row.id).then(response => {
           dialog.value = false
-          getHcspecialtiess()
+          getHealthadministrators()
         })
+      })
+    }
+    const filterFnThird = (val, update) => {
+      if (val === '') {
+        update(() => {
+          dataThirdOptions.value = dataThird.value
+        })
+        return
+      }
+
+      update(() => {
+        const needle = val.toLowerCase()
+        dataThirdOptions.value = dataThird.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
       })
     }
     return {
       dialog,
-      dataHcspecialtiess,
+      dataHealthadministrators,
       isEditing,
       role,
       active,
@@ -232,13 +324,22 @@ export default defineComponent({
       filter,
       code,
       description,
+      idthird,
       onReset,
       onSubmit,
       editing,
       onEditing,
       id,
       onDelete,
-      states
+      states,
+      enttypman,
+      enttypmanOptions,
+      idtiype,
+      idtiypeOptions,
+      readonlyState,
+      dataThird,
+      dataThirdOptions,
+      filterFnThird
     }
   }
 })
