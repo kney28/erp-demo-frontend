@@ -1117,6 +1117,23 @@
                       Administradoras de Salud
                     </q-item-section>
                   </q-item>
+                  <q-item
+                    @click="setTabSelected('/admissions/requirementslists', 'Listados de requisitos ')"
+                    active-class="tab-active"
+                    to="/admissions/requirementslists"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-list-check"/>
+                    </q-item-section>
+
+                    <q-item-section>
+                      Listados de requisitos
+                    </q-item-section>
+                  </q-item>
                 </q-expansion-item>
                 <q-expansion-item
                   expand-separator

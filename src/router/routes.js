@@ -50,6 +50,8 @@ const routes = [
       { path: '/admissions/moderatingcopays', name: 'moderatingcopays', component: () => import('pages/admissions/ModeratingcopaysPage.vue') },
       { path: '/admissions/moderatingcopaysdets', name: 'moderatingcopaysdets', component: () => import('pages/admissions/ModeratingcopaysdetsPage.vue') },
       { path: '/admissions/healthadministrators', name: 'healthadministrators', component: () => import('pages/admissions/HealthadministratorsPage.vue') },
+      { path: '/admissions/requirementslists', name: 'requirementslists', component: () => import('pages/admissions/RequirementslistsPage.vue') },
+      { path: '/admissions/requirementslistdets', name: 'requirementslistdets', component: () => import('pages/admissions/RequirementslistdetsPage.vue') },
 
       { path: '/hiring/categoriescupss', name: 'categoriescupss', component: () => import('pages/hiring/CategoriescupssPage.vue') },
       { path: '/hiring/entitytemplates', name: 'entitytemplates', component: () => import('pages/hiring/EntitytemplatesPage.vue') },
