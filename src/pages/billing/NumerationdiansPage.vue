@@ -68,6 +68,7 @@
               <div class="col-md-6">
                 <q-input
                   white
+                  :readonly="readonlyState"
                   color="blue"
                   v-model="numerationDian.code"
                   label="Código *"
@@ -329,9 +330,7 @@
                   white
                   color="blue"
                   v-model="detailNumerationDian.billingprefix"
-                  label="Prefijo *"
-                  lazy-rules
-                  :rules="[ val => !!val || 'El campo es obligatorio']"
+                  label="Prefijo"
                 />
               </div>
               <div class="col-md-4">
@@ -341,7 +340,7 @@
                   v-model="detailNumerationDian.initialinvoice"
                   label="Factura inicial *"
                   lazy-rules
-                  :rules="[ val => !!val || 'El campo es obligatorio']"
+                  :rules="[ val => !!val || 'El campo es obligatorio', val => val < 0 ? 'El número debe ser positivo' : !!val, val => val % 1 == 0 ? !!val : 'El número de ser un entero']"
                 />
               </div>
               <div class="col-md-4">
@@ -351,7 +350,7 @@
                   v-model="detailNumerationDian.finalbill"
                   label="Factura final *"
                   lazy-rules
-                  :rules="[ val => !!val || 'El campo es obligatorio']"
+                  :rules="[ val => !!val || 'El campo es obligatorio', val => val > detailNumerationDian.initialinvoice ? !!val : 'El número debe ser mayor que factura inicial', val => val % 1 == 0 ? !!val : 'El número de ser un entero']"
                 />
               </div>
               <div class="col-md-4">
@@ -443,6 +442,7 @@ export default defineComponent({
       billingtype: null,
       status: null
     })
+    const readonlyState = ref(false)
     const path = '/billing/numerationdians'
     const pathDetail = '/billing/detailnumerationdians'
     const dialog = ref(false)
@@ -515,11 +515,14 @@ export default defineComponent({
     const creating = () => {
       onReset()
       dialog.value = true
+      readonlyState.value = false
+      active.value = true
     }
 
     const creatingDetail = () => {
       onResetDetail()
       dialogFormDetail.value = true
+      activeDetail.value = true
     }
 
     const onReset = () => {
@@ -577,6 +580,7 @@ export default defineComponent({
       numerationDian.code = row.code
       numerationDian.description = row.description
       numerationDian.status = row.status
+      readonlyState.value = true
       if (row.status === ACTIVE) {
         active.value = true
       }
@@ -638,7 +642,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar la numeración?',
+        message: '¿Está seguro que desea eliminar la numeración ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -658,7 +662,7 @@ export default defineComponent({
     const onDeleteDetail = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar el detalle de numeración?',
+        message: '¿Está seguro que desea eliminar resolución: ' + row.resolutiondian + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -711,7 +715,8 @@ export default defineComponent({
       descriptionNumerationDian,
       statusNumerationDian,
       facturationType,
-      activeDetail
+      activeDetail,
+      readonlyState
     }
   }
 })
