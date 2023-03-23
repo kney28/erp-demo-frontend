@@ -90,6 +90,7 @@ lazy-rules
     color="blue"
     v-model="idthird"
     label="Tercero *"
+    @update:model-value="updateDocument"
     @filter="filterFnAccountThirPerson"
     :options="filterOptionsAccountThirPerson"
     option-value="id"
@@ -101,20 +102,13 @@ lazy-rules
   />
 </div>
 <div class="col-md-4">
-  <q-select
-    white
-    color="blue"
-    v-model="thirddocument"
-    label="Documento del Tercer *"
-    @filter="filterFnAccountThirPerson"
-    :options="filterOptionsAccountThirPerson"
-    option-value="id"
-    option-label="document"
-    emit-value
-    map-options
-    lazy-rules
-    :rules="[ val => !!val || 'El campo es obligatorio']"
-  />
+<q-input
+white
+color="blue"
+v-model="thirddocument"
+label="Documento del Tercero *"
+:disable="isDisable"
+/>
 </div>
 <div class="col-md-4">
 <q-select
@@ -233,8 +227,10 @@ export default defineComponent({
     const ecoactper = ref(null)
     const role = ref(null)
     const active = ref(false)
+    const isDisable = ref(true)
     const myForm = ref(null)
     const $q = useQuasar()
+    let datathird = Array
     const pagination = ref({
       page: 1,
       rowsPerPage: 10
@@ -266,6 +262,7 @@ export default defineComponent({
     const getAccountThirPerson = async () => {
       visible.value = true
       const { data } = await api.get('/thirdperson')
+      datathird = data
       dataAccountThirPerson.value = data
       visible.value = false
     }
@@ -363,6 +360,10 @@ export default defineComponent({
         })
       })
     }
+    const updateDocument = (val) => {
+      const obj = datathird.find(value => value.id === val)
+      thirddocument.value = obj.document
+    }
     const filterFnAccountCatalog = (val, update) => {
       if (val === '') {
         update(() => {
@@ -419,7 +420,9 @@ export default defineComponent({
       filterOptionsAccountThirPerson,
       dataAccountThirPerson,
       dataAccountCatalog,
-      filterOptionsAccountCatalog
+      filterOptionsAccountCatalog,
+      isDisable,
+      updateDocument
     }
   }
 })

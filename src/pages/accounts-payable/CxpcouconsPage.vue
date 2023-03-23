@@ -25,7 +25,7 @@
 {{ props.row.description }}
 </q-td>
 <q-td key="type" :props="props">
-{{ typecocept[props.row.type].description  }}
+{{ typecocept[props.row.type-1].description  }}
 </q-td>
 <q-td key="idledacc" :props="props">
 {{ props.row.idledacc.description }}
@@ -97,6 +97,9 @@ label="Tipo *"
 option-label="description"
 option-value="id"
 :options="typecocept"
+stack-label
+use-input
+input-debounce="0"
 emit-value
 map-options
 lazy-rules
@@ -175,7 +178,7 @@ lazy-rules
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-import { ACTIVE, INACTIVE, STATUS, SELECTION, CONCEPTTYPE } from '../../constants/Constants'
+import { ACTIVE, INACTIVE, STATUS, SELECTION, CONCEPTTYPEPAY } from '../../constants/Constants'
 export default defineComponent({
   name: 'CxpcouconsPage',
   setup () {
@@ -188,7 +191,7 @@ export default defineComponent({
     const dataAccountCatalog = ref([])
     const filterOptionsAccountCatalog = ref(dataAccountCatalog)
     const states = ref(STATUS)
-    const typecocept = ref(CONCEPTTYPE)
+    const typecocept = ref(CONCEPTTYPEPAY)
     const type = ref(null)
     const selections = ref(SELECTION)
     const conappl = ref(null)

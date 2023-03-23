@@ -532,10 +532,10 @@ export const COCEPTTYPE = [
   { id: 3, description: 'NOTAS' }
 ]
 
-export const CONCEPTTYPE = [
-  { id: 0, description: 'NINGUNO' },
-  { id: 1, description: 'CUENTAS POR PAGAR' },
-  { id: 2, description: 'NOTAS' }
+export const CONCEPTTYPEPAY = [
+  { id: 1, description: 'NINGUNO' },
+  { id: 2, description: 'CUENTAS POR PAGAR' },
+  { id: 3, description: 'NOTAS' }
 ]
 
 export const SELECTION = [
