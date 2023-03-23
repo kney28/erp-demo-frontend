@@ -380,7 +380,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '!Está seguro que desea eliminar el listado de requisito: ' + row.code + '?',
+        message: '!Está seguro que desea eliminar el listado de requisito: ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -472,7 +472,7 @@ export default defineComponent({
     const onDeleteDetail = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar el detalle del listado de requisitos: ' + row.code + '?',
+        message: '¿Está seguro que desea eliminar el detalle del listado de requisitos: ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'
