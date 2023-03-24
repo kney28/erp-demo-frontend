@@ -74,6 +74,11 @@ const routes = [
       { path: '/clinichistory/hcdignosess', name: 'hcdignosess', component: () => import('pages/clinic-history/HcdignosessPage.vue') },
       { path: '/clinichistory/hchealthpros', name: 'hchealthpros', component: () => import('pages/clinic-history/HchealthprosPage.vue') },
       { path: '/clinichistory/hcspecialtiess', name: 'hcspecialtiess', component: () => import('pages/clinic-history/HcspecialtiessPage.vue') },
+      { path: '/clinichistory/hcvadsispromipress', name: 'hcvadsispromipress', component: () => import('pages/clinic-history/HcvadsispromipressPage.vue') },
+      { path: '/clinichistory/hcclassanestrecords', name: 'hcclassanestrecords', component: () => import('pages/clinic-history/HcclassanestrecordsPage.vue') },
+      { path: '/clinichistory/hcadvereventclasss', name: 'hcadvereventclasss', component: () => import('pages/clinic-history/HcadvereventclasssPage.vue') },
+      { path: '/clinichistory/hcallerclasss', name: 'hcallerclasss', component: () => import('pages/clinic-history/HcallerclasssPage.vue') },
+      { path: '/clinichistory/hcvacunclasss', name: 'hcvacunclasss', component: () => import('pages/clinic-history/HcvacunclasssPage.vue') },
 
       { path: '/goods/goopars', name: 'goopars', component: () => import('pages/goods/GooparsPage.vue') },
       { path: '/goods/gooconfs', name: 'gooconfs', component: () => import('pages/goods/GooconfsPage.vue') },

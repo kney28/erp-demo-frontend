@@ -25,7 +25,7 @@
 {{ props.row.description }}
 </q-td>
 <q-td key="typheapro" :props="props">
-{{ typeprofs[props.row.typheapro].description  }}
+{{ typeprofs[props.row.typheapro-1].description  }}
 </q-td>
 <q-td key="idthird" :props="props">
 {{ props.row.idthird.fullname }}
@@ -34,7 +34,7 @@
 {{ props.row.businesscard }}
 </q-td>
 <q-td key="conttyp" :props="props">
-{{ typeconts[props.row.conttyp].description  }}</q-td>
+{{ typeconts[props.row.conttyp-1].description  }}</q-td>
 <q-td key="idspecialty" :props="props">
 {{ props.row.idspecialty.code }}
 </q-td>
@@ -168,23 +168,12 @@ lazy-rules
     @filter="filterFnAccountHcSpecialtiess"
     :options="filterOptionsAccountHcSpecialtiess"
     option-value="id"
-    option-label="code"
+    option-label="description"
     emit-value
     map-options
     lazy-rules
     :rules="[ val => !!val || 'El campo es obligatorio']"
   />
-</div>
-<div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="digsig"
-label="Descripción de Especialidad *"
-:disable="isDisable"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
 </div>
 </div>
 <div class="row justify-around">

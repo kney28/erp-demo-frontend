@@ -1405,6 +1405,96 @@
                       Especialidades
                     </q-item-section>
                   </q-item>
+
+                  <q-item
+                    @click="setTabSelected('clinichistory/hcvadsispromipress', 'VAD SISPRO para MIPRES')"
+                    active-class="tab-active"
+                    to="/clinichistory/hcvadsispromipress"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="collections_bookmark" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      VAD SISPRO para MIPRES
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/clinichistory/hcclassanestrecords', 'Clases de registros anestésicos')"
+                    active-class="tab-active"
+                    to="/clinichistory/hcclassanestrecords"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="vaccines" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Clases de registros anestésicos
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/clinichistory/hcadvereventclasss', 'Clases de eventos adversos')"
+                    active-class="tab-active"
+                    to="/clinichistory/hcadvereventclasss"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="event_available" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Clases de eventos adversos
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/clinichistory/hcallerclasss', 'Clases de alergias')"
+                    active-class="tab-active"
+                    to="/clinichistory/hcallerclasss"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="warning_amber" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Clases de alergias
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/clinichistory/hcvacunclasss', 'Clases de vacunas')"
+                    active-class="tab-active"
+                    to="/clinichistory/hcvacunclasss"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="vaccines" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Clases de vacunas
+                    </q-item-section>
+                  </q-item>
                 </q-expansion-item>
 
                 <q-expansion-item

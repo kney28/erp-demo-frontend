@@ -569,6 +569,23 @@ export const MINORMAJOR = [
   { id: 2, description: 'Menor' }
 ]
 
+export const TYPEANESTHESIA = [
+  { id: 1, description: 'LOCAL' },
+  { id: 2, description: 'REGIONALANESTESIAEPIDURALANESTESIAESPINAL' },
+  { id: 3, description: 'REGIONALANESTESIAMEDIANTEBLOQUEONERVIOSPERIFÉRICOS' },
+  { id: 4, description: 'GENERAL' }
+]
+
+export const TYPEALLERG = [
+  { id: 1, description: 'RESPIRATORIA' },
+  { id: 2, description: 'ALIMENTOS' },
+  { id: 3, description: 'FÁRMACOS' },
+  { id: 4, description: 'HIMENÓPTEROS' },
+  { id: 5, description: 'MEDICAMENTOS' },
+  { id: 6, description: 'AMBIENTAL' },
+  { id: 7, description: 'ANIMALES' }
+]
+
 export const findBy = function (arrayName, column) {
   /*
     permite crear solo un array de objetos tanto para mostrar
