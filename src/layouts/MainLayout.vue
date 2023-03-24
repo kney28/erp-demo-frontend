@@ -1081,6 +1081,59 @@
                       Población especial
                     </q-item-section>
                   </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/admissions/moderatingcopays', 'Copagos y cuotas moderadoras')"
+                    active-class="tab-active"
+                    to="/admissions/moderatingcopays"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-hand-holding-dollar"/>
+                    </q-item-section>
+
+                    <q-item-section>
+                      Copagos y cuotas moderadoras
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/admissions/healthadministrators', 'Administradoras de Salud')"
+                    active-class="tab-active"
+                    to="/admissions/healthadministrators"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-regular fa-hospital"/>
+                    </q-item-section>
+
+                    <q-item-section>
+                      Administradoras de Salud
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/admissions/requirementslists', 'Listados de requisitos ')"
+                    active-class="tab-active"
+                    to="/admissions/requirementslists"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-list-check"/>
+                    </q-item-section>
+
+                    <q-item-section>
+                      Listados de requisitos
+                    </q-item-section>
+                  </q-item>
                 </q-expansion-item>
                 <q-expansion-item
                   expand-separator
@@ -1721,6 +1774,38 @@
                   expand-separator
                   icon="engineering"
                   label="Maestros">
+                  <q-item
+                    @click="setTabSelected('/treasury/tscasreccons', 'Conceptos de Recibos de Caja')"
+                    active-class="tab-active"
+                    to="/treasury/tscasreccons"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="receipt" />
+                    </q-item-section>
+                    <q-item-section>
+                      Conceptos de Recibos de Caja
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    @click="setTabSelected('/treasury/tsdiscons', 'Conceptos de Egreso')"
+                    active-class="tab-active"
+                    to="/treasury/tsdiscons"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="receipt" />
+                    </q-item-section>
+                    <q-item-section>
+                      Conceptos de Egreso
+                    </q-item-section>
+                  </q-item>
                   <q-item
                     @click="setTabSelected('/treasury/tsnotcons', 'Conceptos de notas')"
                     active-class="tab-active"
