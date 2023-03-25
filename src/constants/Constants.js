@@ -586,7 +586,6 @@ export const MINORMAJOR = [
   { id: 2, description: 'Menor' }
 ]
 
-<<<<<<< HEAD
 export const TYPEANESTHESIA = [
   { id: 1, description: 'LOCAL' },
   { id: 2, description: 'REGIONALANESTESIAEPIDURALANESTESIAESPINAL' },
@@ -602,7 +601,8 @@ export const TYPEALLERG = [
   { id: 5, description: 'MEDICAMENTOS' },
   { id: 6, description: 'AMBIENTAL' },
   { id: 7, description: 'ANIMALES' }
-=======
+]
+
 export const TYPE = [
   { id: 1, description: 'Cuota Moderadora' },
   { id: 2, description: 'Copago' },
@@ -631,7 +631,12 @@ export const TYPEIDENT = [
   { id: 2, description: 'Municipio' },
   { id: 3, description: 'Departamento' },
   { id: 4, description: 'Distrito' }
->>>>>>> a7976d4af55113f9e9420259558c66a31fa7c4d0
+]
+
+export const TYPECAU = [
+  { id: 1, description: 'NINGUNO' },
+  { id: 2, description: 'ADMINISTRATIVA' },
+  { id: 3, description: 'MEDICA' }
 ]
 
 export const findBy = function (arrayName, column) {

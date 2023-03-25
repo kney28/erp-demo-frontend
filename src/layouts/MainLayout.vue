@@ -1548,6 +1548,24 @@
                       Clases de vacunas
                     </q-item-section>
                   </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/clinichistory/hccauserefusrefers', 'Causas de negación de referencia')"
+                    active-class="tab-active"
+                    to="/clinichistory/hccauserefusrefers"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="thumb_down_alt" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Causas de negación de referencia
+                    </q-item-section>
+                  </q-item>
                 </q-expansion-item>
 
                 <q-expansion-item
