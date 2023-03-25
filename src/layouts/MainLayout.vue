@@ -1566,6 +1566,24 @@
                       Causas de negación de referencia
                     </q-item-section>
                   </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/clinichistory/hccauseremisrefers', 'Causas de remisión de referencia')"
+                    active-class="tab-active"
+                    to="/clinichistory/hccauseremisrefers"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="notifications" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Causas de remisión de referencia
+                    </q-item-section>
+                  </q-item>
                 </q-expansion-item>
 
                 <q-expansion-item

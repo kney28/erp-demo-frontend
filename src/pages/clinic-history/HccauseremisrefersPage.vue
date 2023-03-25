@@ -4,7 +4,7 @@
 <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
 <div>
 <q-space />
-<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Hcclassanestrecord" :rows="dataHcclassanestrecords" :filter="filter" :columns="columns" row-key="name" >
+<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Hccauseremisrefer" :rows="dataHccauseremisrefers" :filter="filter" :columns="columns" row-key="name" >
 <template v-slot:top-left>
 <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
 <q-space />
@@ -24,11 +24,8 @@
 <q-td key="description" :props="props">
 {{ props.row.description }}
 </q-td>
-<q-td key="typeanesthesia" :props="props">
-{{ typeanesthesias[props.row.typeanesthesia-1].description  }}
-</q-td>
 <q-td key="status" :props="props">
-  {{ state[props.row.status] }}
+  {{ states[props.row.status] }}
 </q-td>
 <q-td key="edit" :props="props">
 <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
@@ -67,7 +64,7 @@ Los campos marcados con (*) son obligatorios
 white
 color="blue"
 v-model="code"
-label="Codigo *"
+label="Código *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
@@ -78,24 +75,6 @@ white
 color="blue"
 v-model="description"
 label="Descripción *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
-</div>
-<div class="col-md-4">
-<q-select
-white
-color="blue"
-v-model="typeanesthesia"
-label="Tipo de anestesia *"
-option-label="description"
-option-value="id"
-:options="typeanesthesias"
-stack-label
-use-input
-input-debounce="0"
-emit-value
-map-options
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
@@ -138,21 +117,19 @@ lazy-rules
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-import { ACTIVE, INACTIVE, STATUS, TYPEANESTHESIA } from '../../constants/Constants'
+import { ACTIVE, INACTIVE, STATUS } from '../../constants/Constants'
 export default defineComponent({
-  name: 'HcclassanestrecordsPage',
+  name: 'HccauseremisrefersPage',
   setup () {
-    const path = 'clinic-history/hcclassanestrecords'
+    const path = 'clinic-history/hccauseremisrefers'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)
     const filter = ref(null)
-    const dataHcclassanestrecords = ref([])
+    const dataHccauseremisrefers = ref([])
     const code = ref(null)
     const description = ref(null)
-    const state = ref(STATUS)
-    const typeanesthesias = ref(TYPEANESTHESIA)
-    const typeanesthesia = ref(null)
+    const states = ref(STATUS)
     const role = ref(null)
     const active = ref(false)
     const myForm = ref(null)
@@ -165,18 +142,17 @@ export default defineComponent({
     const columns = ref([
       { name: 'code', align: 'center', label: 'Código', field: 'code', sortable: true },
       { name: 'description', align: 'center', label: 'Descripción', field: 'description', sortable: true },
-      { name: 'typeanesthesia', align: 'center', label: 'Tipo de anestesia', field: 'typeanesthesia', sortable: true },
       { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
     onMounted(() => {
-      getHcclassanestrecords()
+      getHccauseremisrefers()
     })
-    const getHcclassanestrecords = async () => {
+    const getHccauseremisrefers = async () => {
       visible.value = true
       const { data } = await api.get(path)
-      dataHcclassanestrecords.value = data
+      dataHccauseremisrefers.value = data
       visible.value = false
     }
     const creating = () => {
@@ -186,7 +162,6 @@ export default defineComponent({
     const onReset = () => {
       code.value = null
       description.value = null
-      typeanesthesia.value = null
       isEditing.value = false
       active.value = false
     }
@@ -196,11 +171,10 @@ export default defineComponent({
           api.post(path, {
             code: code.value,
             description: description.value,
-            typeanesthesia: typeanesthesia.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getHcclassanestrecords()
+            getHccauseremisrefers()
           })
         }
       })
@@ -212,7 +186,6 @@ export default defineComponent({
       id.value = row.id
       code.value = row.code
       description.value = row.description
-      typeanesthesia.value = row.typeanesthesia
       if (row.status === ACTIVE) {
         active.value = true
       }
@@ -223,11 +196,10 @@ export default defineComponent({
           api.patch(path + '/' + id.value, {
             code: code.value,
             description: description.value,
-            typeanesthesia: typeanesthesia.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getHcclassanestrecords()
+            getHccauseremisrefers()
           })
         }
       })
@@ -235,7 +207,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar la clase de registros anestésicos : ' + row.description + '?',
+        message: '¿Está seguro que desea eliminar la causa de remisión de referencia: ' + row.id + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -247,13 +219,13 @@ export default defineComponent({
       }).onOk(() => {
         api.delete(path + '/' + row.id).then(response => {
           dialog.value = false
-          getHcclassanestrecords()
+          getHccauseremisrefers()
         })
       })
     }
     return {
       dialog,
-      dataHcclassanestrecords,
+      dataHccauseremisrefers,
       isEditing,
       role,
       active,
@@ -271,9 +243,7 @@ export default defineComponent({
       onEditing,
       id,
       onDelete,
-      state,
-      typeanesthesias,
-      typeanesthesia
+      states
     }
   }
 })

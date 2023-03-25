@@ -88,6 +88,7 @@ const routes = [
       { path: '/clinichistory/hcallerclasss', name: 'hcallerclasss', component: () => import('pages/clinic-history/HcallerclasssPage.vue') },
       { path: '/clinichistory/hcvacunclasss', name: 'hcvacunclasss', component: () => import('pages/clinic-history/HcvacunclasssPage.vue') },
       { path: '/clinichistory/hccauserefusrefers', name: 'hccauserefusrefers', component: () => import('pages/clinic-history/HccauserefusrefersPage.vue') },
+      { path: '/clinichistory/hccauseremisrefers', name: 'hccauseremisrefers', component: () => import('pages/clinic-history/HccauseremisrefersPage.vue') },
 
       { path: '/goods/goopars', name: 'goopars', component: () => import('pages/goods/GooparsPage.vue') },
       { path: '/goods/gooconfs', name: 'gooconfs', component: () => import('pages/goods/GooconfsPage.vue') },
