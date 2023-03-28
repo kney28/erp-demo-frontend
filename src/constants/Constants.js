@@ -639,6 +639,18 @@ export const TYPECAU = [
   { id: 3, description: 'MEDICA' }
 ]
 
+export const STATUSVALIDITY = [
+  { id: 1, description: 'ABIERTO' },
+  { id: 2, description: 'ACTIVO' },
+  { id: 3, description: 'EN CIERRE' },
+  { id: 4, description: 'CERRADO' }
+]
+
+export const STATEDOCUMENTVIGENCIA = [
+  { id: 1, description: 'SIN APROBAR' },
+  { id: 2, description: 'APROBADO' },
+  { id: 3, description: 'ANULADO' }
+]
 export const findBy = function (arrayName, column) {
   /*
     permite crear solo un array de objetos tanto para mostrar

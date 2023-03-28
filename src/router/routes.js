@@ -111,7 +111,9 @@ const routes = [
       { path: '/treasury/tsnotcons', name: 'tsnotcons', component: () => import('pages/treasury/TsnotconsPage.vue') },
       { path: '/treasury/tsboxess', name: 'tsboxess', component: () => import('pages/treasury/TsboxessPage.vue') },
       { path: '/treasury/tsbankss', name: 'tsbankss', component: () => import('pages/treasury/TsbankssPage.vue') },
-      { path: '/treasury/tsconpays', name: 'tsconpays', component: () => import('pages/treasury/TsconpaysPage.vue') }
+      { path: '/treasury/tsconpays', name: 'tsconpays', component: () => import('pages/treasury/TsconpaysPage.vue') },
+
+      { path: '/budget/preconfigenerals', name: 'preconfigenerals', component: () => import('pages/budget/PreconfigeneralsPage.vue') }
     ]
   },
   { path: '/login', name: 'login', component: () => import('src/pages/LoginPage2.vue') },

@@ -396,7 +396,6 @@ export default defineComponent({
         filterOptionsAccountThirPerson.value = dataAccountThirPerson.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
       })
     }
-
     const filterFnAccountHcSpecialtiess = (val, update) => {
       if (val === '') {
         update(() => {
