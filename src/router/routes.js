@@ -52,12 +52,16 @@ const routes = [
       { path: '/admissions/healthadministrators', name: 'healthadministrators', component: () => import('pages/admissions/HealthadministratorsPage.vue') },
       { path: '/admissions/requirementslists', name: 'requirementslists', component: () => import('pages/admissions/RequirementslistsPage.vue') },
       { path: '/admissions/requirementslistdets', name: 'requirementslistdets', component: () => import('pages/admissions/RequirementslistdetsPage.vue') },
+      { path: '/admissions/patients', name: 'patients', component: () => import('pages/admissions/PatientsPage.vue') },
 
       { path: '/hiring/categoriescupss', name: 'categoriescupss', component: () => import('pages/hiring/CategoriescupssPage.vue') },
       { path: '/hiring/entitytemplates', name: 'entitytemplates', component: () => import('pages/hiring/EntitytemplatesPage.vue') },
       { path: '/hiring/parameterizationcupss', name: 'parameterizationcupss', component: () => import('pages/hiring/ParameterizationcupssPage.vue') },
       { path: '/hiring/subcatcupss', name: 'subcatcupss', component: () => import('pages/hiring/SubcatcupssPage.vue') },
       { path: '/hiring/subgruposcupss', name: 'subgruposcupss', component: () => import('pages/hiring/SubgruposcupssPage.vue') },
+      { path: '/hiring/percentageqxs', name: 'percentageqxs', component: () => import('pages/hiring/PercentageqxsPage.vue') },
+      { path: '/hiring/percentajeqxdets', name: 'percentajeqxdets', component: () => import('pages/hiring/PercentageqxdetsPage.vue') },
+      { path: '/hiring/healthservices', name: 'healthservices', component: () => import('pages/hiring/HealthservicesPage.vue') },
 
       { path: '/treasury/tscasreccons', name: 'tscasreccons', component: () => import('pages/treasury/TscasrecconsPage.vue') },
       { path: '/treasury/tsdiscons', name: 'tsdiscon', component: () => import('pages/treasury/TsdisconsPage.vue') },
@@ -82,6 +86,13 @@ const routes = [
       { path: '/clinichistory/hcdignosess', name: 'hcdignosess', component: () => import('pages/clinic-history/HcdignosessPage.vue') },
       { path: '/clinichistory/hchealthpros', name: 'hchealthpros', component: () => import('pages/clinic-history/HchealthprosPage.vue') },
       { path: '/clinichistory/hcspecialtiess', name: 'hcspecialtiess', component: () => import('pages/clinic-history/HcspecialtiessPage.vue') },
+      { path: '/clinichistory/hcvadsispromipress', name: 'hcvadsispromipress', component: () => import('pages/clinic-history/HcvadsispromipressPage.vue') },
+      { path: '/clinichistory/hcclassanestrecords', name: 'hcclassanestrecords', component: () => import('pages/clinic-history/HcclassanestrecordsPage.vue') },
+      { path: '/clinichistory/hcadvereventclasss', name: 'hcadvereventclasss', component: () => import('pages/clinic-history/HcadvereventclasssPage.vue') },
+      { path: '/clinichistory/hcallerclasss', name: 'hcallerclasss', component: () => import('pages/clinic-history/HcallerclasssPage.vue') },
+      { path: '/clinichistory/hcvacunclasss', name: 'hcvacunclasss', component: () => import('pages/clinic-history/HcvacunclasssPage.vue') },
+      { path: '/clinichistory/hccauserefusrefers', name: 'hccauserefusrefers', component: () => import('pages/clinic-history/HccauserefusrefersPage.vue') },
+      { path: '/clinichistory/hccauseremisrefers', name: 'hccauseremisrefers', component: () => import('pages/clinic-history/HccauseremisrefersPage.vue') },
 
       { path: '/goods/goopars', name: 'goopars', component: () => import('pages/goods/GooparsPage.vue') },
       { path: '/goods/gooconfs', name: 'gooconfs', component: () => import('pages/goods/GooconfsPage.vue') },
@@ -104,7 +115,9 @@ const routes = [
       { path: '/treasury/tsnotcons', name: 'tsnotcons', component: () => import('pages/treasury/TsnotconsPage.vue') },
       { path: '/treasury/tsboxess', name: 'tsboxess', component: () => import('pages/treasury/TsboxessPage.vue') },
       { path: '/treasury/tsbankss', name: 'tsbankss', component: () => import('pages/treasury/TsbankssPage.vue') },
-      { path: '/treasury/tsconpays', name: 'tsconpays', component: () => import('pages/treasury/TsconpaysPage.vue') }
+      { path: '/treasury/tsconpays', name: 'tsconpays', component: () => import('pages/treasury/TsconpaysPage.vue') },
+
+      { path: '/budget/preconfigenerals', name: 'preconfigenerals', component: () => import('pages/budget/PreconfigeneralsPage.vue') }
     ]
   },
   { path: '/login', name: 'login', component: () => import('src/pages/LoginPage2.vue') },

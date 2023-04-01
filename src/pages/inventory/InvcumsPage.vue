@@ -25,10 +25,10 @@
 {{ props.row.filecum }}
 </q-td>
 <q-td key="actdat" :props="props">
-{{ props.row.actdat }}
+{{ props.row.actdat.split('T')[0] }}
 </q-td>
 <q-td key="inadat" :props="props">
-{{ props.row.inadat }}
+{{ props.row.inadat.split('T')[0] }}
 </q-td>
 <q-td key="status" :props="props">
   {{ states[props.row.status] }}

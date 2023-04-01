@@ -1134,6 +1134,23 @@
                       Listados de requisitos
                     </q-item-section>
                   </q-item>
+                  <q-item
+                    @click="setTabSelected('/admissions/patients', 'Pacientes ')"
+                    active-class="tab-active"
+                    to="/admissions/patients"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-person"/>
+                    </q-item-section>
+
+                    <q-item-section>
+                      Pacientes
+                    </q-item-section>
+                  </q-item>
                 </q-expansion-item>
                 <q-expansion-item
                   expand-separator
@@ -1329,6 +1346,42 @@
                       Parametrización RIPS
                     </q-item-section>
                   </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/hiring/percentageqxs', 'Porcentajes QX SOAT')"
+                    active-class="tab-active"
+                    to="/hiring/percentageqxs"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-calculator" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Porcentajes QX SOAT
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/hiring/healthservices', 'Servicios de salud')"
+                    active-class="tab-active"
+                    to="/hiring/healthservices"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-heart-pulse" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Servicios de salud
+                    </q-item-section>
+                  </q-item>
                 </q-expansion-item>
               </q-expansion-item>
 
@@ -1456,6 +1509,132 @@
 
                     <q-item-section>
                       Especialidades
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('clinichistory/hcvadsispromipress', 'VAD SISPRO para MIPRES')"
+                    active-class="tab-active"
+                    to="/clinichistory/hcvadsispromipress"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="collections_bookmark" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      VAD SISPRO para MIPRES
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/clinichistory/hcclassanestrecords', 'Clases de registros anestésicos')"
+                    active-class="tab-active"
+                    to="/clinichistory/hcclassanestrecords"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="vaccines" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Clases de registros anestésicos
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/clinichistory/hcadvereventclasss', 'Clases de eventos adversos')"
+                    active-class="tab-active"
+                    to="/clinichistory/hcadvereventclasss"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="event_available" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Clases de eventos adversos
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/clinichistory/hcallerclasss', 'Clases de alergias')"
+                    active-class="tab-active"
+                    to="/clinichistory/hcallerclasss"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="warning_amber" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Clases de alergias
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/clinichistory/hcvacunclasss', 'Clases de vacunas')"
+                    active-class="tab-active"
+                    to="/clinichistory/hcvacunclasss"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="vaccines" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Clases de vacunas
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/clinichistory/hccauserefusrefers', 'Causas de negación de referencia')"
+                    active-class="tab-active"
+                    to="/clinichistory/hccauserefusrefers"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="thumb_down_alt" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Causas de negación de referencia
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/clinichistory/hccauseremisrefers', 'Causas de remisión de referencia')"
+                    active-class="tab-active"
+                    to="/clinichistory/hccauseremisrefers"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="notifications" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Causas de remisión de referencia
                     </q-item-section>
                   </q-item>
                 </q-expansion-item>
@@ -1672,6 +1851,29 @@
                 expand-separator
                 icon="shopping_cart"
                 label="Presupuesto">
+                <q-expansion-item
+                  :header-inset-level="0.5"
+                  :content-inset-level="1"
+                  expand-separator
+                  icon="engineering"
+                  label="Maestros">
+                  <q-item
+                    @click="setTabSelected('/budget/preconfigenerals', 'Vigencias Presupuestales')"
+                    active-class="tab-active"
+                    to="/budget/preconfigenerals"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="verified_user" />
+                    </q-item-section>
+                    <q-item-section>
+                      Vigencias Presupuestales
+                    </q-item-section>
+                  </q-item>
+                </q-expansion-item>
               </q-expansion-item>
 
               <q-expansion-item
