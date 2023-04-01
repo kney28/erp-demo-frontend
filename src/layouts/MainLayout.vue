@@ -1134,6 +1134,23 @@
                       Listados de requisitos
                     </q-item-section>
                   </q-item>
+                  <q-item
+                    @click="setTabSelected('/admissions/patients', 'Pacientes ')"
+                    active-class="tab-active"
+                    to="/admissions/patients"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-person"/>
+                    </q-item-section>
+
+                    <q-item-section>
+                      Pacientes
+                    </q-item-section>
+                  </q-item>
                 </q-expansion-item>
                 <q-expansion-item
                   expand-separator
@@ -1327,6 +1344,42 @@
 
                     <q-item-section>
                       Parametrización RIPS
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/hiring/percentageqxs', 'Porcentajes QX SOAT')"
+                    active-class="tab-active"
+                    to="/hiring/percentageqxs"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-calculator" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Porcentajes QX SOAT
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/hiring/healthservices', 'Servicios de salud')"
+                    active-class="tab-active"
+                    to="/hiring/healthservices"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-heart-pulse" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Servicios de salud
                     </q-item-section>
                   </q-item>
                 </q-expansion-item>
