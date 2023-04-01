@@ -22,16 +22,16 @@
 {{ props.row.code }}
 </q-td>
 <q-td key="idthird" :props="props">
-{{ props.row.idthird }}
+{{ props.row.idthird.fullname }}
 </q-td>
 <q-td key="thirddocument" :props="props">
-{{ props.row.thirddocument }}
+{{ props.row.idthird.document }}
 </q-td>
-<q-td key="type" :props="props">
-{{ providertype[props.row.type].description  }}
+<q-td key="typeprovider" :props="props">
+{{ providertype[props.row.typeprovider].description  }}
 </q-td>
 <q-td key="idledacc" :props="props">
-{{ props.row.idledacc }}
+{{ props.row.idledacc.description }}
 </q-td>
 <q-td key="idecoact" :props="props">
 {{ props.row.idecoact }}
@@ -90,6 +90,7 @@ lazy-rules
     color="blue"
     v-model="idthird"
     label="Tercero *"
+    @update:model-value="updateDocument"
     @filter="filterFnAccountThirPerson"
     :options="filterOptionsAccountThirPerson"
     option-value="id"
@@ -101,33 +102,23 @@ lazy-rules
   />
 </div>
 <div class="col-md-4">
-  <q-select
-    white
-    color="blue"
-    v-model="thirddocument"
-    label="Documento del Tercer *"
-    @filter="filterFnAccountThirPerson"
-    :options="filterOptionsAccountThirPerson"
-    option-value="id"
-    option-label="document"
-    emit-value
-    map-options
-    lazy-rules
-    :rules="[ val => !!val || 'El campo es obligatorio']"
-  />
+<q-input
+white
+color="blue"
+v-model="thirddocument"
+label="Documento del Tercero *"
+:disable="isDisable"
+/>
 </div>
 <div class="col-md-4">
 <q-select
 white
 color="blue"
-v-model="type"
+v-model="typeprovider"
 label="Tipo *"
 option-label="description"
 option-value="id"
 :options="providertype"
-stack-label
-use-input
-input-debounce="0"
 emit-value
 map-options
 lazy-rules
@@ -155,7 +146,7 @@ lazy-rules
 white
 color="blue"
 v-model="idecoact"
-label="Actividad económica *"
+label="Código actividad económica *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
@@ -219,6 +210,7 @@ export default defineComponent({
     const filter = ref(null)
     const dataCxpproviderss = ref([])
     const states = ref(STATUS)
+    const typeprovider = ref(null)
     const dataAccountThirPerson = ref([])
     const filterOptionsAccountThirPerson = ref(dataAccountThirPerson)
     const dataAccountCatalog = ref([])
@@ -233,8 +225,10 @@ export default defineComponent({
     const ecoactper = ref(null)
     const role = ref(null)
     const active = ref(false)
+    const isDisable = ref(true)
     const myForm = ref(null)
     const $q = useQuasar()
+    let datathird = Array
     const pagination = ref({
       page: 1,
       rowsPerPage: 10
@@ -266,6 +260,7 @@ export default defineComponent({
     const getAccountThirPerson = async () => {
       visible.value = true
       const { data } = await api.get('/thirdperson')
+      datathird = data
       dataAccountThirPerson.value = data
       visible.value = false
     }
@@ -283,6 +278,7 @@ export default defineComponent({
       code.value = null
       idthird.value = null
       thirddocument.value = null
+      typeprovider.value = null
       idledacc.value = null
       idecoact.value = null
       ecoactper.value = null
@@ -297,6 +293,7 @@ export default defineComponent({
             code: code.value,
             idthird: idthird.value,
             thirddocument: thirddocument.value,
+            typeprovider: typeprovider.value,
             idledacc: idledacc.value,
             idecoact: idecoact.value,
             type: type.value,
@@ -316,8 +313,9 @@ export default defineComponent({
       id.value = row.id
       code.value = row.code
       type.value = row.type
-      idthird.value = row.idthird
-      thirddocument.value = row.thirddocument
+      idthird.value = row.idthird.id
+      thirddocument.value = row.idthird.document
+      typeprovider.value = row.typeprovider
       idledacc.value = row.idledacc
       idecoact.value = row.idecoact
       ecoactper.value = row.ecoactper
@@ -332,6 +330,7 @@ export default defineComponent({
             code: code.value,
             idthird: idthird.value,
             thirddocument: thirddocument.value,
+            typeprovider: typeprovider.value,
             idledacc: idledacc.value,
             idecoact: idecoact.value,
             ecoactper: ecoactper.value,
@@ -347,7 +346,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar los Proveedores: ' + row.id + '?',
+        message: '¿Está seguro que desea eliminar el proveedor: ' + row.idthird.fullname + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -362,6 +361,10 @@ export default defineComponent({
           getCxpproviderss()
         })
       })
+    }
+    const updateDocument = (val) => {
+      const obj = datathird.find(value => value.id === val)
+      thirddocument.value = obj.document
     }
     const filterFnAccountCatalog = (val, update) => {
       if (val === '') {
@@ -419,7 +422,10 @@ export default defineComponent({
       filterOptionsAccountThirPerson,
       dataAccountThirPerson,
       dataAccountCatalog,
-      filterOptionsAccountCatalog
+      filterOptionsAccountCatalog,
+      isDisable,
+      updateDocument,
+      typeprovider
     }
   }
 })
