@@ -561,10 +561,10 @@ export const SELECTION = [
 ]
 
 export const PROVIDERTYPE = [
-  { id: 1, description: 'NINGUNO' },
-  { id: 2, description: 'PRODUCTOS' },
-  { id: 3, description: 'SERVICIOS' },
-  { id: 4, description: 'AMBOS' }
+  { id: 0, description: 'NINGUNO' },
+  { id: 1, description: 'PRODUCTOS' },
+  { id: 2, description: 'SERVICIOS' },
+  { id: 3, description: 'AMBOS' }
 ]
 
 export const EMEROFFICE = [
@@ -588,8 +588,8 @@ export const MINORMAJOR = [
 
 export const TYPEANESTHESIA = [
   { id: 1, description: 'LOCAL' },
-  { id: 2, description: 'REGIONALANESTESIAEPIDURALANESTESIAESPINAL' },
-  { id: 3, description: 'REGIONALANESTESIAMEDIANTEBLOQUEONERVIOSPERIFÉRICOS' },
+  { id: 2, description: 'REGIONAL - ANESTESIA EPIDURAL ANESTESIA ESPINAL' },
+  { id: 3, description: 'REGIONAL - ANESTESIA MEDIANTE BLOQUEO NERVIOS PERIFÉRICOS' },
   { id: 4, description: 'GENERAL' }
 ]
 

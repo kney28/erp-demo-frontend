@@ -4,7 +4,7 @@
 <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
 <div>
 <q-space />
-<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Hcallerclass" :rows="dataHcallerclasss" :filter="filter" :columns="columns" row-key="name" >
+<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" title="Hcallerclass" :rows="dataHcallerclasss" :filter="filter" :columns="columns" row-key="name" >
 <template v-slot:top-left>
 <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
 <q-space />
@@ -100,6 +100,7 @@ lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
 </div>
+</div>
 <div class="row justify-around">
     <div class="col-md-3">
     </div>
@@ -108,7 +109,6 @@ lazy-rules
     </div>
     <div class="col-md-3">
   </div>
-</div>
 </div>
 </q-form>
 </q-card-section>
@@ -235,7 +235,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar la clase de alergias: ' + row.description + '?',
+        message: '¿Está seguro que desea eliminar la clase de alergia: ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'

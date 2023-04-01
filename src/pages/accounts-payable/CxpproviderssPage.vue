@@ -22,16 +22,16 @@
 {{ props.row.code }}
 </q-td>
 <q-td key="idthird" :props="props">
-{{ props.row.idthird }}
+{{ props.row.idthird.fullname }}
 </q-td>
 <q-td key="thirddocument" :props="props">
-{{ props.row.thirddocument }}
+{{ props.row.idthird.document }}
 </q-td>
-<q-td key="type" :props="props">
-{{ providertype[props.row.type].description  }}
+<q-td key="typeprovider" :props="props">
+{{ providertype[props.row.typeprovider].description  }}
 </q-td>
 <q-td key="idledacc" :props="props">
-{{ props.row.idledacc }}
+{{ props.row.idledacc.description }}
 </q-td>
 <q-td key="idecoact" :props="props">
 {{ props.row.idecoact }}
@@ -114,14 +114,11 @@ label="Documento del Tercero *"
 <q-select
 white
 color="blue"
-v-model="type"
+v-model="typeprovider"
 label="Tipo *"
 option-label="description"
 option-value="id"
 :options="providertype"
-stack-label
-use-input
-input-debounce="0"
 emit-value
 map-options
 lazy-rules
@@ -149,7 +146,7 @@ lazy-rules
 white
 color="blue"
 v-model="idecoact"
-label="Actividad económica *"
+label="Código actividad económica *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
@@ -213,6 +210,7 @@ export default defineComponent({
     const filter = ref(null)
     const dataCxpproviderss = ref([])
     const states = ref(STATUS)
+    const typeprovider = ref(null)
     const dataAccountThirPerson = ref([])
     const filterOptionsAccountThirPerson = ref(dataAccountThirPerson)
     const dataAccountCatalog = ref([])
@@ -280,6 +278,7 @@ export default defineComponent({
       code.value = null
       idthird.value = null
       thirddocument.value = null
+      typeprovider.value = null
       idledacc.value = null
       idecoact.value = null
       ecoactper.value = null
@@ -294,6 +293,7 @@ export default defineComponent({
             code: code.value,
             idthird: idthird.value,
             thirddocument: thirddocument.value,
+            typeprovider: typeprovider.value,
             idledacc: idledacc.value,
             idecoact: idecoact.value,
             type: type.value,
@@ -313,8 +313,9 @@ export default defineComponent({
       id.value = row.id
       code.value = row.code
       type.value = row.type
-      idthird.value = row.idthird
-      thirddocument.value = row.thirddocument
+      idthird.value = row.idthird.id
+      thirddocument.value = row.idthird.document
+      typeprovider.value = row.typeprovider
       idledacc.value = row.idledacc
       idecoact.value = row.idecoact
       ecoactper.value = row.ecoactper
@@ -329,6 +330,7 @@ export default defineComponent({
             code: code.value,
             idthird: idthird.value,
             thirddocument: thirddocument.value,
+            typeprovider: typeprovider.value,
             idledacc: idledacc.value,
             idecoact: idecoact.value,
             ecoactper: ecoactper.value,
@@ -344,7 +346,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar los Proveedores: ' + row.id + '?',
+        message: '¿Está seguro que desea eliminar el proveedor: ' + row.idthird.fullname + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -422,7 +424,8 @@ export default defineComponent({
       dataAccountCatalog,
       filterOptionsAccountCatalog,
       isDisable,
-      updateDocument
+      updateDocument,
+      typeprovider
     }
   }
 })

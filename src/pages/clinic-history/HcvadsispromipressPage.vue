@@ -4,7 +4,7 @@
 <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
 <div>
 <q-space />
-<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Hcvadsispromipres" :rows="dataHcvadsispromipress" :filter="filter" :columns="columns" row-key="name" >
+<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" title="Hcvadsispromipres" :rows="dataHcvadsispromipress" :filter="filter" :columns="columns" row-key="name" >
 <template v-slot:top-left>
 <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
 <q-space />
@@ -95,6 +95,7 @@ lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
 </div>
+<div class="col-md-4"></div>
 <div class="col-md-4">
 <q-select
 white
@@ -113,15 +114,14 @@ lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
 </div>
+<div class="col-md-4"></div>
+</div>
 <div class="row justify-around">
-    <div class="col-md-3">
-    </div>
-    <div class="col-md-3">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
       <q-toggle v-model="active" label="Estado"/>
     </div>
-    <div class="col-md-3">
-  </div>
-</div>
+    <div class="col-md-4"></div>
 </div>
 </q-form>
 </q-card-section>

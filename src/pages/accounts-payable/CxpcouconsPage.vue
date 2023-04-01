@@ -4,7 +4,7 @@
 <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
 <div>
 <q-space />
-<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Cxpcoucon" :rows="dataCxpcoucons" :filter="filter" :columns="columns" row-key="name" >
+<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" title="Cxpcoucon" :rows="dataCxpcoucons" :filter="filter" :columns="columns" row-key="name" >
 <template v-slot:top-left>
 <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
 <q-space />
@@ -297,7 +297,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar la Conceptos contrapartida–CXP y Notas: ' + row.description + '?',
+        message: '¿Está seguro que desea eliminar el concepto de contrapartida–CXP y nota: ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'
