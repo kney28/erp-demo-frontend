@@ -197,7 +197,7 @@
                     </q-item-section>
                   </q-item>
                   <q-item
-                    @click="setTabSelected('/companies', 'Compañias')"
+                    @click="setTabSelected('/companies', 'Compañia')"
                     active-class="tab-active"
                     to="/companies"
                     exact
@@ -210,7 +210,7 @@
                     </q-item-section>
 
                     <q-item-section>
-                      Compañias
+                      Compañia
                     </q-item-section>
                   </q-item>
                   <q-item
