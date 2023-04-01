@@ -549,10 +549,10 @@ export const COCEPTTYPE = [
   { id: 3, description: 'NOTAS' }
 ]
 
-export const CONCEPTTYPE = [
-  { id: 0, description: 'NINGUNO' },
-  { id: 1, description: 'CUENTAS POR PAGAR' },
-  { id: 2, description: 'NOTAS' }
+export const CONCEPTTYPEPAY = [
+  { id: 1, description: 'NINGUNO' },
+  { id: 2, description: 'CUENTAS POR PAGAR' },
+  { id: 3, description: 'NOTAS' }
 ]
 
 export const SELECTION = [
@@ -561,10 +561,10 @@ export const SELECTION = [
 ]
 
 export const PROVIDERTYPE = [
-  { id: 1, description: 'NINGUNO' },
-  { id: 2, description: 'PRODUCTOS' },
-  { id: 3, description: 'SERVICIOS' },
-  { id: 4, description: 'AMBOS' }
+  { id: 0, description: 'NINGUNO' },
+  { id: 1, description: 'PRODUCTOS' },
+  { id: 2, description: 'SERVICIOS' },
+  { id: 3, description: 'AMBOS' }
 ]
 
 export const EMEROFFICE = [
@@ -584,6 +584,23 @@ export const NATURES = [
 export const MINORMAJOR = [
   { id: 1, description: 'Mayor' },
   { id: 2, description: 'Menor' }
+]
+
+export const TYPEANESTHESIA = [
+  { id: 1, description: 'LOCAL' },
+  { id: 2, description: 'REGIONAL - ANESTESIA EPIDURAL ANESTESIA ESPINAL' },
+  { id: 3, description: 'REGIONAL - ANESTESIA MEDIANTE BLOQUEO NERVIOS PERIFÉRICOS' },
+  { id: 4, description: 'GENERAL' }
+]
+
+export const TYPEALLERG = [
+  { id: 1, description: 'RESPIRATORIA' },
+  { id: 2, description: 'ALIMENTOS' },
+  { id: 3, description: 'FÁRMACOS' },
+  { id: 4, description: 'HIMENÓPTEROS' },
+  { id: 5, description: 'MEDICAMENTOS' },
+  { id: 6, description: 'AMBIENTAL' },
+  { id: 7, description: 'ANIMALES' }
 ]
 
 export const TYPE = [
@@ -616,6 +633,24 @@ export const TYPEIDENT = [
   { id: 4, description: 'Distrito' }
 ]
 
+export const TYPECAU = [
+  { id: 1, description: 'NINGUNO' },
+  { id: 2, description: 'ADMINISTRATIVA' },
+  { id: 3, description: 'MEDICA' }
+]
+
+export const STATUSVALIDITY = [
+  { id: 1, description: 'ABIERTO' },
+  { id: 2, description: 'ACTIVO' },
+  { id: 3, description: 'EN CIERRE' },
+  { id: 4, description: 'CERRADO' }
+]
+
+export const STATEDOCUMENTVIGENCIA = [
+  { id: 1, description: 'SIN APROBAR' },
+  { id: 2, description: 'APROBADO' },
+  { id: 3, description: 'ANULADO' }
+]
 export const findBy = function (arrayName, column) {
   /*
     permite crear solo un array de objetos tanto para mostrar
