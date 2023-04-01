@@ -633,6 +633,202 @@ export const TYPEIDENT = [
   { id: 4, description: 'Distrito' }
 ]
 
+export const DOCUMENTTYPE2 = [
+  { id: 1, abbrevation: 'CC', description: 'Cedula de ciudadanía' },
+  { id: 2, abbrevation: 'CE', description: 'Cedula de extranjería' },
+  { id: 3, abbrevation: 'CD', description: 'Carnet diplomático' },
+  { id: 4, abbrevation: 'PA', description: 'Pasaporte' },
+  { id: 5, abbrevation: 'SC', description: 'Salvoconducto' },
+  { id: 6, abbrevation: 'PE', description: 'Permiso especial de permanencia' },
+  { id: 7, abbrevation: 'RC', description: 'Registro civil de nacimiento' },
+  { id: 8, abbrevation: 'TI', description: 'Tarjeta de identidad' },
+  { id: 9, abbrevation: 'CN', description: 'Certificado de nacido vivo' },
+  { id: 10, abbrevation: 'AS', description: 'Adulto sin identificar' },
+  { id: 11, abbrevation: 'MS', description: 'Menor sin identificar' },
+  { id: 12, abbrevation: 'DE', description: 'Documento extranjero' },
+  { id: 13, abbrevation: 'SI', description: 'Sin Identificar' }
+]
+
+export const SEXTYPE = [
+  { id: 1, description: 'Ninguno' },
+  { id: 2, description: 'Femenino' },
+  { id: 3, description: 'Masculino' }
+]
+
+export const MARITALSTATUS = [
+  { id: 1, description: 'Soltero(a)' },
+  { id: 2, description: 'Casado(a)' },
+  { id: 3, description: 'Divorciado(a)' },
+  { id: 4, description: 'Separado(a)' },
+  { id: 5, description: 'Viudo(a)' },
+  { id: 6, description: 'Unión Libre' }
+]
+
+export const REGIMENTYPE = [
+  { id: 1, description: 'Contributivo' },
+  { id: 2, description: 'Subsidiado' },
+  { id: 3, description: 'Vinculado' },
+  { id: 4, description: 'Particular' },
+  { id: 5, description: 'Otro' }
+]
+
+export const CONTRIBUTORTYPE = [
+  { id: 0, description: 'Ninguno' },
+  { id: 1, description: 'Cotizante' },
+  { id: 2, description: 'Beneficiario' },
+  { id: 3, description: 'Adicional' },
+  { id: 4, description: 'Jubilado retirado' },
+  { id: 5, description: 'Pensionado' }
+]
+
+export const KINDSHIP = [
+  { id: 0, description: 'Ninguno' },
+  { id: 1, description: 'Hermano(a)' },
+  { id: 2, description: 'Abuelo(a)' },
+  { id: 3, description: 'Nieto(a)' },
+  { id: 4, description: 'Biznieto(a)' },
+  { id: 5, description: 'Sobrino(a)' },
+  { id: 6, description: 'Tío(a)' },
+  { id: 7, description: 'Bisabuelo(a)' },
+  { id: 8, description: 'Primo(a) hermano(a)' },
+  { id: 9, description: 'Yerno' },
+  { id: 10, description: 'Nuera' },
+  { id: 11, description: 'Suegro(a)' },
+  { id: 12, description: 'Cuñado(a)' },
+  { id: 13, description: 'Otro' }
+]
+
+export const GROUPQX = [
+  { id: 1, description: 'GRUPO 02' },
+  { id: 2, description: 'GRUPO 03' },
+  { id: 3, description: 'GRUPO 04' },
+  { id: 4, description: 'GRUPO 05' },
+  { id: 5, description: 'GRUPO 06' },
+  { id: 6, description: 'GRUPO 07' },
+  { id: 7, description: 'GRUPO 08' },
+  { id: 8, description: 'GRUPO 09' },
+  { id: 9, description: 'GRUPO 10' },
+  { id: 10, description: 'GRUPO 11' },
+  { id: 11, description: 'GRUPO 12' },
+  { id: 12, description: 'GRUPO 13' },
+  { id: 13, description: 'GRUPO ESPECIAL 20' },
+  { id: 14, description: 'GRUPO ESPECIAL 21' },
+  { id: 15, description: 'GRUPO ESPECIAL 22' },
+  { id: 16, description: 'GRUPO ESPECIAL 23' }
+]
+
+export const PERCENTAGETYPE = [
+  { id: 1, description: 'Ninguno' },
+  { id: 2, description: 'Cirujano o Ginecobstetra' },
+  { id: 3, description: 'Anestesiólogo' },
+  { id: 4, description: 'Ayudantía quirúrgica' },
+  { id: 5, description: 'Derechos de sala' },
+  { id: 6, description: 'Materiales' }
+]
+
+export const LISTYESNOT = [
+  { id: 1, description: 'Si' },
+  { id: 2, description: 'No' }
+]
+
+export const LISTSERVICETYPE = [
+  { id: 0, description: 'Ninguno' },
+  { id: 1, description: 'No quirúrgico' },
+  { id: 2, description: 'Quirúrgico' },
+  { id: 3, description: 'Paquete' }
+]
+
+export const LISTNQXSERVICE = [
+  { id: 0, description: 'Ninguno' },
+  { id: 1, description: 'Cirujano o Ginecoobstetra' },
+  { id: 2, description: 'Anestesiólogo' },
+  { id: 3, description: 'Ayudantía quirúrgica' },
+  { id: 4, description: 'Derechos de sala' },
+  { id: 5, description: 'Material de sutura' },
+  { id: 6, description: 'Instrumentación Quirúrgica' }
+]
+
+export const LISTPROPOSEPROCEDURE = [
+  { id: 0, description: 'Ninguno' },
+  { id: 1, description: 'Diagnóstico' },
+  { id: 2, description: 'Terapéutico' },
+  { id: 3, description: 'Protección específica' },
+  { id: 4, description: 'Detección temprana de enfermedad general' },
+  { id: 5, description: 'Detección temprana de enfermedad laboral' }
+]
+
+export const LISTCONCEPHEALTH = [
+  { id: 0, description: 'Ninguno' },
+  { id: 1, description: 'Estancia Individual' },
+  { id: 2, description: 'Habitación Compartida' },
+  { id: 3, description: 'UCI de adultos' },
+  { id: 4, description: 'UCI neonatal' },
+  { id: 5, description: 'CI de cuidados medianos' },
+  { id: 6, description: 'Incubadora' },
+  { id: 7, description: 'Consulta médica general' },
+  { id: 8, description: 'Consulta especialista' },
+  { id: 9, description: 'Interconsulta' },
+  { id: 10, description: 'Visitas hospitalarias' },
+  { id: 11, description: 'Honorarios de cirujanos' },
+  { id: 12, description: 'Honorarios de Anestesia' },
+  { id: 13, description: 'Honorarios de ayudantía' },
+  { id: 14, description: 'Honorarios de Instrumentación' },
+  { id: 15, description: 'Derechos de salas' },
+  { id: 16, description: 'Derechos de Anestesia' },
+  { id: 17, description: 'Derechos de equipos' },
+  { id: 18, description: 'Insumos Hospitalarios' },
+  { id: 19, description: 'Material Quirúrgico' },
+  { id: 20, description: 'Medicamentos' },
+  { id: 21, description: 'Oxigeno' },
+  { id: 22, description: 'Laboratorio' },
+  { id: 23, description: 'Radiología' },
+  { id: 24, description: 'Tomografías' },
+  { id: 25, description: 'Medicina nuclear' },
+  { id: 26, description: 'Resonancia magnética' },
+  { id: 27, description: 'Exámenes Complementarios' },
+  { id: 28, description: 'Exámenes vasculares' },
+  { id: 29, description: 'Hemodinamia' },
+  { id: 30, description: 'Banco de sangre' },
+  { id: 31, description: 'Terapias' },
+  { id: 32, description: 'Ambulancia' },
+  { id: 33, description: 'Facturación integral' }
+]
+
+export const LISTCOMPLEXITYLEVEL2 = [
+  { id: 0, description: 'Ninguno' },
+  { id: 1, description: 'Nivel 1' },
+  { id: 2, description: 'Nivel 2' },
+  { id: 3, description: 'Nivel 3' },
+  { id: 4, description: 'Nivel 4' },
+  { id: 5, description: 'Nivel 5' }
+]
+
+export const LISTCONCEPRIPS = [
+  { id: 0, description: 'Ninguno' },
+  { id: 1, description: 'Consultas' },
+  { id: 2, description: 'Procedimientos Diagnostico' },
+  { id: 3, description: 'Procedimientos Terapéuticos No Quirúrgicos' },
+  { id: 4, description: 'Procedimientos Terapéuticos Quirúrgicos' },
+  { id: 5, description: 'Procedimientos Promoción y Prevención' },
+  { id: 6, description: 'Estancias' },
+  { id: 7, description: 'Honorarios' },
+  { id: 8, description: 'Derechos Sala' },
+  { id: 9, description: 'Materiales Insumos' },
+  { id: 10, description: 'Banco Sangre' },
+  { id: 11, description: 'Prótesis Ortesis' },
+  { id: 12, description: 'Medicamentos POS' },
+  { id: 13, description: 'Medicamentos No POS' },
+  { id: 14, description: 'Traslado Pacientes' },
+  { id: 15, description: 'Otros Servicios' }
+]
+
+export const SEX = [
+  { id: 0, description: 'Ninguno' },
+  { id: 1, description: 'Femenino' },
+  { id: 2, description: 'Masculino' },
+  { id: 3, description: 'Ambos' }
+]
+
 export const TYPECAU = [
   { id: 1, description: 'NINGUNO' },
   { id: 2, description: 'ADMINISTRATIVA' },
