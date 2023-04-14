@@ -25,21 +25,21 @@
 {{ props.row.description }}
 </q-td>
 <q-td key="typheapro" :props="props">
-{{ typeprofs[props.row.typeprof].description  }}
+{{ typeprofs[props.row.typheapro-1].description  }}
 </q-td>
 <q-td key="idthird" :props="props">
-{{ props.row.idthird }}
+{{ props.row.idthird.fullname }}
 </q-td>
 <q-td key="businesscard" :props="props">
 {{ props.row.businesscard }}
 </q-td>
 <q-td key="conttyp" :props="props">
-{{ typeconts[props.row.typecont].description  }}</q-td>
+{{ typeconts[props.row.conttyp-1].description  }}</q-td>
 <q-td key="idspecialty" :props="props">
-{{ props.row.idspecialty }}
+{{ props.row.idspecialty.code }}
 </q-td>
 <q-td key="digsig" :props="props">
-{{ digsig[props.row.digsig] }}
+{{ props.row.digsig }}
 </q-td>
 <q-td key="status" :props="props">
   {{ state[props.row.status] }}
@@ -100,7 +100,7 @@ lazy-rules
 <q-select
 white
 color="blue"
-v-model="typeprof"
+v-model="typheapro"
 label="Tipo de profesional en salud *"
 option-label="description"
 option-value="id"
@@ -144,7 +144,7 @@ lazy-rules
 <q-select
 white
 color="blue"
-v-model="typecont"
+v-model="conttyp"
 label="Tipo de Contratación *"
 option-label="description"
 option-value="id"
@@ -164,25 +164,16 @@ lazy-rules
     color="blue"
     v-model="idspecialty"
     label="Especialidad *"
+    @update:model-value="updateDescription"
     @filter="filterFnAccountHcSpecialtiess"
     :options="filterOptionsAccountHcSpecialtiess"
     option-value="id"
-    option-label="code"
+    option-label="description"
     emit-value
     map-options
     lazy-rules
     :rules="[ val => !!val || 'El campo es obligatorio']"
   />
-</div>
-<div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="digsig"
-label="Descripción de Especialidad *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
 </div>
 </div>
 <div class="row justify-around">
@@ -235,9 +226,9 @@ export default defineComponent({
     const code = ref(null)
     const state = ref(STATUS)
     const typeconts = ref(TYPECONT)
-    const typecont = ref(null)
+    const conttyp = ref(null)
     const typeprofs = ref(TYPEPROF)
-    const typeprof = ref(null)
+    const typheapro = ref(null)
     const description = ref(null)
     const idthird = ref(null)
     const dataAccountThirPerson = ref([])
@@ -250,6 +241,8 @@ export default defineComponent({
     const role = ref(null)
     const active = ref(false)
     const myForm = ref(null)
+    const isDisable = ref(false)
+    let dataesp = Array
     const $q = useQuasar()
     const pagination = ref({
       page: 1,
@@ -271,6 +264,7 @@ export default defineComponent({
     ])
     onMounted(() => {
       getHchealthpros()
+      getAccountHcSpecialtiess()
       getAccountThirPerson()
     })
     const getAccountThirPerson = async () => {
@@ -283,6 +277,7 @@ export default defineComponent({
       visible.value = true
       const { data } = await api.get('/clinict-history/hcspecialtiess')
       dataAccountHcSpecialtiess.value = data
+      dataesp = data
       visible.value = false
     }
     const getHchealthpros = async () => {
@@ -302,6 +297,8 @@ export default defineComponent({
       businesscard.value = null
       idspecialty.value = null
       digsig.value = null
+      conttyp.value = null
+      typheapro.value = null
       isEditing.value = false
       active.value = false
     }
@@ -314,6 +311,8 @@ export default defineComponent({
             idthird: idthird.value,
             businesscard: businesscard.value,
             idspecialty: idspecialty.value,
+            typheapro: typheapro.value,
+            conttyp: conttyp.value,
             digsig: digsig.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
@@ -324,6 +323,8 @@ export default defineComponent({
       })
     }
     const editing = (row) => {
+      isDisable.value = true
+      console.log(isDisable.value)
       onReset()
       dialog.value = true
       isEditing.value = true
@@ -333,7 +334,9 @@ export default defineComponent({
       idthird.value = row.idthird
       businesscard.value = row.businesscard
       idspecialty.value = row.idspecialty
+      conttyp.value = row.conttyp
       digsig.value = row.digsig
+      typheapro.value = row.typheapro
       if (row.status === ACTIVE) {
         active.value = true
       }
@@ -347,6 +350,8 @@ export default defineComponent({
             idthird: idthird.value,
             businesscard: businesscard.value,
             idspecialty: idspecialty.value,
+            typheapro: typheapro.value,
+            conttyp: conttyp.value,
             digsig: digsig.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
@@ -375,7 +380,10 @@ export default defineComponent({
         })
       })
     }
-
+    const updateDescription = (val) => {
+      const obj = dataesp.find(value => value.id === val)
+      digsig.value = obj.description
+    }
     const filterFnAccountThirPerson = (val, update) => {
       if (val === '') {
         update(() => {
@@ -388,7 +396,6 @@ export default defineComponent({
         filterOptionsAccountThirPerson.value = dataAccountThirPerson.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
       })
     }
-
     const filterFnAccountHcSpecialtiess = (val, update) => {
       if (val === '') {
         update(() => {
@@ -427,16 +434,18 @@ export default defineComponent({
       onDelete,
       state,
       typeconts,
-      typecont,
+      conttyp,
       typeprofs,
-      typeprof,
+      typheapro,
       dataAccountThirPerson,
       filterFnAccountThirPerson,
       filterOptionsAccountThirPerson,
       getAccountHcSpecialtiess,
       dataAccountHcSpecialtiess,
       filterFnAccountHcSpecialtiess,
-      filterOptionsAccountHcSpecialtiess
+      filterOptionsAccountHcSpecialtiess,
+      updateDescription,
+      isDisable
     }
   }
 })

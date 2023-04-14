@@ -4,7 +4,7 @@
 <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
 <div>
 <q-space />
-<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" title="Cxpcoucon" :rows="dataCxpcoucons" :filter="filter" :columns="columns" row-key="name" >
+<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Percentajeqxdet" :rows="dataPercentajeqxdets" :filter="filter" :columns="columns" row-key="name" >
 <template v-slot:top-left>
 <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
 <q-space />
@@ -21,20 +21,17 @@
 <q-td key="code" :props="props">
 {{ props.row.code }}
 </q-td>
-<q-td key="description" :props="props">
-{{ props.row.description }}
+<q-td key="percentajeqxId" :props="props">
+{{ props.row.percentajeqxId }}
 </q-td>
-<q-td key="type" :props="props">
-{{ typecocept[props.row.type-1].description  }}
+<q-td key="typepercentaje" :props="props">
+{{ props.row.typepercentaje }}
 </q-td>
-<q-td key="idledacc" :props="props">
-{{ props.row.idledacc.description }}
-</q-td>
-<q-td key="conappl" :props="props">
-{{ selections[props.row.conappl-1].description  }}
+<q-td key="valpercentaje" :props="props">
+{{ props.row.valpercentaje }}
 </q-td>
 <q-td key="status" :props="props">
-  {{ states[props.row.status] }}
+{{ props.row.status }}
 </q-td>
 <q-td key="edit" :props="props">
 <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
@@ -73,7 +70,7 @@ Los campos marcados con (*) son obligatorios
 white
 color="blue"
 v-model="code"
-label="Código *"
+label="code *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
@@ -82,73 +79,42 @@ lazy-rules
 <q-input
 white
 color="blue"
-v-model="description"
-label="Descripción *"
+v-model="percentajeqxId"
+label="percentajeqxId *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
 </div>
 <div class="col-md-4">
-<q-select
+<q-input
 white
 color="blue"
-v-model="type"
-label="Tipo *"
-option-label="description"
-option-value="id"
-:options="typecocept"
-stack-label
-use-input
-input-debounce="0"
-emit-value
-map-options
+v-model="typepercentaje"
+label="typepercentaje *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
 </div>
 <div class="col-md-4">
-  <q-select
-  white
-  color="blue"
-  v-model="idledacc"
-  label="Cuenta Contable *"
-  @filter="filterFnAccountCatalog"
-  :options="filterOptionsAccountCatalog"
-  option-value="id"
-  option-label="description"
-  emit-value
-  map-options
-  lazy-rules
-  :rules="[ val => !!val || 'El campo es obligatorio']"
-  />
-</div>
-<div class="col-md-4">
-<q-select
+<q-input
 white
 color="blue"
-v-model="conappl"
-label="Concepto aplica IVA *"
-option-label="description"
-option-value="id"
-:options="selections"
-stack-label
-use-input
-input-debounce="0"
-emit-value
-map-options
+v-model="valpercentaje"
+label="valpercentaje *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
 </div>
+<div class="col-md-4">
+<q-input
+white
+color="blue"
+v-model="status"
+label="status *"
+lazy-rules
+:rules="[ val => !!val || 'El campo es obligatorio']"
+/>
 </div>
-<div class="row justify-around">
-    <div class="col-md-3">
-    </div>
-    <div class="col-md-3">
-      <q-toggle v-model="active" label="Estado"/>
-    </div>
-    <div class="col-md-3">
-  </div>
 </div>
 </q-form>
 </q-card-section>
@@ -178,26 +144,20 @@ lazy-rules
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-import { ACTIVE, INACTIVE, STATUS, SELECTION, CONCEPTTYPEPAY } from '../../constants/Constants'
 export default defineComponent({
-  name: 'CxpcouconsPage',
+  name: 'PercentajeqxdetsPage',
   setup () {
-    const path = 'accounts-payable/cxpcoucons'
+    const path = '/percentajeqxdets'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)
     const filter = ref(null)
-    const dataCxpcoucons = ref([])
-    const dataAccountCatalog = ref([])
-    const filterOptionsAccountCatalog = ref(dataAccountCatalog)
-    const states = ref(STATUS)
-    const typecocept = ref(CONCEPTTYPEPAY)
-    const type = ref(null)
-    const selections = ref(SELECTION)
-    const conappl = ref(null)
+    const dataPercentajeqxdets = ref([])
     const code = ref(null)
-    const description = ref(null)
-    const idledacc = ref(null)
+    const percentajeqxId = ref(null)
+    const typepercentaje = ref(null)
+    const valpercentaje = ref(null)
+    const status = ref(null)
     const role = ref(null)
     const active = ref(false)
     const myForm = ref(null)
@@ -208,29 +168,21 @@ export default defineComponent({
     })
     const isEditing = ref(false)
     const columns = ref([
-      { name: 'code', align: 'center', label: 'Código', field: 'code', sortable: true },
-      { name: 'description', align: 'center', label: 'Descripción', field: 'description', sortable: true },
-      { name: 'type', align: 'center', label: 'Tipo', field: 'type', sortable: true },
-      { name: 'idledacc', align: 'center', label: 'Cuenta Contable', field: 'idledacc', sortable: true },
-      { name: 'conappl', align: 'center', label: 'Concepto aplica IVA', field: 'conappl', sortable: true },
-      { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
+      { name: 'code', align: 'center', label: 'code', field: 'code', sortable: true },
+      { name: 'percentajeqxId', align: 'center', label: 'percentajeqxId', field: 'percentajeqxId', sortable: true },
+      { name: 'typepercentaje', align: 'center', label: 'typepercentaje', field: 'typepercentaje', sortable: true },
+      { name: 'valpercentaje', align: 'center', label: 'valpercentaje', field: 'valpercentaje', sortable: true },
+      { name: 'status', align: 'center', label: 'status', field: 'status', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
     onMounted(() => {
-      getCxpcoucons()
-      getAccountCatalog()
+      getPercentajeqxdets()
     })
-    const getCxpcoucons = async () => {
+    const getPercentajeqxdets = async () => {
       visible.value = true
       const { data } = await api.get(path)
-      dataCxpcoucons.value = data
-      visible.value = false
-    }
-    const getAccountCatalog = async () => {
-      visible.value = true
-      const { data } = await api.get('/account-catalog')
-      dataAccountCatalog.value = data
+      dataPercentajeqxdets.value = data
       visible.value = false
     }
     const creating = () => {
@@ -239,11 +191,11 @@ export default defineComponent({
     }
     const onReset = () => {
       code.value = null
-      description.value = null
-      idledacc.value = null
+      percentajeqxId.value = null
+      typepercentaje.value = null
+      valpercentaje.value = null
+      status.value = null
       isEditing.value = false
-      type.value = null
-      conappl.value = null
       active.value = false
     }
     const onSubmit = () => {
@@ -251,14 +203,13 @@ export default defineComponent({
         if (success) {
           api.post(path, {
             code: code.value,
-            description: description.value,
-            type: type.value,
-            conappl: conappl.value,
-            idledacc: idledacc.value,
-            status: active.value ? ACTIVE : INACTIVE
+            percentajeqxId: percentajeqxId.value,
+            typepercentaje: typepercentaje.value,
+            valpercentaje: valpercentaje.value,
+            status: status.value,
           }).then(() => {
             dialog.value = false
-            getCxpcoucons()
+            getPercentajeqxdets()
           })
         }
       })
@@ -269,35 +220,31 @@ export default defineComponent({
       isEditing.value = true
       id.value = row.id
       code.value = row.code
-      description.value = row.description
-      type.value = row.type
-      conappl.value = row.conappl
-      idledacc.value = row.idledacc
-      if (row.status === ACTIVE) {
-        active.value = true
-      }
+      percentajeqxId.value = row.percentajeqxId
+      typepercentaje.value = row.typepercentaje
+      valpercentaje.value = row.valpercentaje
+      status.value = row.status
     }
     const onEditing = () => {
       myForm.value.validate().then(async success => {
         if (success) {
           api.patch(path + '/' + id.value, {
             code: code.value,
-            description: description.value,
-            type: type.value,
-            conappl: conappl.value,
-            idledacc: idledacc.value,
-            status: active.value ? ACTIVE : INACTIVE
+            percentajeqxId: percentajeqxId.value,
+            typepercentaje: typepercentaje.value,
+            valpercentaje: valpercentaje.value,
+            status: status.value,
           }).then(() => {
             dialog.value = false
-            getCxpcoucons()
+            getPercentajeqxdets()
           })
         }
       })
     }
     const onDelete = (row) => {
       $q.dialog({
-        title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar el concepto de contrapartida–CXP y nota: ' + row.description + '?',
+        title: 'Confirmaci�n',
+        message: '�Est� seguro que desea eliminar la percentajeqxdet: ' + row.id + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -309,25 +256,13 @@ export default defineComponent({
       }).onOk(() => {
         api.delete(path + '/' + row.id).then(response => {
           dialog.value = false
-          getCxpcoucons()
+          getPercentajeqxdets()
         })
-      })
-    }
-    const filterFnAccountCatalog = (val, update) => {
-      if (val === '') {
-        update(() => {
-          filterOptionsAccountCatalog.value = dataAccountCatalog.value
-        })
-        return
-      }
-      update(() => {
-        const needle = val.toLowerCase()
-        filterOptionsAccountCatalog.value = dataAccountCatalog.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
       })
     }
     return {
       dialog,
-      dataCxpcoucons,
+      dataPercentajeqxdets,
       isEditing,
       role,
       active,
@@ -338,22 +273,16 @@ export default defineComponent({
       visible,
       filter,
       code,
-      description,
-      idledacc,
+      percentajeqxId,
+      typepercentaje,
+      valpercentaje,
+      status,
       onReset,
       onSubmit,
       editing,
       onEditing,
       id,
       onDelete,
-      states,
-      typecocept,
-      type,
-      selections,
-      conappl,
-      filterOptionsAccountCatalog,
-      dataAccountCatalog,
-      filterFnAccountCatalog
     }
   }
 })

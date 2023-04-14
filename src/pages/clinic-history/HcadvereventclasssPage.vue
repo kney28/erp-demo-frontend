@@ -4,7 +4,7 @@
 <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
 <div>
 <q-space />
-<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" title="Cxpcoucon" :rows="dataCxpcoucons" :filter="filter" :columns="columns" row-key="name" >
+<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" title="Hcadvereventclass" :rows="dataHcadvereventclasss" :filter="filter" :columns="columns" row-key="name" >
 <template v-slot:top-left>
 <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
 <q-space />
@@ -23,15 +23,6 @@
 </q-td>
 <q-td key="description" :props="props">
 {{ props.row.description }}
-</q-td>
-<q-td key="type" :props="props">
-{{ typecocept[props.row.type-1].description  }}
-</q-td>
-<q-td key="idledacc" :props="props">
-{{ props.row.idledacc.description }}
-</q-td>
-<q-td key="conappl" :props="props">
-{{ selections[props.row.conappl-1].description  }}
 </q-td>
 <q-td key="status" :props="props">
   {{ states[props.row.status] }}
@@ -68,17 +59,17 @@ Los campos marcados con (*) son obligatorios
 <q-card-section>
 <q-form ref="myForm" @submit.prevent="">
 <div class="row justify-around">
-<div class="col-md-4">
+<div class="col-md-6">
 <q-input
 white
 color="blue"
 v-model="code"
-label="Código *"
+label="Codigo *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
 </div>
-<div class="col-md-4">
+<div class="col-md-6">
 <q-input
 white
 color="blue"
@@ -88,67 +79,13 @@ lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
 </div>
-<div class="col-md-4">
-<q-select
-white
-color="blue"
-v-model="type"
-label="Tipo *"
-option-label="description"
-option-value="id"
-:options="typecocept"
-stack-label
-use-input
-input-debounce="0"
-emit-value
-map-options
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
-</div>
-<div class="col-md-4">
-  <q-select
-  white
-  color="blue"
-  v-model="idledacc"
-  label="Cuenta Contable *"
-  @filter="filterFnAccountCatalog"
-  :options="filterOptionsAccountCatalog"
-  option-value="id"
-  option-label="description"
-  emit-value
-  map-options
-  lazy-rules
-  :rules="[ val => !!val || 'El campo es obligatorio']"
-  />
-</div>
-<div class="col-md-4">
-<q-select
-white
-color="blue"
-v-model="conappl"
-label="Concepto aplica IVA *"
-option-label="description"
-option-value="id"
-:options="selections"
-stack-label
-use-input
-input-debounce="0"
-emit-value
-map-options
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
-</div>
 </div>
 <div class="row justify-around">
-    <div class="col-md-3">
-    </div>
-    <div class="col-md-3">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
       <q-toggle v-model="active" label="Estado"/>
     </div>
-    <div class="col-md-3">
-  </div>
+    <div class="col-md-4"></div>
 </div>
 </q-form>
 </q-card-section>
@@ -178,26 +115,19 @@ lazy-rules
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-import { ACTIVE, INACTIVE, STATUS, SELECTION, CONCEPTTYPEPAY } from '../../constants/Constants'
+import { ACTIVE, INACTIVE, STATUS } from '../../constants/Constants'
 export default defineComponent({
-  name: 'CxpcouconsPage',
+  name: 'HcadvereventclasssPage',
   setup () {
-    const path = 'accounts-payable/cxpcoucons'
+    const path = 'clinic-history/hcadvereventclasss'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)
     const filter = ref(null)
-    const dataCxpcoucons = ref([])
-    const dataAccountCatalog = ref([])
-    const filterOptionsAccountCatalog = ref(dataAccountCatalog)
     const states = ref(STATUS)
-    const typecocept = ref(CONCEPTTYPEPAY)
-    const type = ref(null)
-    const selections = ref(SELECTION)
-    const conappl = ref(null)
+    const dataHcadvereventclasss = ref([])
     const code = ref(null)
     const description = ref(null)
-    const idledacc = ref(null)
     const role = ref(null)
     const active = ref(false)
     const myForm = ref(null)
@@ -210,27 +140,17 @@ export default defineComponent({
     const columns = ref([
       { name: 'code', align: 'center', label: 'Código', field: 'code', sortable: true },
       { name: 'description', align: 'center', label: 'Descripción', field: 'description', sortable: true },
-      { name: 'type', align: 'center', label: 'Tipo', field: 'type', sortable: true },
-      { name: 'idledacc', align: 'center', label: 'Cuenta Contable', field: 'idledacc', sortable: true },
-      { name: 'conappl', align: 'center', label: 'Concepto aplica IVA', field: 'conappl', sortable: true },
       { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
     onMounted(() => {
-      getCxpcoucons()
-      getAccountCatalog()
+      getHcadvereventclasss()
     })
-    const getCxpcoucons = async () => {
+    const getHcadvereventclasss = async () => {
       visible.value = true
       const { data } = await api.get(path)
-      dataCxpcoucons.value = data
-      visible.value = false
-    }
-    const getAccountCatalog = async () => {
-      visible.value = true
-      const { data } = await api.get('/account-catalog')
-      dataAccountCatalog.value = data
+      dataHcadvereventclasss.value = data
       visible.value = false
     }
     const creating = () => {
@@ -240,10 +160,7 @@ export default defineComponent({
     const onReset = () => {
       code.value = null
       description.value = null
-      idledacc.value = null
       isEditing.value = false
-      type.value = null
-      conappl.value = null
       active.value = false
     }
     const onSubmit = () => {
@@ -252,13 +169,10 @@ export default defineComponent({
           api.post(path, {
             code: code.value,
             description: description.value,
-            type: type.value,
-            conappl: conappl.value,
-            idledacc: idledacc.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getCxpcoucons()
+            getHcadvereventclasss()
           })
         }
       })
@@ -270,9 +184,6 @@ export default defineComponent({
       id.value = row.id
       code.value = row.code
       description.value = row.description
-      type.value = row.type
-      conappl.value = row.conappl
-      idledacc.value = row.idledacc
       if (row.status === ACTIVE) {
         active.value = true
       }
@@ -283,13 +194,10 @@ export default defineComponent({
           api.patch(path + '/' + id.value, {
             code: code.value,
             description: description.value,
-            type: type.value,
-            conappl: conappl.value,
-            idledacc: idledacc.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getCxpcoucons()
+            getHcadvereventclasss()
           })
         }
       })
@@ -297,7 +205,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar el concepto de contrapartida–CXP y nota: ' + row.description + '?',
+        message: '¿Está seguro que desea eliminar la clase de evento adverso: ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -309,25 +217,13 @@ export default defineComponent({
       }).onOk(() => {
         api.delete(path + '/' + row.id).then(response => {
           dialog.value = false
-          getCxpcoucons()
+          getHcadvereventclasss()
         })
-      })
-    }
-    const filterFnAccountCatalog = (val, update) => {
-      if (val === '') {
-        update(() => {
-          filterOptionsAccountCatalog.value = dataAccountCatalog.value
-        })
-        return
-      }
-      update(() => {
-        const needle = val.toLowerCase()
-        filterOptionsAccountCatalog.value = dataAccountCatalog.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
       })
     }
     return {
       dialog,
-      dataCxpcoucons,
+      dataHcadvereventclasss,
       isEditing,
       role,
       active,
@@ -339,21 +235,13 @@ export default defineComponent({
       filter,
       code,
       description,
-      idledacc,
       onReset,
       onSubmit,
       editing,
       onEditing,
       id,
       onDelete,
-      states,
-      typecocept,
-      type,
-      selections,
-      conappl,
-      filterOptionsAccountCatalog,
-      dataAccountCatalog,
-      filterFnAccountCatalog
+      states
     }
   }
 })

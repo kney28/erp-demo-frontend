@@ -4,7 +4,7 @@
 <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
 <div>
 <q-space />
-<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" title="Cxpcoucon" :rows="dataCxpcoucons" :filter="filter" :columns="columns" row-key="name" >
+<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" title="Hcvadsispromipres" :rows="dataHcvadsispromipress" :filter="filter" :columns="columns" row-key="name" >
 <template v-slot:top-left>
 <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
 <q-space />
@@ -21,20 +21,17 @@
 <q-td key="code" :props="props">
 {{ props.row.code }}
 </q-td>
+<q-td key="name" :props="props">
+{{ props.row.name }}
+</q-td>
 <q-td key="description" :props="props">
 {{ props.row.description }}
 </q-td>
-<q-td key="type" :props="props">
-{{ typecocept[props.row.type-1].description  }}
-</q-td>
-<q-td key="idledacc" :props="props">
-{{ props.row.idledacc.description }}
-</q-td>
-<q-td key="conappl" :props="props">
-{{ selections[props.row.conappl-1].description  }}
+<q-td key="enabled" :props="props">
+{{ selections[props.row.enabled-1].description  }}
 </q-td>
 <q-td key="status" :props="props">
-  {{ states[props.row.status] }}
+  {{ state[props.row.status] }}
 </q-td>
 <q-td key="edit" :props="props">
 <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
@@ -73,7 +70,17 @@ Los campos marcados con (*) son obligatorios
 white
 color="blue"
 v-model="code"
-label="Código *"
+label="Codigo *"
+lazy-rules
+:rules="[ val => !!val || 'El campo es obligatorio']"
+/>
+</div>
+<div class="col-md-4">
+<q-input
+white
+color="blue"
+v-model="name"
+label="Nombre *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
@@ -88,46 +95,13 @@ lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
 </div>
+<div class="col-md-4"></div>
 <div class="col-md-4">
 <q-select
 white
 color="blue"
-v-model="type"
-label="Tipo *"
-option-label="description"
-option-value="id"
-:options="typecocept"
-stack-label
-use-input
-input-debounce="0"
-emit-value
-map-options
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
-</div>
-<div class="col-md-4">
-  <q-select
-  white
-  color="blue"
-  v-model="idledacc"
-  label="Cuenta Contable *"
-  @filter="filterFnAccountCatalog"
-  :options="filterOptionsAccountCatalog"
-  option-value="id"
-  option-label="description"
-  emit-value
-  map-options
-  lazy-rules
-  :rules="[ val => !!val || 'El campo es obligatorio']"
-  />
-</div>
-<div class="col-md-4">
-<q-select
-white
-color="blue"
-v-model="conappl"
-label="Concepto aplica IVA *"
+v-model="enabled"
+label="Habilitado *"
 option-label="description"
 option-value="id"
 :options="selections"
@@ -140,15 +114,14 @@ lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
 </div>
+<div class="col-md-4"></div>
 </div>
 <div class="row justify-around">
-    <div class="col-md-3">
-    </div>
-    <div class="col-md-3">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
       <q-toggle v-model="active" label="Estado"/>
     </div>
-    <div class="col-md-3">
-  </div>
+    <div class="col-md-4"></div>
 </div>
 </q-form>
 </q-card-section>
@@ -178,26 +151,22 @@ lazy-rules
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-import { ACTIVE, INACTIVE, STATUS, SELECTION, CONCEPTTYPEPAY } from '../../constants/Constants'
+import { ACTIVE, INACTIVE, STATUS, SELECTION } from '../../constants/Constants'
 export default defineComponent({
-  name: 'CxpcouconsPage',
+  name: 'HcvadsispromipressPage',
   setup () {
-    const path = 'accounts-payable/cxpcoucons'
+    const path = 'clinic-history/hcvadsispromipress'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)
     const filter = ref(null)
-    const dataCxpcoucons = ref([])
-    const dataAccountCatalog = ref([])
-    const filterOptionsAccountCatalog = ref(dataAccountCatalog)
-    const states = ref(STATUS)
-    const typecocept = ref(CONCEPTTYPEPAY)
-    const type = ref(null)
+    const dataHcvadsispromipress = ref([])
+    const state = ref(STATUS)
     const selections = ref(SELECTION)
-    const conappl = ref(null)
+    const enabled = ref(null)
     const code = ref(null)
+    const name = ref(null)
     const description = ref(null)
-    const idledacc = ref(null)
     const role = ref(null)
     const active = ref(false)
     const myForm = ref(null)
@@ -208,29 +177,21 @@ export default defineComponent({
     })
     const isEditing = ref(false)
     const columns = ref([
-      { name: 'code', align: 'center', label: 'Código', field: 'code', sortable: true },
-      { name: 'description', align: 'center', label: 'Descripción', field: 'description', sortable: true },
-      { name: 'type', align: 'center', label: 'Tipo', field: 'type', sortable: true },
-      { name: 'idledacc', align: 'center', label: 'Cuenta Contable', field: 'idledacc', sortable: true },
-      { name: 'conappl', align: 'center', label: 'Concepto aplica IVA', field: 'conappl', sortable: true },
+      { name: 'code', align: 'center', label: 'Codigo', field: 'code', sortable: true },
+      { name: 'name', align: 'center', label: 'Nombre', field: 'name', sortable: true },
+      { name: 'description', align: 'center', label: 'Descripsión', field: 'description', sortable: true },
+      { name: 'enabled', align: 'center', label: 'Habilitado', field: 'enabled', sortable: true },
       { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
     onMounted(() => {
-      getCxpcoucons()
-      getAccountCatalog()
+      getHcvadsispromipress()
     })
-    const getCxpcoucons = async () => {
+    const getHcvadsispromipress = async () => {
       visible.value = true
       const { data } = await api.get(path)
-      dataCxpcoucons.value = data
-      visible.value = false
-    }
-    const getAccountCatalog = async () => {
-      visible.value = true
-      const { data } = await api.get('/account-catalog')
-      dataAccountCatalog.value = data
+      dataHcvadsispromipress.value = data
       visible.value = false
     }
     const creating = () => {
@@ -239,11 +200,10 @@ export default defineComponent({
     }
     const onReset = () => {
       code.value = null
+      name.value = null
       description.value = null
-      idledacc.value = null
+      enabled.value = null
       isEditing.value = false
-      type.value = null
-      conappl.value = null
       active.value = false
     }
     const onSubmit = () => {
@@ -251,14 +211,13 @@ export default defineComponent({
         if (success) {
           api.post(path, {
             code: code.value,
+            name: name.value,
             description: description.value,
-            type: type.value,
-            conappl: conappl.value,
-            idledacc: idledacc.value,
+            enabled: enabled.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getCxpcoucons()
+            getHcvadsispromipress()
           })
         }
       })
@@ -269,10 +228,9 @@ export default defineComponent({
       isEditing.value = true
       id.value = row.id
       code.value = row.code
+      name.value = row.name
+      enabled.value = row.enabled
       description.value = row.description
-      type.value = row.type
-      conappl.value = row.conappl
-      idledacc.value = row.idledacc
       if (row.status === ACTIVE) {
         active.value = true
       }
@@ -282,14 +240,13 @@ export default defineComponent({
         if (success) {
           api.patch(path + '/' + id.value, {
             code: code.value,
+            name: name.value,
             description: description.value,
-            type: type.value,
-            conappl: conappl.value,
-            idledacc: idledacc.value,
+            enabled: enabled.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
             dialog.value = false
-            getCxpcoucons()
+            getHcvadsispromipress()
           })
         }
       })
@@ -297,7 +254,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar el concepto de contrapartida–CXP y nota: ' + row.description + '?',
+        message: '¿Está seguro que desea eliminar la VAD SISPRO para MIPRES: ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -309,25 +266,13 @@ export default defineComponent({
       }).onOk(() => {
         api.delete(path + '/' + row.id).then(response => {
           dialog.value = false
-          getCxpcoucons()
+          getHcvadsispromipress()
         })
-      })
-    }
-    const filterFnAccountCatalog = (val, update) => {
-      if (val === '') {
-        update(() => {
-          filterOptionsAccountCatalog.value = dataAccountCatalog.value
-        })
-        return
-      }
-      update(() => {
-        const needle = val.toLowerCase()
-        filterOptionsAccountCatalog.value = dataAccountCatalog.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
       })
     }
     return {
       dialog,
-      dataCxpcoucons,
+      dataHcvadsispromipress,
       isEditing,
       role,
       active,
@@ -338,22 +283,17 @@ export default defineComponent({
       visible,
       filter,
       code,
+      name,
       description,
-      idledacc,
       onReset,
       onSubmit,
       editing,
       onEditing,
       id,
       onDelete,
-      states,
-      typecocept,
-      type,
+      state,
       selections,
-      conappl,
-      filterOptionsAccountCatalog,
-      dataAccountCatalog,
-      filterFnAccountCatalog
+      enabled
     }
   }
 })
