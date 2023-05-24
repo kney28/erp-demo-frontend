@@ -62,6 +62,7 @@ const routes = [
       { path: '/hiring/percentageqxs', name: 'percentageqxs', component: () => import('pages/hiring/PercentageqxsPage.vue') },
       { path: '/hiring/percentajeqxdets', name: 'percentajeqxdets', component: () => import('pages/hiring/PercentageqxdetsPage.vue') },
       { path: '/hiring/healthservices', name: 'healthservices', component: () => import('pages/hiring/HealthservicesPage.vue') },
+      { path: '/hiring/parameterizationqxs', name: 'parameterizationqxs', component: () => import('pages/hiring/ParameterizationqxsPage.vue') },
 
       { path: '/treasury/tscasreccons', name: 'tscasreccons', component: () => import('pages/treasury/TscasrecconsPage.vue') },
       { path: '/treasury/tsdiscons', name: 'tsdiscon', component: () => import('pages/treasury/TsdisconsPage.vue') },

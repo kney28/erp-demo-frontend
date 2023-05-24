@@ -1382,6 +1382,25 @@
                       Servicios de salud
                     </q-item-section>
                   </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/hiring/parameterizationqxs', 'Parametrización Qx')"
+                    active-class="tab-active"
+                    to="/hiring/parameterizationqxs"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-heart-pulse" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Parametrización Qx
+                    </q-item-section>
+                  </q-item>
+
                 </q-expansion-item>
               </q-expansion-item>
 
