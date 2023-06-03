@@ -69,10 +69,12 @@
                   :rules="[val => !!val || 'El campo es obligatorio']" />
               </div>
               <div class="col-md-12">
-                <q-toggle
-                  v-model="active"
-                  label="Estado"
-                />
+                <center>
+                  <q-toggle
+                    v-model="active"
+                    label="Estado"
+                  />
+                </center>
               </div>
             </div>
           </q-form>
