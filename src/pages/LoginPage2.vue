@@ -180,8 +180,8 @@ export default defineComponent({
         token.value = data.access_token
         $q.cookies.set('userName', data.usuario.name.toUpperCase())
         userName.value = data.usuario.name.toUpperCase()
-        $q.cookies.set('role', data.usuario.role.description)
-        role.value = data.usuario.role.description
+        $q.cookies.set('role', data.usuario.role.code)
+        role.value = data.usuario.role.code
         $router.push({ name: 'index' })
       }).catch(e => {
         if (e) {

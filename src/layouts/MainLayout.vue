@@ -163,9 +163,9 @@
                   icon="engineering"
                   label="Maestros">
                   <q-item
-                    @click="setTabSelected('/profiles', 'Perfiles')"
+                    @click="setTabSelected('/configuration/profiles', 'Perfiles')"
                     active-class="tab-active"
-                    to="/profiles"
+                    to="/configuration/profiles"
                     exact
                     class="q-ma-sm navigation-item"
                     clickable
@@ -197,9 +197,9 @@
                     </q-item-section>
                   </q-item>
                   <q-item
-                    @click="setTabSelected('/neighborhoods', 'Barrios')"
+                    @click="setTabSelected('/configuration/neighborhoods', 'Barrios')"
                     active-class="tab-active"
-                    to="/neighborhoods"
+                    to="/configuration/neighborhoods"
                     exact
                     class="q-ma-sm navigation-item"
                     clickable
@@ -231,6 +231,23 @@
                     </q-item-section>
                   </q-item>
                   <q-item
+                    @click="setTabSelected('/configuration/companies', 'Compañia')"
+                    active-class="tab-active"
+                    to="/configuration/companies"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="store" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Compañia
+                    </q-item-section>
+                  </q-item>
+                  <q-item
                     @click="setTabSelected('/configuration/validities', 'Vigencias')"
                     active-class="tab-active"
                     to="/configuration/validities"
@@ -245,40 +262,6 @@
 
                     <q-item-section>
                       Vigencias
-                    </q-item-section>
-                  </q-item>
-                  <q-item
-                    @click="setTabSelected('/configuration/permissionss', 'Permisos')"
-                    active-class="tab-active"
-                    to="/configuration/permissionss"
-                    exact
-                    class="q-ma-sm navigation-item"
-                    clickable
-                    v-ripple
-                  >
-                    <q-item-section avatar>
-                      <q-icon name="key" />
-                    </q-item-section>
-
-                    <q-item-section>
-                      Permisos
-                    </q-item-section>
-                  </q-item>
-                  <q-item
-                    @click="setTabSelected('/companies', 'Compañia')"
-                    active-class="tab-active"
-                    to="/companies"
-                    exact
-                    class="q-ma-sm navigation-item"
-                    clickable
-                    v-ripple
-                  >
-                    <q-item-section avatar>
-                      <q-icon name="store" />
-                    </q-item-section>
-
-                    <q-item-section>
-                      Compañia
                     </q-item-section>
                   </q-item>
                   <q-item

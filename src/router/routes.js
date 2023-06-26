@@ -6,10 +6,11 @@ const routes = [
     children: [
       { path: '', name: 'index', component: () => import('pages/IndexPage.vue') },
       { path: '/users', name: 'users', component: () => import('pages/UsersPage.vue') },
-      { path: '/profiles', name: 'profiles', component: () => import('pages/ProfilePage.vue') },
-      { path: '/neighborhoods', name: 'neighborhoods', component: () => import('pages/NeighborhoodsPage.vue') },
+      { path: '/configuration/profiles', name: 'profiles', component: () => import('pages/configuration/ProfilePage.vue') },
+      { path: '/configuration/erp_moduless', name: 'erp_modules', component: () => import('pages/configuration/Erp_modulessPage.vue') },
+      { path: '/configuration/neighborhoods', name: 'neighborhoods', component: () => import('pages/configuration/NeighborhoodsPage.vue') },
       { path: '/configuration/validities', name: 'validities', component: () => import('pages/configuration/ValidityPage.vue') },
-      { path: '/companies', name: 'companies', component: () => import('pages/CompanyPage.vue') },
+      { path: '/configuration/companies', name: 'companies', component: () => import('pages/configuration/CompanyPage.vue') },
       { path: '/changePasswords', name: 'changePasswords', component: () => import('pages/ChangePasswordPage.vue') },
       { path: '/logsAudits', name: 'logsAudits', component: () => import('pages/LogAuditPage.vue') },
       { path: '/accountingSettings', name: 'accountingSettings', component: () => import('pages/AccountingSettingsPage.vue') },
@@ -39,7 +40,6 @@ const routes = [
       { path: '/hospitalization/locations', name: 'locations', component: () => import('pages/hospitalization/LocationsPage.vue') },
 
       { path: '/configuration/holidays', name: 'holidays', component: () => import('pages/configuration/HolidayssPage.vue') },
-      { path: '/configuration/permissionss', name: 'permissionss', component: () => import('pages/configuration/PermissionssPage.vue') },
 
       { path: '/admissions/headquarters', name: 'headquarters', component: () => import('pages/admissions/HeadquarterssPage.vue') },
       { path: '/admissions/healthproviders', name: 'healthproviders', component: () => import('pages/admissions/HealthproviderssPage.vue') },
