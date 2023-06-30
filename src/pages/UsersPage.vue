@@ -84,7 +84,7 @@
                 @filter="filterFnProfiles"
                 :options="filterOptionsProfiles"
                 option-value="id"
-                option-label="description"
+                option-label="code"
                 emit-value
                 map-options
                 lazy-rules
@@ -253,7 +253,7 @@ export default defineComponent({
 
     const getProfiles = async () => {
       visible.value = true
-      const { data } = await api.get('/profiles')
+      const { data } = await api.get('/configuration/profiles')
       dataProfiles.value = data
       visible.value = false
     }
