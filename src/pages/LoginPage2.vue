@@ -41,7 +41,7 @@
               <div class="text-h4 text-weight-bolder">
                 ¡Bienvenid@!
               </div>
-              <div class="text-h5 q-mt-sm font-poppins-regular" style="text-shadow:3px 5px 6px #000;">
+              <div class="text-h5 q-mt-sm font-poppins-regular" style="text-shadow:3px 5px 6px #000; text-align: justify;">
                 Aquí encontraras todas las herramientas que necesitas para gestionar
                 todos los aspectos administrativos de tu hospital
               </div>
@@ -53,7 +53,15 @@
     <div class="col-12 col-md-4" style="min-width: 300px;">
       <div>
         <q-card-section>
-          <div class="text-center">
+          <div class="text-center" v-if="logo">
+            <br><br>
+            <q-img
+              :src="logo"
+              width="200px"
+            />
+          </div>
+          <div class="text-center" v-else>
+            <br><br>
             <q-icon
               name="fa-solid fa-stethoscope"
               size="70px"
@@ -62,8 +70,8 @@
             />
           </div>
           <div>
-            <p style="color: #60818E; font-size: 20px; font-weight: bolder;" class="text-center q-mb-xs">Hospital Universitario</p>
-            <p style="color: #12506A; font-size: 30px; font-weight: bolder;" class="text-center q-mb-lg">San Vicente de Paul</p>
+            <p style="color: #60818E; font-size: 20px; font-weight: bolder;" class="text-center q-mb-xs"></p>
+            <p style="color: #12506A; font-size: 30px; font-weight: bolder;" class="text-center q-mb-lg">{{ companyName }}</p>
           </div>
           <div class="col text-h6 text-center font-poppins-bold" style="color: #12506A; font-weight:bold">
             Iniciar sesión
@@ -96,6 +104,7 @@
                 :input-style="{marginTop: '15px'}"
                 :input-class="{'input-login': 'a'}"
                 class="font-poppins-regular"
+                @keydown.enter.prevent="login"
               />
             </div>
             <div class="text-right font-poppins-bold q-mt-sm" style="color: #2fc1ff; font-size: 12px;">
@@ -126,7 +135,7 @@
 
 <script>
 
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, onMounted } from 'vue'
 import { useAuthStore } from 'src/stores/auth'
 import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
@@ -141,7 +150,26 @@ export default defineComponent({
     const username = ref(null)
     const password = ref(null)
     const auth = useAuthStore()
-    const { token } = storeToRefs(auth)
+    const rows = ref([])
+    const { token, userName, companyName, logo, role } = storeToRefs(auth)
+
+    onMounted(() => {
+      getCompany()
+    })
+
+    const getCompany = async () => {
+      api.get('/company').then(response => {
+        rows.value = response.data
+        $q.cookies.set('companyName', rows.value[0].name)
+        companyName.value = rows.value[0].name
+        $q.cookies.set('logo', rows.value[0].logo)
+        logo.value = rows.value[0].logo
+      }).catch(e => {
+        if (e) {
+          console.log(e)
+        }
+      })
+    }
 
     const login = () => {
       api.post('auth/login/', {
@@ -150,6 +178,10 @@ export default defineComponent({
       }).then(({ data }) => {
         $q.cookies.set('token', data.access_token)
         token.value = data.access_token
+        $q.cookies.set('userName', data.usuario.name.toUpperCase())
+        userName.value = data.usuario.name.toUpperCase()
+        $q.cookies.set('role', data.usuario.role.code)
+        role.value = data.usuario.role.code
         $router.push({ name: 'index' })
       }).catch(e => {
         if (e) {
@@ -161,7 +193,9 @@ export default defineComponent({
     return {
       username,
       password,
-      login
+      login,
+      companyName,
+      logo
     }
   }
 })

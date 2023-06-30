@@ -189,7 +189,7 @@
         </q-card-section>
       </q-card>
     </q-dialog>
-    <q-dialog v-model="dialogFormDetail" persistent>
+    <q-dialog v-model="dialogForm" persistent>
       <q-card style="width: 900px; max-width: 80vw;">
         <q-linear-progress :value="10" color="blue" />
 

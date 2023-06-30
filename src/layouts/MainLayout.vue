@@ -3,6 +3,9 @@
     <q-header
       reveal
       :class="$q.dark.isActive ? 'header_dark' : 'header_normal'"
+      style="
+        color: #616161;
+      "
     >
       <q-toolbar>
         <q-btn
@@ -12,20 +15,67 @@
           dense
           icon="menu"
           class="q-mr-sm"
+          style="
+            margin-top: 15px;
+          "
         />
 
-        <q-toolbar-title>ERP HOSPITALARIO</q-toolbar-title>
+        <q-toolbar-title style="margin-top: 15px;">{{ companyName }}</q-toolbar-title>
         <q-btn
           flat
-          round
-          dense
-          icon="fas fa-sign-out-alt"
-          @click="logout"
-        />
+          style="
+            border: none !important;
+            border-width: 0px !important;
+            outline:none !important;
+            text-transform: none;
+          "
+        >
+          <q-item-section avatar >
+            <q-btn
+              icon="person"
+              size="20px"
+              style="
+                border: 3px solid #2FC1FF;
+                border-radius: 50%;
+                color: #2FC1FF;
+                width: 50px;
+                height: 20px;
+              "
+            />
+          </q-item-section>
+          <p style="text-align: left; margin-top: 15px;">{{ userName }}<br>{{ role }}</p>
+          <q-menu
+          >
+            <div class="row" >
+              <q-card
+                flat
+                class="my-card"
+                style="
+                  width: 200px;
+                  border: none;
+                ">
+                <q-card-section style="border: none; text-align: right;">
+                  <q-btn
+                    flat
+                    icon="fas fa-sign-out-alt"
+                    @click="logout"
+                    style="
+                      color: #616161;
+                    "
+                  >
+                    Cerrar sesión
+                  </q-btn>
+                </q-card-section>
+              </q-card>
+            </div>
+          </q-menu>
+        </q-btn>
       </q-toolbar>
       <br>
-      <q-separator />
+      <!--
       <q-toolbar class="bg-grey-3">
+      -->
+      <q-toolbar style="background-color: #fff;">
         <q-tabs class="text-grey"
           active-color="primary"
           indicator-color="grey"
@@ -56,12 +106,30 @@
         :class="$q.dark.isActive ? 'drawer_dark' : 'drawer_normal'"
       >
         <div style="height: calc(100% - 117px);padding:10px;">
+          <!--
           <q-toolbar>
             <q-avatar>
               <img src="https://cdn.quasar.dev/img/boy-avatar.png" alt="icon"/>
             </q-avatar>
 
-            <q-toolbar-title>Hospital XYZ</q-toolbar-title>
+            <q-toolbar-title>{{ userName }}</q-toolbar-title>
+          </q-toolbar>
+          -->
+          <q-toolbar>
+              <div v-if="logo" style="text-align: center;">
+                <q-img
+                  :src="logo"
+                  width="60px"
+                />
+              </div>
+              <div v-else>
+                <q-icon
+                  name="fa-solid fa-stethoscope"
+                  size="60px"
+                  style="color: #12506A"
+                />
+              </div>
+              <q-toolbar-title>ERP Hospitalario</q-toolbar-title>
           </q-toolbar>
           <hr />
           <q-scroll-area style="height:100%;">
@@ -95,9 +163,9 @@
                   icon="engineering"
                   label="Maestros">
                   <q-item
-                    @click="setTabSelected('/profiles', 'Perfiles')"
+                    @click="setTabSelected('/configuration/profiles', 'Perfiles')"
                     active-class="tab-active"
-                    to="/profiles"
+                    to="/configuration/profiles"
                     exact
                     class="q-ma-sm navigation-item"
                     clickable
@@ -129,9 +197,9 @@
                     </q-item-section>
                   </q-item>
                   <q-item
-                    @click="setTabSelected('/neighborhoods', 'Barrios')"
+                    @click="setTabSelected('/configuration/neighborhoods', 'Barrios')"
                     active-class="tab-active"
-                    to="/neighborhoods"
+                    to="/configuration/neighborhoods"
                     exact
                     class="q-ma-sm navigation-item"
                     clickable
@@ -163,6 +231,23 @@
                     </q-item-section>
                   </q-item>
                   <q-item
+                    @click="setTabSelected('/configuration/companies', 'Compañia')"
+                    active-class="tab-active"
+                    to="/configuration/companies"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="store" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Compañia
+                    </q-item-section>
+                  </q-item>
+                  <q-item
                     @click="setTabSelected('/configuration/validities', 'Vigencias')"
                     active-class="tab-active"
                     to="/configuration/validities"
@@ -177,40 +262,6 @@
 
                     <q-item-section>
                       Vigencias
-                    </q-item-section>
-                  </q-item>
-                  <q-item
-                    @click="setTabSelected('/configuration/permissionss', 'Permisos')"
-                    active-class="tab-active"
-                    to="/configuration/permissionss"
-                    exact
-                    class="q-ma-sm navigation-item"
-                    clickable
-                    v-ripple
-                  >
-                    <q-item-section avatar>
-                      <q-icon name="key" />
-                    </q-item-section>
-
-                    <q-item-section>
-                      Permisos
-                    </q-item-section>
-                  </q-item>
-                  <q-item
-                    @click="setTabSelected('/companies', 'Compañia')"
-                    active-class="tab-active"
-                    to="/companies"
-                    exact
-                    class="q-ma-sm navigation-item"
-                    clickable
-                    v-ripple
-                  >
-                    <q-item-section avatar>
-                      <q-icon name="store" />
-                    </q-item-section>
-
-                    <q-item-section>
-                      Compañia
                     </q-item-section>
                   </q-item>
                   <q-item
@@ -1382,6 +1433,25 @@
                       Servicios de salud
                     </q-item-section>
                   </q-item>
+
+                  <q-item
+                    @click="setTabSelected('/hiring/parameterizationqxs', 'Parametrización Qx')"
+                    active-class="tab-active"
+                    to="/hiring/parameterizationqxs"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="fa-solid fa-heart-pulse" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Parametrización Qx
+                    </q-item-section>
+                  </q-item>
+
                 </q-expansion-item>
               </q-expansion-item>
 
@@ -2267,6 +2337,10 @@ export default defineComponent({
     const $q = useQuasar()
     const router = useRouter()
     const tabsDefinition = ref([])
+    const logo = $q.cookies.get('logo')
+    const companyName = $q.cookies.get('companyName')
+    const userName = $q.cookies.get('userName')
+    const role = $q.cookies.get('role')
 
     const auth = useAuthStore()
     const { token } = storeToRefs(auth)
@@ -2286,6 +2360,7 @@ export default defineComponent({
       }).onOk(() => {
         token.value = null
         $q.cookies.remove('token')
+        $q.cookies.remove('userName')
         router.push({ name: 'login' })
       })
     }
@@ -2306,7 +2381,11 @@ export default defineComponent({
       logout,
       onClose,
       tabsDefinition,
-      setTabSelected
+      setTabSelected,
+      userName,
+      role,
+      companyName,
+      logo
     }
   }
 })
@@ -2331,19 +2410,23 @@ export default defineComponent({
 }
 
 .tab-active {
-  background-color: #3BA3BC;
+  background-color: #2FC1FF;
+  color: #fff;
 }
 
 body {
-  background: #f1f1f1 !important;
+  background: #fff !important;/*f1f1f1*/
 }
 
 .header_normal {
+  /*
   background: linear-gradient(
     145deg,
     rgb(21, 57, 102) 15%,
     rgb(00, 128, 128) 70%
   );
+  */
+  background-color: #fff;/*#2FC1FF;*/
 }
 
 .header_dark {

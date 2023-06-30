@@ -829,6 +829,35 @@ export const SEX = [
   { id: 3, description: 'Ambos' }
 ]
 
+export const TARIFFMANUAL = [
+  { id: 0, description: 'Ninguno' },
+  { id: 1, description: 'SOAT' },
+  { id: 2, description: 'ISS' },
+  { id: 3, description: 'ISS 2004' }
+]
+
+export const TYPESURGERY = [
+  { id: 0, description: 'Ninguno' },
+  { id: 1, description: 'Bilateral' },
+  { id: 2, description: 'Mismo especialista misma via' },
+  { id: 3, description: 'Mismo especialista diferente via' },
+  { id: 4, description: 'Diferente especialista por diferente via' },
+  { id: 5, description: 'Diferente especialista por misma via' },
+  { id: 6, description: 'Bilateral multiple' },
+  { id: 7, description: 'Politrauma misma via' },
+  { id: 8, description: 'Politrauma diferente vía' },
+  { id: 9, description: 'Basico' },
+  { id: 10, description: 'No cruento' }
+]
+
+export const ROOMRIGHTTYPES = [
+  { id: 0, description: 'Ninguna' },
+  { id: 1, description: 'Endoscopia ' },
+  { id: 2, description: 'Especialista' },
+  { id: 3, description: 'Otras salas' },
+  { id: 4, description: 'Sala para SOAT' }
+]
+
 export const TYPECAU = [
   { id: 1, description: 'NINGUNO' },
   { id: 2, description: 'ADMINISTRATIVA' },

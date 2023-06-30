@@ -22,11 +22,11 @@
 {{ props.row.code }}
 </q-td>
 <q-td key="profile" :props="props">
-{{ props.row.profile.description }}
+{{ props.row.profile.code }}
 </q-td>
 <!--The next column is ENUM, please complete the code necessary-->
 <q-td key="option" :props="props">
-{{ optionsPermissions[props.row.option - 1].description }}
+{{ props.row.option.code }}
 </q-td>
 <q-td key="add" :props="props">
 {{ props.row.add ? 'SI' : 'NO' }}
@@ -334,7 +334,7 @@ export default defineComponent({
     }
     const getProfiles = async () => {
       visible.value = true
-      const { data } = await api.get('/profiles')
+      const { data } = await api.get('/configuration/profiles')
       dataProfiles.value = data
       visible.value = false
     }
@@ -495,4 +495,5 @@ export default defineComponent({
     }
   }
 })
+
 </script>
