@@ -19,23 +19,28 @@
     <div class="row">
       <div class="col-5"></div>
       <div class="col-2 text-center">
-        <q-file
-          filled
-          bottom-slots
-          v-model="logoCompny"
-          label="Cambiar imagen"
-          counter
-        >
-          <template v-slot:prepend>
-            <q-icon name="cloud_upload" @click.stop.prevent />
-          </template>
-          <template v-slot:append>
-            <q-icon name="close" @click.stop.prevent="logoCompny = null" class="cursor-pointer" />
-          </template>
-          <template v-slot:hint>
-            Tamaño de archivo
-          </template>
-        </q-file>
+        <q-form ref="myFormFile">
+          <q-file
+            filled
+            bottom-slots
+            v-model="file"
+            name="file"
+            label="Cambiar imagen"
+            counter
+            :disable="editElements"
+            accept="image/gif, image/png, image/jpeg"
+          >
+            <template v-slot:prepend>
+              <q-icon name="cloud_upload" @click.stop.prevent />
+            </template>
+            <template v-slot:append>
+              <q-icon name="close" @click.stop.prevent="file = null" class="cursor-pointer" />
+            </template>
+            <template v-slot:hint>
+              Tamaño de archivo
+            </template>
+          </q-file>
+        </q-form>
         <br><br>
       </div>
       <div class="col-5"></div>
@@ -163,7 +168,9 @@ export default defineComponent({
     const logo = ref(null)
     const id = ref()
     const myForm = ref(null)
+    const myFormFile = ref(null)
     const logoCompny = ref(null)
+    const file = ref(null)
     const company = reactive({
       name: null,
       legal_representative: null,
@@ -277,11 +284,49 @@ export default defineComponent({
     }
     const onEdit = () => {
       company.status = active.value ? ACTIVE : INACTIVE
+      // const form = ref.myFormFile
+      if (file.value) {
+        const formData = new FormData()
+        formData.append('file', file.value)
+        /*
+        for (const [key, value] of Object.entries(this.form)) {
+          formData.append(key, value)
+        }
+        */
+        api.post(`${path}/upload`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(response => {
+          console.log(response.data.msg)
+          if (response.data.op === 'OK') {
+            company.logo = response.data.filename
+            file.value = null
+          }
+        }).then(getCompany()).catch(e => {
+          if (e) {
+            console.log(e)
+          }
+        })
+      }
       myForm.value.validate().then(success => {
         if (success) {
+          // if (logoCompny.value) {
+          /*
+          api.post(`${path}/upload`, formData).then(response => {
+            alert(response.data)
+          }).then(getCompany()).catch(e => {
+            if (e) {
+              console.log(e)
+            }
+          })
+          */
+          // }
           api.patch(`${path}/${id.value}`, company).then(response => {
             if (response) {
               getAll()
+              edit.value = !edit.value
+              editElements.value = !editElements.value
             }
           }).then(getCompany()).catch(e => {
             if (e) {
@@ -302,6 +347,7 @@ export default defineComponent({
     return {
       company,
       myForm,
+      myFormFile,
       rows,
       companyTypes,
       statuses,
@@ -318,6 +364,7 @@ export default defineComponent({
       onEdit,
       active,
       logoCompny,
+      file,
       companyData,
       companyName,
       logo

@@ -28,7 +28,7 @@
                   {{ (props.row.active) ? 'Activo' : 'Inactivo' }}
                 </q-td>
                 <q-td key="role" :props="props">
-                  {{ props.row.role.description }}
+                  {{ props.row.role.code }}
                 </q-td>
                 <q-td key="edit" :props="props">
                   <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />

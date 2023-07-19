@@ -201,7 +201,7 @@ export default defineComponent({
 
     const getMunicipalities = async () => {
       visible.value = true
-      const { data } = await api.get('/municipalities')
+      const { data } = await api.get('/configuration/municipalities')
       dataMunicipalities.value = data
       visible.value = false
     }
