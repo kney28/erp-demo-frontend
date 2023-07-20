@@ -209,8 +209,11 @@ export default defineComponent({
         rows.value = response.data
         companyData.value = response.data ? response.data[0] : null
         if (companyData.value) {
-          logoCompny.value = companyData.value.logo
+          if (companyData.value.logo) {
+            logoCompny.value = companyData.value.logo + `?t=${(new Date()).getTime()}`
+          }
           id.value = companyData.value.id
+          // company.id.value = companyData.value.id
           company.name = companyData.value.name
           company.legal_representative = companyData.value.legal_representative
           company.company_type = companyData.value.company_type
@@ -274,6 +277,41 @@ export default defineComponent({
         if (success) {
           api.post(path, company).then(response => {
             getAll()
+            if (file.value) {
+              const formData = new FormData()
+              formData.append('file', file.value)
+              /*
+              for (const [key, value] of Object.entries(this.form)) {
+                formData.append(key, value)
+              }
+              */
+              api.post(`${path}/upload`, formData, {
+                headers: {
+                  'Content-Type': 'multipart/form-data'
+                }
+              }).then(response => {
+                console.log(response.data.msg)
+                if (response.data.op === 'OK') {
+                  company.logo = process.env.BASEURL + 'company-logo/' + response.data.filename
+                  file.value = null
+                  api.patch(`${path}/${id.value}`, company).then(response => {
+                    if (response) {
+                      getAll()
+                      edit.value = !edit.value
+                      editElements.value = !editElements.value
+                    }
+                  }).then(getCompany()).catch(e => {
+                    if (e) {
+                      console.log(e)
+                    }
+                  })
+                }
+              }).then(getCompany()).catch(e => {
+                if (e) {
+                  console.log(e)
+                }
+              })
+            }
           }).then(getCompany()).catch(e => {
             if (e) {
               console.log(e)
@@ -300,8 +338,21 @@ export default defineComponent({
         }).then(response => {
           console.log(response.data.msg)
           if (response.data.op === 'OK') {
-            company.logo = response.data.filename
+            company.logo = process.env.BASEURL + 'company-logo/' + response.data.filename
             file.value = null
+            api.patch(`${path}/${id.value}`, company).then(response => {
+              if (response) {
+                // logoCompny.value = ''
+                getAll()
+                edit.value = !edit.value
+                editElements.value = !editElements.value
+                // this.$forceUpdate()
+              }
+            }).then(getCompany()).catch(e => {
+              if (e) {
+                console.log(e)
+              }
+            })
           }
         }).then(getCompany()).catch(e => {
           if (e) {
@@ -310,7 +361,7 @@ export default defineComponent({
         })
       }
       myForm.value.validate().then(success => {
-        if (success) {
+        if (success || company.logo !== null) {
           // if (logoCompny.value) {
           /*
           api.post(`${path}/upload`, formData).then(response => {

@@ -162,15 +162,20 @@
             </div>
           </div>
 
-          <div class="row justify-around">
+          <div v-if="isEditing" class="row justify-around">
             <div class="col-md-5">
               <q-toggle v-model="active" label="Estado usuario"/>
             </div>
-            <div v-if="isEditing" class="col-md-5">
+            <div class="col-md-5">
               <q-toggle v-model="changePassword" label="Cambiar Contraseña"/>
             </div>
-            <div v-else class="col-md-5">
+          </div>
+          <div v-else class="row justify-around">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+              <q-toggle v-model="active" label="Estado usuario"/>
             </div>
+            <div class="col-md-4"></div>
           </div>
         </q-form>
       </q-card-section>
@@ -301,7 +306,8 @@ export default defineComponent({
       username.value = row.username
       name.value = row.name
       role.value = row.role
-      password.value = row.password
+      password.value = null
+      newPassword.value = null
       active.value = row.active
     }
 
