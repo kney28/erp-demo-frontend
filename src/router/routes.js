@@ -5,8 +5,8 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', name: 'index', component: () => import('pages/IndexPage.vue') },
-      { path: '/users', name: 'users', component: () => import('pages/UsersPage.vue') },
       { path: '/configuration/profiles', name: 'profiles', component: () => import('pages/configuration/ProfilePage.vue') },
+      { path: '/configuration/users', name: 'users', component: () => import('pages/configuration/UsersPage.vue') },
       { path: '/configuration/erp_moduless', name: 'erp_modules', component: () => import('pages/configuration/Erp_modulessPage.vue') },
       { path: '/configuration/neighborhoods', name: 'neighborhoods', component: () => import('pages/configuration/NeighborhoodsPage.vue') },
       { path: '/configuration/validities', name: 'validities', component: () => import('pages/configuration/ValidityPage.vue') },

@@ -118,7 +118,7 @@
           <q-toolbar>
               <div v-if="logo" style="text-align: center;">
                 <q-img
-                  :src="logo"
+                  :src="$q.cookies.get('logo')"
                   width="60px"
                 />
               </div>
@@ -180,8 +180,8 @@
                     </q-item-section>
                   </q-item>
                   <q-item
-                    @click="setTabSelected('/users', 'Usuarios')"
-                    to="/users"
+                    @click="setTabSelected('/configuration/users', 'Usuarios')"
+                    to="/configuration/users"
                     active-class="tab-active"
                     exact
                     class="q-ma-sm navigation-item"
@@ -2337,7 +2337,7 @@ export default defineComponent({
     const $q = useQuasar()
     const router = useRouter()
     const tabsDefinition = ref([])
-    const logo = $q.cookies.get('logo')
+    const logo = $q.cookies.get('logo') !== 'null' ? $q.cookies.get('logo') + `?t=${(new Date()).getTime()}` : null
     const companyName = $q.cookies.get('companyName')
     const userName = $q.cookies.get('userName')
     const role = $q.cookies.get('role')

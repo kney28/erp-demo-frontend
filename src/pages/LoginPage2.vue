@@ -162,8 +162,13 @@ export default defineComponent({
         rows.value = response.data
         $q.cookies.set('companyName', rows.value[0].name)
         companyName.value = rows.value[0].name
-        $q.cookies.set('logo', rows.value[0].logo)
-        logo.value = rows.value[0].logo
+        if (rows.value[0].logo) {
+          $q.cookies.set('logo', rows.value[0].logo + `?t=${(new Date()).getTime()}`)
+          logo.value = rows.value[0].logo + `?t=${(new Date()).getTime()}`
+        } else {
+          $q.cookies.set('logo', null)
+          logo.value = null
+        }
       }).catch(e => {
         if (e) {
           console.log(e)
@@ -176,13 +181,15 @@ export default defineComponent({
         username: username.value,
         password: password.value
       }).then(({ data }) => {
-        $q.cookies.set('token', data.access_token)
-        token.value = data.access_token
-        $q.cookies.set('userName', data.usuario.name.toUpperCase())
-        userName.value = data.usuario.name.toUpperCase()
-        $q.cookies.set('role', data.usuario.role.code)
-        role.value = data.usuario.role.code
-        $router.push({ name: 'index' })
+        if (data.access_token) {
+          $q.cookies.set('token', data.access_token)
+          token.value = data.access_token
+          $q.cookies.set('userName', data.usuario.name.toUpperCase())
+          userName.value = data.usuario.name.toUpperCase()
+          $q.cookies.set('role', data.usuario.role.code)
+          role.value = data.usuario.role.code
+          $router.push({ name: 'index' })
+        }
       }).catch(e => {
         if (e) {
           console.log(e)

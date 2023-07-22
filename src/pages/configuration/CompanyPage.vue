@@ -19,23 +19,28 @@
     <div class="row">
       <div class="col-5"></div>
       <div class="col-2 text-center">
-        <q-file
-          filled
-          bottom-slots
-          v-model="logoCompny"
-          label="Cambiar imagen"
-          counter
-        >
-          <template v-slot:prepend>
-            <q-icon name="cloud_upload" @click.stop.prevent />
-          </template>
-          <template v-slot:append>
-            <q-icon name="close" @click.stop.prevent="logoCompny = null" class="cursor-pointer" />
-          </template>
-          <template v-slot:hint>
-            Tamaño de archivo
-          </template>
-        </q-file>
+        <q-form ref="myFormFile">
+          <q-file
+            filled
+            bottom-slots
+            v-model="file"
+            name="file"
+            label="Cambiar imagen"
+            counter
+            :disable="editElements"
+            accept="image/gif, image/png, image/jpeg"
+          >
+            <template v-slot:prepend>
+              <q-icon name="cloud_upload" @click.stop.prevent />
+            </template>
+            <template v-slot:append>
+              <q-icon name="close" @click.stop.prevent="file = null" class="cursor-pointer" />
+            </template>
+            <template v-slot:hint>
+              Tamaño de archivo
+            </template>
+          </q-file>
+        </q-form>
         <br><br>
       </div>
       <div class="col-5"></div>
@@ -163,7 +168,9 @@ export default defineComponent({
     const logo = ref(null)
     const id = ref()
     const myForm = ref(null)
+    const myFormFile = ref(null)
     const logoCompny = ref(null)
+    const file = ref(null)
     const company = reactive({
       name: null,
       legal_representative: null,
@@ -202,8 +209,11 @@ export default defineComponent({
         rows.value = response.data
         companyData.value = response.data ? response.data[0] : null
         if (companyData.value) {
-          logoCompny.value = companyData.value.logo
+          if (companyData.value.logo) {
+            logoCompny.value = companyData.value.logo + `?t=${(new Date()).getTime()}`
+          }
           id.value = companyData.value.id
+          // company.id.value = companyData.value.id
           company.name = companyData.value.name
           company.legal_representative = companyData.value.legal_representative
           company.company_type = companyData.value.company_type
@@ -267,6 +277,41 @@ export default defineComponent({
         if (success) {
           api.post(path, company).then(response => {
             getAll()
+            if (file.value) {
+              const formData = new FormData()
+              formData.append('file', file.value)
+              /*
+              for (const [key, value] of Object.entries(this.form)) {
+                formData.append(key, value)
+              }
+              */
+              api.post(`${path}/upload`, formData, {
+                headers: {
+                  'Content-Type': 'multipart/form-data'
+                }
+              }).then(response => {
+                console.log(response.data.msg)
+                if (response.data.op === 'OK') {
+                  company.logo = process.env.BASEURL + 'company-logo/' + response.data.filename
+                  file.value = null
+                  api.patch(`${path}/${id.value}`, company).then(response => {
+                    if (response) {
+                      getAll()
+                      edit.value = !edit.value
+                      editElements.value = !editElements.value
+                    }
+                  }).then(getCompany()).catch(e => {
+                    if (e) {
+                      console.log(e)
+                    }
+                  })
+                }
+              }).then(getCompany()).catch(e => {
+                if (e) {
+                  console.log(e)
+                }
+              })
+            }
           }).then(getCompany()).catch(e => {
             if (e) {
               console.log(e)
@@ -277,11 +322,62 @@ export default defineComponent({
     }
     const onEdit = () => {
       company.status = active.value ? ACTIVE : INACTIVE
+      // const form = ref.myFormFile
+      if (file.value) {
+        const formData = new FormData()
+        formData.append('file', file.value)
+        /*
+        for (const [key, value] of Object.entries(this.form)) {
+          formData.append(key, value)
+        }
+        */
+        api.post(`${path}/upload`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(response => {
+          console.log(response.data.msg)
+          if (response.data.op === 'OK') {
+            company.logo = process.env.BASEURL + 'company-logo/' + response.data.filename
+            file.value = null
+            api.patch(`${path}/${id.value}`, company).then(response => {
+              if (response) {
+                // logoCompny.value = ''
+                getAll()
+                edit.value = !edit.value
+                editElements.value = !editElements.value
+                // this.$forceUpdate()
+              }
+            }).then(getCompany()).catch(e => {
+              if (e) {
+                console.log(e)
+              }
+            })
+          }
+        }).then(getCompany()).catch(e => {
+          if (e) {
+            console.log(e)
+          }
+        })
+      }
       myForm.value.validate().then(success => {
-        if (success) {
+        if (success || company.logo !== null) {
+          // if (logoCompny.value) {
+          /*
+          api.post(`${path}/upload`, formData).then(response => {
+            alert(response.data)
+          }).then(getCompany()).catch(e => {
+            if (e) {
+              console.log(e)
+            }
+          })
+          */
+          // }
           api.patch(`${path}/${id.value}`, company).then(response => {
             if (response) {
               getAll()
+              edit.value = !edit.value
+              editElements.value = !editElements.value
             }
           }).then(getCompany()).catch(e => {
             if (e) {
@@ -302,6 +398,7 @@ export default defineComponent({
     return {
       company,
       myForm,
+      myFormFile,
       rows,
       companyTypes,
       statuses,
@@ -318,6 +415,7 @@ export default defineComponent({
       onEdit,
       active,
       logoCompny,
+      file,
       companyData,
       companyName,
       logo
