@@ -7,7 +7,7 @@
           <q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination"
             title="Holidays" :rows="dataHolidayss" :filter="filter" :columns="columns" row-key="name">
             <template v-slot:top-left>
-              <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar" />
+              <q-btn unelevated rounded icon="sync" color="positive" @click="sync" label="Sincronizar"/>
               <q-space />
             </template>
             <template v-slot:top-right>
@@ -31,12 +31,14 @@
                 <q-td key="status" :props="props">
                   {{ states[props.row.status] }}
                 </q-td>
+                <!--
                 <q-td key="edit" :props="props">
                   <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
                 </q-td>
                 <q-td key="delete" :props="props">
                   <q-btn round size="xs" color="negative" icon="delete_forever" v-on:click="onDelete(props.row)" />
                 </q-td>
+                -->
               </q-tr>
             </template>
           </q-table>
@@ -145,9 +147,9 @@ export default defineComponent({
       { name: 'code', align: 'center', label: 'Código', field: 'code', sortable: true },
       { name: 'day', align: 'center', label: 'Día', field: 'day', sortable: true },
       { name: 'description', align: 'center', label: 'Descripción', field: 'description', sortable: true },
-      { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
-      { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
-      { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
+      { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true }
+      // { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
+      // { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
     onMounted(() => {
       getHolidayss()
@@ -211,6 +213,11 @@ export default defineComponent({
         }
       })
     }
+    const sync = () => {
+      visible.value = true
+      alert('Sincronizando...')
+      visible.value = false
+    }
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
@@ -251,7 +258,8 @@ export default defineComponent({
       onEditing,
       id,
       onDelete,
-      states
+      states,
+      sync
     }
   }
 })
