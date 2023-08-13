@@ -206,7 +206,7 @@ export default defineComponent({
             percentajeqxId: percentajeqxId.value,
             typepercentaje: typepercentaje.value,
             valpercentaje: valpercentaje.value,
-            status: status.value,
+            status: status.value
           }).then(() => {
             dialog.value = false
             getPercentajeqxdets()
@@ -233,7 +233,7 @@ export default defineComponent({
             percentajeqxId: percentajeqxId.value,
             typepercentaje: typepercentaje.value,
             valpercentaje: valpercentaje.value,
-            status: status.value,
+            status: status.value
           }).then(() => {
             dialog.value = false
             getPercentajeqxdets()
@@ -243,8 +243,8 @@ export default defineComponent({
     }
     const onDelete = (row) => {
       $q.dialog({
-        title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar la percentajeqxdet: ' + row.id + '?',
+        title: 'Confirmaciï¿½n',
+        message: 'ï¿½Estï¿½ seguro que desea eliminar la percentajeqxdet: ' + row.id + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -282,7 +282,7 @@ export default defineComponent({
       editing,
       onEditing,
       id,
-      onDelete,
+      onDelete
     }
   }
 })

@@ -238,7 +238,7 @@ export default defineComponent({
             type: type.value,
             percentage: percentage.value,
             capevent: capevent.value,
-            annualcap: annualcap.value,
+            annualcap: annualcap.value
           }).then(() => {
             dialog.value = false
             getModeratingcopaysdets()
@@ -267,7 +267,7 @@ export default defineComponent({
             type: type.value,
             percentage: percentage.value,
             capevent: capevent.value,
-            annualcap: annualcap.value,
+            annualcap: annualcap.value
           }).then(() => {
             dialog.value = false
             getModeratingcopaysdets()
@@ -277,8 +277,8 @@ export default defineComponent({
     }
     const onDelete = (row) => {
       $q.dialog({
-        title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar la moderatingcopaysdet: ' + row.id + '?',
+        title: 'Confirmaciï¿½n',
+        message: 'ï¿½Estï¿½ seguro que desea eliminar la moderatingcopaysdet: ' + row.id + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -317,7 +317,7 @@ export default defineComponent({
       editing,
       onEditing,
       id,
-      onDelete,
+      onDelete
     }
   }
 })
