@@ -690,7 +690,7 @@ export default defineComponent({
         const diasRestantes = diasTranscurridos - aniosTranscurridos * 365 - mesesTranscurridos * 30
         const req = aniosTranscurridos > 17 ? '' : '*'
         age.value = 'Años: ' + aniosTranscurridos + ' Meses: ' + mesesTranscurridos + ' Días: ' + diasRestantes
-        return { anios: aniosTranscurridos, req: req }
+        return { anios: aniosTranscurridos, req }
       } else {
         return ''
       }
