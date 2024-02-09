@@ -1,25 +1,26 @@
 <template>
-<q-page class="q-pa-md q-gutter-sm">
-<div>
-<transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
-<div>
-<q-space />
-<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Accountingterms" :rows="dataAccountingtermss" :filter="filter" :columns="columns" row-key="name" >
-<template v-slot:top-left>
-<q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
-<q-space />
-</template>
-<template v-slot:top-right>
-<q-input dense debounce="300" v-model="filter" placeholder="Buscar">
-<template v-slot:append>
-<q-icon name="search" />
-</template>
-</q-input>
-</template>
-<template v-slot:body="props">
-<q-tr :props="props">
+  <q-page class="q-pa-md q-gutter-sm">
+    <div>
+      <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
+        <div>
+          <q-space />
+          <q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination"
+            title="Accountingterms" :rows="dataAccountingtermss" :filter="filter" :columns="columns" row-key="name">
+            <template v-slot:top-left>
+              <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar" />
+              <q-space />
+            </template>
+            <template v-slot:top-right>
+              <q-input dense debounce="300" v-model="filter" placeholder="Buscar">
+                <template v-slot:append>
+                  <q-icon name="search" />
+                </template>
+              </q-input>
+            </template>
+            <template v-slot:body="props">
+              <q-tr :props="props">
 
-<q-td key="validity" :props="props">
+                <q-td key="validity" :props="props">
                   {{ props.row.validity.year }}
                 </q-td>
 
@@ -31,95 +32,84 @@
                   {{ states[props.row.status - 1].description }}
                 </q-td>
 
-<q-td key="edit" :props="props">
-<q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
-</q-td>
-<q-td key="delete" :props="props">
-<q-btn round size="xs" color="negative" icon="delete_forever" v-on:click="onDelete(props.row)" />
-</q-td>
-</q-tr>
-</template>
-</q-table>
-</div>
-</transition>
-<q-inner-loading :showing="visible">
-<q-spinner-pie color="primary" size="70px"/>
-</q-inner-loading>
-</div>
-<q-dialog v-model="dialog" persistent>
-<q-card style="width: 700px; max-width: 80vw;">
-<q-linear-progress :value="10" color="blue" />
-<q-card-section class="row items-center">
-<div class="text-h6"> </div>
-<q-space />
-<q-btn icon="close" flat round dense v-close-popup />
-</q-card-section>
-<q-banner class="bg-grey-3">
-<template v-slot:avatar>
-<q-icon name="warning" color="warning" />
-</template>
-Los campos marcados con (*) son obligatorios
-</q-banner>
-<q-card-section>
-<q-form ref="myForm" @submit.prevent="">
-<div class="row justify-around">
+                <q-td key="edit" :props="props">
+                  <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
+                </q-td>
+                <q-td key="delete" :props="props">
+                  <q-btn round size="xs" color="negative" icon="delete_forever" v-on:click="onDelete(props.row)" />
+                </q-td>
+              </q-tr>
+            </template>
+          </q-table>
+        </div>
+      </transition>
+      <q-inner-loading :showing="visible">
+        <q-spinner-pie color="primary" size="70px" />
+      </q-inner-loading>
+    </div>
+    <q-dialog v-model="dialog" persistent>
+      <q-card style="width: 700px; max-width: 80vw;">
+        <q-linear-progress :value="10" color="blue" />
+        <q-card-section class="row items-center">
+          <div class="text-h6"> </div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
+        <q-banner class="bg-grey-3">
+          <template v-slot:avatar>
+            <q-icon name="warning" color="warning" />
+          </template>
+          Los campos marcados con (*) son obligatorios
+        </q-banner>
+        <q-card-section>
+          <q-form ref="myForm" @submit.prevent="">
+            <div class="row justify-around">
 
               <div class="col-md-4">
-                <q-select
-                white
-                color="blue"
-                v-model="validity"
-                label="Vigencia *"
-                @filter="filterFnValidity"
-                :options="filterOptionsValidity"
-                option-value="id"
-                option-label="year"
-                emit-value
-                map-options
-                lazy-rules
-                :rules="[ val => !!val || 'El campo es obligatorio']"
-                />
+                <q-select white color="blue" v-model="validity" label="Vigencia *" @filter="filterFnValidity"
+                  :options="filterOptionsValidity" option-value="id" option-label="year" emit-value map-options lazy-rules
+                  :readonly="readonly.validity"
+                  :rules="[val => findValid(val) ? 'Esta vigencia se encuentra en uso' : true ]" />
               </div>
 
               <div class="col-md-4">
-                <q-select white color="blue" v-model="inuse" label="En uso *" option-label="description"
-                  option-value="id" :options="uso" emit-value map-options lazy-rules
-                  :rules="[val => !!val || 'El campo es obligatorio']" />
+                <q-select white color="blue" v-model="inuse" label="En uso *" option-label="description" option-value="id"
+                  :options="uso" emit-value map-options lazy-rules :rules="[val => !!val || 'El campo es obligatorio']" />
               </div>
 
               <div class="col-md-4">
-                <q-select white color="blue"  v-model="status" label="Estado *" option-label="description" :disable="isActive"
-                  option-value="id" :options="states" emit-value map-options lazy-rules
-                  :rules="[val => !!val || 'El campo es obligatorio']"   />
+                <q-select white color="blue" v-model="status" label="Estado *" option-label="description"
+                  option-value="id" :options="states" emit-value map-options lazy-rules :readonly="readonly.status"
+                  :rules="[val => findStaus(val) ? 'Ya existe un registro con esta opción, por favor selecciona otra' : true]" />
               </div>
 
-</div>
-</q-form>
-</q-card-section>
-<div class="row justify-between">
-<q-card-actions align="left" class="bg-white text-teal">
-</q-card-actions>
-<q-card-actions align="right" class="bg-white text-teal">
-<div v-if="!isEditing">
-<q-btn round icon="save" @click.prevent="onSubmit" color="primary"/>
-<q-tooltip>Guardar datos</q-tooltip>
-</div>
-<div v-else>
-<q-btn round icon="save" @click.prevent="onEditing" color="primary"/>
-<q-tooltip>Editar datos</q-tooltip>
-</div> &nbsp;
-<div>
-<q-btn round icon="cancel" v-close-popup color="negative"/>
-<q-tooltip>Cancelar</q-tooltip>
-</div>
-</q-card-actions>
-</div>
-</q-card>
-</q-dialog>
-</q-page>
+            </div>
+          </q-form>
+        </q-card-section>
+        <div class="row justify-between">
+          <q-card-actions align="left" class="bg-white text-teal">
+          </q-card-actions>
+          <q-card-actions align="right" class="bg-white text-teal">
+            <div v-if="!isEditing">
+              <q-btn round icon="save" @click.prevent="onSubmit" color="primary" />
+              <q-tooltip>Guardar datos</q-tooltip>
+            </div>
+            <div v-else>
+              <q-btn round icon="save" @click.prevent="onEditing" color="primary" />
+              <q-tooltip>Editar datos</q-tooltip>
+            </div> &nbsp;
+            <div>
+              <q-btn round icon="cancel" v-close-popup color="negative" />
+              <q-tooltip>Cancelar</q-tooltip>
+            </div>
+          </q-card-actions>
+        </div>
+      </q-card>
+    </q-dialog>
+  </q-page>
 </template>
 <script>
-import { defineComponent, ref, onMounted } from 'vue'
+import { defineComponent, ref, onMounted, reactive } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
 import { ACCOUNTINGVALIDITYSTATUS, LISINUSOCOUNTING } from '../../constants/Constants'
@@ -130,6 +120,10 @@ export default defineComponent({
     const path = '/accountingtermss'
     const dialog = ref(false)
     const visible = ref(false)
+    const readonly = reactive({
+      validity: false,
+      status: false
+    })
     const id = ref(null)
     const filter = ref(null)
     const dataAccountingtermss = ref([])
@@ -140,8 +134,6 @@ export default defineComponent({
     const validity = ref(null)
     const states = ref(ACCOUNTINGVALIDITYSTATUS)
     const status = ref(null)
-    const dataInuso = ref([])
-    const dataStates = ref([])
     const inuse = ref(null)
     const uso = ref(LISINUSOCOUNTING)
     const dataValidity = ref([])
@@ -162,8 +154,8 @@ export default defineComponent({
     ])
     onMounted(() => {
       getAccountingtermss()
-      getStates()
-      getInusos()
+      // getStates()
+      // getInusos()
       getValidity()
     })
     const getAccountingtermss = async () => {
@@ -171,24 +163,33 @@ export default defineComponent({
       const { data } = await api.get(path)
       dataAccountingtermss.value = data
       visible.value = false
-    }
-    const getStates = async () => {
-      visible.value = true
-      const { data } = await api.get(path)
-      dataStates.value = data
-      visible.value = false
-    }
-    const getInusos = async () => {
-      visible.value = true
-      const { data } = await api.get(path)
-      dataInuso.value = data
-      visible.value = false
+      console.log(data)
     }
     const getValidity = async () => {
       visible.value = true
       const { data } = await api.get('/configuration/validity')
       dataValidity.value = data
       visible.value = false
+    }
+    const findValid = (val) => {
+      const result = dataAccountingtermss.value.find((item) =>
+        item.validity.id === parseInt(val)
+      )
+      if (result !== undefined) {
+        return true
+      } else {
+        return false
+      }
+    }
+    const findStaus = (val) => {
+      const result = dataAccountingtermss.value.find((item) =>
+        item.status === 2 && parseInt(val) === 2
+      )
+      if (result !== undefined) {
+        return true
+      } else {
+        return false
+      }
     }
     const creating = () => {
       onReset()
@@ -197,8 +198,11 @@ export default defineComponent({
     const onReset = () => {
       code.value = null
       idvalididy.value = null
+      readonly.validity = false
+      readonly.status = false
       isEditing.value = false
       active.value = false
+      validity.value = null
       status.value = 1
       inuse.value = 2
     }
@@ -221,11 +225,17 @@ export default defineComponent({
       onReset()
       dialog.value = true
       isEditing.value = true
+      readonly.validity = true
       id.value = row.id
       code.value = row.code
       validity.value = row.validity
       status.value = row.status
       inuse.value = row.inuse
+      if (row.inuse === 1) {
+        readonly.status = true
+      } else {
+        readonly.status = false
+      }
     }
     const onEditing = () => {
       myForm.value.validate().then(async success => {
@@ -234,7 +244,7 @@ export default defineComponent({
             code: code.value,
             validity: validity.value,
             inuse: inuse.value,
-            status: states.value
+            status: status.value
           }).then(() => {
             dialog.value = false
             getAccountingtermss()
@@ -301,7 +311,10 @@ export default defineComponent({
       uso,
       dataValidity,
       filterFnValidity,
-      filterOptionsValidity
+      filterOptionsValidity,
+      findValid,
+      findStaus,
+      readonly
     }
   }
 
