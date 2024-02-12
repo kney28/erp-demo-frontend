@@ -36,7 +36,7 @@
           src="images/hospital.jpeg"
           style="position: relative; width: 100%; height: 100vh"
         >
-          <div class="fullscreen">
+          <div class="fullscreen" style="z-index: 500;">
             <div class="absolute-center justify-center fixed-left">
               <div class="text-h4 text-weight-bolder">
                 ¡Bienvenid@!
