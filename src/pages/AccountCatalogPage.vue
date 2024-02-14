@@ -18,11 +18,11 @@
             </template>
             <template v-slot:body="props">
               <q-tr :props="props">
+                <!--<q-td key="majorAccount" :props="props">
+                  {{ props.row.majorAccount }}
+                </q-td>-->
                 <q-td key="code" :props="props">
                   {{ props.row.code }}
-                </q-td>
-                <q-td key="accountCatalogId" :props="props">
-                  {{ props.row.accountCatalogId }}
                 </q-td>
                 <q-td key="description" :props="props">
                   {{ props.row.description }}
@@ -46,10 +46,10 @@
                   {{ listSelectionCatalog[props.row.transferThirdParties] }}
                 </q-td>
                 <q-td key="thirdId" :props="props">
-                  {{ props.row.thirdId }}
+                  {{ props.row.thirdId !== null ? props.row.thirdId.firstname ? `${props.row.thirdId.document} ${props.row.thirdId.firstname} ${props.row.thirdId.secondname} ${props.row.thirdId.firstsurname} ${props.row.thirdId.secondsurname}` : `${props.row.thirdId.document} ${props.row.thirdId.socialreason}` :'' }}
                 </q-td>
                 <q-td key="affectsRetention" :props="props">
-                  {{ listSelectionCatalog[props.row.affectsRetention] }}
+                  {{ selectionRetention[props.row.affectsRetention - 1].description }}
                 </q-td>
                 <q-td key="status" :props="props">
                   {{ states[props.row.status] }}
@@ -88,196 +88,217 @@
 
       <q-card-section>
         <q-form ref="myForm" @submit.prevent="">
-          <div class="row justify-around">
-            <div class="col-md-2">
-              <q-input
-                white
-                color="blue"
-                v-model="code"
-                label="Código *"
-                stack-label
-                lazy-rules
-                :rules="[ val => !!val || 'El campo es obligatorio']"
-              />
+          <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <q-input
+              white
+              color="blue"
+              type="number"
+              v-model="code"
+              label="Código *"
+              stack-label
+              lazy-rules
+              :readonly="readonly.code"
+              :rules="[ val => !!val || 'El campo es obligatorio']"
+            />
             </div>
 
-            <div class="col-md-2">
-              <q-input
-                white
-                color="blue"
-                v-model="accountCatalogId"
-                label="Cuenta contable *"
-                stack-label
-                lazy-rules
-                type="number"
-                :rules="[ val => !!val || 'El campo es obligatorio']"
-              />
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <q-input
+              white
+              color="blue"
+              v-model="description"
+              label="Descripción *"
+              stack-label
+              lazy-rules
+              :rules="[ val => !!val || 'El campo es obligatorio']"
+            />
             </div>
 
-            <div class="col-md-2">
-              <q-input
-                white
-                color="blue"
-                v-model="description"
-                label="Descripción *"
-                stack-label
-                lazy-rules
-                :rules="[ val => !!val || 'El campo es obligatorio']"
-              />
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <q-select
+              white
+              color="blue"
+              stack-label
+              v-model="level"
+              label="Nivel contable *"
+              @filter="filterFNAccountingLevel"
+              :options="levels"
+              option-value="id"
+              option-label="description"
+              emit-value
+              map-options
+              readonly
+              lazy-rules
+              :rules="[ val => !!val || 'El campo es obligatorio']"
+            />
             </div>
 
-            <div class="col-md-3">
-              <q-select
-                white
-                color="blue"
-                stack-label
-                v-model="level"
-                label="Nivel contable *"
-                @filter="filterFNAccountingLevel"
-                :options="levels"
-                option-value="id"
-                option-label="description"
-                emit-value
-                map-options
-                lazy-rules
-                :rules="[ val => !!val || 'El campo es obligatorio']"
-              />
-            </div>
-          </div>
-
-          <div class="row justify-around">
-            <div class="col-md-2">
-              <q-select
-                white
-                color="blue"
-                stack-label
-                v-model="sort"
-                label="Clase *"
-                @filter="filterFNAccountingSort"
-                :options="sorts"
-                option-value="id"
-                option-label="description"
-                emit-value
-                map-options
-                lazy-rules
-                :rules="[ val => !!val || 'El campo es obligatorio']"
-              />
+            <div v-if="code ? code.length > 1 ? true : false : false" class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <q-select
+            white
+            color="blue"
+            stack-label
+            v-model="majorAccount"
+            label="Cuenta mayor *"
+            @filter="filterFnAccount"
+            :options="filterOptionsAccount"
+            option-value="code"
+            :option-label="e => {return e.code !== undefined ? e.code +' - '+e.description: null}"
+            emit-value
+            map-options
+            readonly
+            lazy-rules
+            :rules="[ val => !!val || `La cuenta mayor ${code[0]} no existe`]"
+            />
             </div>
 
-            <div class="col-md-2">
-              <q-select
-                white
-                color="blue"
-                stack-label
-                v-model="availabilityType"
-                label="Tipo disponibilidad *"
-                @filter="filterFNAccountingTypes"
-                :options="availabilitiesTypes"
-                option-value="id"
-                option-label="description"
-                emit-value
-                map-options
-                lazy-rules
-                :rules="[ val => !!val || 'El campo es obligatorio']"
-              />
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <q-select
+              white
+              color="blue"
+              stack-label
+              v-model="sort"
+              label="Clase *"
+              @filter="filterFNAccountingSort"
+              :options="sorts"
+              option-value="id"
+              option-label="description"
+              emit-value
+              map-options
+              readonly
+              lazy-rules
+              :rules="[ val => !!val || 'El campo es obligatorio']"
+            />
             </div>
 
-            <div class="col-md-2">
-              <q-select
-                white
-                color="blue"
-                stack-label
-                v-model="affectsThirdParties"
-                label="Afecta terceros *"
-                :options="selectionCatalog"
-                option-value="id"
-                option-label="description"
-                emit-value
-                map-options
-                lazy-rules
-                :rules="[ val => !!val || 'El campo es obligatorio']"
-              />
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <q-select
+              white
+              color="blue"
+              stack-label
+              v-model="nature"
+              label="Naturaleza *"
+              :options="optionsNature"
+              option-value="id"
+              option-label="description"
+              emit-value
+              map-options
+              readonly
+              lazy-rules
+              :rules="[ val => !!val || 'El campo es obligatorio']"
+            />
             </div>
 
-            <div class="col-md-3">
-              <q-select
-                white
-                color="blue"
-                stack-label
-                v-model="affectsCostCenters"
-                label="Afecta centro de costos *"
-                :options="selectionCatalog"
-                option-value="id"
-                option-label="description"
-                emit-value
-                map-options
-                lazy-rules
-                :rules="[ val => !!val || 'El campo es obligatorio']"
-              />
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <q-select
+              white
+              color="blue"
+              stack-label
+              v-model="availabilityType"
+              label="Tipo disponibilidad *"
+              @filter="filterFNAccountingTypes"
+              :options="availabilitiesTypes"
+              option-value="id"
+              option-label="description"
+              emit-value
+              map-options
+              lazy-rules
+              :rules="[ val => !!val || 'El campo es obligatorio']"
+            />
             </div>
-          </div>
 
-          <div class="row justify-around">
-            <div class="col-md-2">
-              <q-select
-                white
-                color="blue"
-                stack-label
-                v-model="affectsRetention"
-                label="Afecta retention *"
-                :options="selectionRetention"
-                option-value="id"
-                option-label="description"
-                emit-value
-                map-options
-                lazy-rules
-                :rules="[ val => !!val || 'El campo es obligatorio']"
-              />
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <q-select
+              :@input="cleanThird()"
+              white
+              color="blue"
+              stack-label
+              v-model="affectsThirdParties"
+              label="Afecta terceros *"
+              :options="selectionCatalog"
+              option-value="id"
+              option-label="description"
+              emit-value
+              map-options
+              lazy-rules
+              :rules="[ val => !!val || 'El campo es obligatorio']"
+            />
             </div>
-            <div class="col-md-2">
-              <q-select
-                :@input="cleanThird()"
-                white
-                color="blue"
-                stack-label
-                v-model="transferThirdParties"
-                label="Transferir terceros *"
-                :options="selectionCatalog"
-                option-value="id"
-                option-label="description"
-                emit-value
-                map-options
-                lazy-rules
-                :rules="[ val => !!val || 'El campo es obligatorio']"
-              />
-            </div>
-            <div v-if="transferThirdParties === 1" class="col-md-5">
-              <q-select
-                white
-                color="blue"
-                stack-label
-                v-model="thirdId"
-                label="Seleccionar tercero *"
-                :options="filterOptionsThirdsAccount"
-                option-value="id"
-                option-label="description"
-                emit-value
-                map-options
-                lazy-rules
-                :rules="[ val => !!val || 'El campo es obligatorio']"
-              />
-            </div>
-            <div v-else class="col-md-6">
-            </div>
-          </div>
 
-          <div class="row justify-around">
-            <div class="col-md-3">
+            <div v-if="affectsThirdParties === 1" class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <q-select
+              :@input="cleanThird()"
+              white
+              color="blue"
+              stack-label
+              v-model="transferThirdParties"
+              label="Transferir terceros *"
+              :options="selectionCatalog"
+              option-value="id"
+              option-label="description"
+              emit-value
+              map-options
+              lazy-rules
+              :rules="[ val => !!val || 'El campo es obligatorio']"
+            />
             </div>
-            <div class="col-md-3">
-              <q-toggle v-model="active" label="Estado cuenta"/>
+            <div v-if="transferThirdParties === 1 && affectsThirdParties === 1" class="col-lg-4 col-md-4 col-sm-12">
+            <q-select
+              white
+              color="blue"
+              stack-label
+              v-model="thirdId"
+              label="Seleccionar tercero *"
+              @filter="filterFnAccountingThirds"
+              :options="filterOptionsThirdsAccount"
+              option-value="id"
+              :option-label="e => `${e.document} ${e.firstname ?? ''} ${e.secondname ?? ''} ${e.firstsurname ?? ''} ${e.firstname ?? ''} ${e.secondsurname ?? ''}${e.socialreason ?? ''}`"
+              emit-value
+              map-options
+              lazy-rules
+              :rules="[ val => !!val || 'El campo es obligatorio']"
+            />
             </div>
-            <div class="col-md-3">
+            <div v-else class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            </div>
+
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <q-select
+              white
+              color="blue"
+              stack-label
+              v-model="affectsCostCenters"
+              label="Afecta centro de costos *"
+              :options="selectionCatalog"
+              option-value="id"
+              option-label="description"
+              emit-value
+              map-options
+              lazy-rules
+              :rules="[ val => !!val || 'El campo es obligatorio']"
+            />
+            </div>
+
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <q-select
+              white
+              color="blue"
+              stack-label
+              v-model="affectsRetention"
+              label="Afecta retention *"
+              :options="selectionRetention"
+              option-value="id"
+              option-label="description"
+              emit-value
+              map-options
+              lazy-rules
+              :rules="[ val => !!val || 'El campo es obligatorio']"
+            />
+            </div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+            <q-toggle v-model="active" label="Estado cuenta"/>
             </div>
           </div>
         </q-form>
@@ -308,12 +329,12 @@
   </q-page>
   </template>
 <script>
-import { defineComponent, ref, onMounted } from 'vue'
+import { defineComponent, ref, onMounted, reactive, computed } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
 import {
   ACTIVE, INACTIVE, LEVELCATALOG, CLASSCATALOG, AVAILABILITYTYPECATALOG, SELECTIONCATALOG, AFFECTSRETENTIONCATALOG, STATUS, LISTLEVELCATALOG,
-  LISTCLASSCATALOG, LISTAVAILABILITYTYPECATALOG, LISTSELECTIONCATALOG
+  LISTCLASSCATALOG, LISTAVAILABILITYTYPECATALOG, LISTSELECTIONCATALOG, NATURECATALOG
 } from '../constants/Constants'
 
 export default defineComponent({
@@ -325,18 +346,150 @@ export default defineComponent({
     const visible = ref(false)
     const active = ref(ACTIVE)
     const states = ref(STATUS)
+    const readonly = reactive({
+      code: false
+    })
     const id = ref(null)
     const filter = ref(null)
     const dataAccountCatalog = ref([])
+    const filterOptionsAccount = ref(dataAccountCatalog)
     const dataThirdsAccount = ref([])
     const myForm = ref(null)
     const code = ref(null)
-    const accountCatalogId = ref(null)
     const description = ref(null)
-    const level = ref(null)
+    const level = computed({
+      get () {
+        let val
+        if (code.value !== null) {
+          switch (code.value.length) {
+            case 1: val = 1
+              break
+            case 2: val = 2
+              break
+            case 3: val = null
+              break
+            case 4: val = 3
+              break
+            case 5: val = null
+              break
+            case 6: val = 4
+              break
+            case 7: val = null
+              break
+            case 8: val = 5
+          }
+          if (code.value.length > 8) {
+            val = 5
+          }
+          return val
+        } else {
+          return null
+        }
+      },
+      set (val) {
+        code.value = val
+      }
+    })
+    const majorAccount = computed({
+      get () {
+        let val
+        if (code.value !== null && code.value.length > 1) {
+          switch (code.value[0]) {
+            case '1': val = 1
+              break
+            case '2': val = 2
+              break
+            case '3': val = 3
+              break
+            case '4': val = 4
+              break
+            case '5': val = 5
+              break
+            case '6': val = 6
+              break
+            case '7': val = 7
+              break
+            case '8': val = 8
+              break
+            case '9': val = 9
+              break
+          }
+          return findItem(val) ? val : null
+        } else {
+          return null
+        }
+      },
+      set (val) {
+        code.value = val
+      }
+    })
+    const nature = computed({
+      get () {
+        let val
+        if (code.value !== null) {
+          switch (code.value[0]) {
+            case '1': val = 1
+              break
+            case '2': val = 2
+              break
+            case '3': val = 2
+              break
+            case '4': val = 2
+              break
+            case '5': val = 1
+              break
+            case '6': val = 1
+              break
+            case '7': val = 1
+              break
+            case '8': val = 2
+              break
+            case '9': val = 1
+              break
+          }
+          return val
+        } else {
+          return null
+        }
+      },
+      set (val) {
+        code.value = val
+      }
+    })
     const listLevel = ref(LISTLEVELCATALOG)
     const levels = ref(LEVELCATALOG)
-    const sort = ref(null)
+    const sort = computed({
+      get () {
+        let val
+        if (code.value !== null) {
+          switch (code.value[0]) {
+            case '1': val = 1
+              break
+            case '2': val = 2
+              break
+            case '3': val = 3
+              break
+            case '4': val = 4
+              break
+            case '5': val = 5
+              break
+            case '6': val = 6
+              break
+            case '7': val = 7
+              break
+            case '8': val = 8
+              break
+            case '9': val = 9
+          }
+          return val
+        } else {
+          return null
+        }
+      },
+      set (val) {
+        code.value = val
+      }
+    })
     const sorts = ref(CLASSCATALOG)
     const listClass = ref(LISTCLASSCATALOG)
     const availabilityType = ref(null)
@@ -344,6 +497,7 @@ export default defineComponent({
     const listAvailabilitiesType = ref(LISTAVAILABILITYTYPECATALOG)
     const affectsThirdParties = ref(null)
     const selectionCatalog = ref(SELECTIONCATALOG)
+    const optionsNature = ref(NATURECATALOG)
     const listSelectionCatalog = ref(LISTSELECTIONCATALOG)
     const selectionRetention = ref(AFFECTSRETENTIONCATALOG)
     const filterOptionsThirdsAccount = ref(dataThirdsAccount)
@@ -358,8 +512,8 @@ export default defineComponent({
     })
     const isEditing = ref(false)
     const columns = ref([
+      // { name: 'majorAccount', align: 'center', label: 'Cuenta mayor', field: 'majorAccount', sortable: true },
       { name: 'code', align: 'center', label: 'Código', field: 'code', sortable: true },
-      { name: 'accountCatalogId', align: 'center', label: 'Cuenta contable', field: 'accountCatalogId', sortable: true },
       { name: 'description', align: 'center', label: 'Descripción', field: 'description', sortable: true },
       { name: 'level', align: 'center', label: 'Nivel', field: 'level', sortable: true },
       { name: 'sort', align: 'center', label: 'Clase', field: 'sort', sortable: true },
@@ -388,31 +542,35 @@ export default defineComponent({
 
     const getThirdAcount = async () => {
       visible.value = true
-      const { data } = await api.get('/third-party-accountants')
-      const loadListThirds = []
-      data.forEach(function (value, key) {
-        loadListThirds.push({
-          id: value.third.id,
-          description: value.third.firstname ? value.third.document + ' ' + value.third.firstname + ' ' + value.third.firstsurname : value.third.document + ' ' + value.third.socialreason
-        })
-      })
-      dataThirdsAccount.value = loadListThirds
+      const { data } = await api.get('/thirdperson')
+      dataThirdsAccount.value = data
       visible.value = false
+    }
+
+    const findItem = (val) => {
+      const result = dataAccountCatalog.value.find((item) =>
+        item.code === val
+      )
+      if (result !== undefined) {
+        return true
+      } else {
+        return false
+      }
     }
 
     const creating = () => {
       onReset()
       dialog.value = true
-      active.value = false
+      active.value = true
     }
 
     const onReset = () => {
       active.value = false
       isEditing.value = false
+      readonly.code = false
       code.value = null
       description.value = null
       status.value = null
-      accountCatalogId.value = null
       level.value = null
       sort.value = null
       availabilityType.value = null
@@ -429,14 +587,15 @@ export default defineComponent({
           api.post(path, {
             code: code.value,
             description: description.value,
-            accountCatalogId: accountCatalogId.value,
             level: level.value,
+            majorAccount: majorAccount.value,
             class: sort.value,
+            nature: nature.value,
             availabilityType: availabilityType.value,
             affectsThirdParties: affectsThirdParties.value,
-            affectsCostCenters: affectsCostCenters.value,
             transferThirdParties: transferThirdParties.value,
             thirdId: thirdId.value,
+            affectsCostCenters: affectsCostCenters.value,
             affectsRetention: affectsRetention.value,
             status: active.value ? ACTIVE : INACTIVE
           }).then(() => {
@@ -451,12 +610,12 @@ export default defineComponent({
       onReset()
       dialog.value = true
       isEditing.value = true
+      readonly.code = true
       id.value = row.id
       code.value = row.code
       description.value = row.description
-      accountCatalogId.value = row.accountCatalogId
-      level.value = row.level
-      sort.value = row.class
+      // level.value = row.level
+      // sort.value = row.class
       availabilityType.value = row.availabilityType
       affectsThirdParties.value = row.affectsThirdParties
       affectsCostCenters.value = row.affectsCostCenters
@@ -474,7 +633,6 @@ export default defineComponent({
           api.patch(path + '/' + id.value, {
             code: code.value,
             description: description.value,
-            accountCatalogId: accountCatalogId.value,
             level: level.value,
             class: sort.value,
             availabilityType: availabilityType.value,
@@ -568,9 +726,27 @@ export default defineComponent({
       })
     }
 
+    const filterFnAccount = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsAccount.value = dataAccountCatalog.value
+        })
+        return
+      }
+
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsAccount.value = dataAccountCatalog.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
+      })
+    }
+
     const cleanThird = () => {
-      if (transferThirdParties.value === SELECTIONCATALOG[1].id) {
+      if (transferThirdParties.value === 2) {
         thirdId.value = null
+      }
+      if (affectsThirdParties.value === 2) {
+        thirdId.value = null
+        transferThirdParties.value = null
       }
     }
 
@@ -596,8 +772,9 @@ export default defineComponent({
       status,
       active,
       filterFNAccountingLevel,
-      accountCatalogId,
       level,
+      majorAccount,
+      nature,
       sort,
       availabilityType,
       affectsThirdParties,
@@ -618,8 +795,13 @@ export default defineComponent({
       filterFNAccountingSort,
       filterFNAccountingTypes,
       filterFnAccountingThirds,
+      filterFnAccount,
       filterOptionsThirdsAccount,
-      cleanThird
+      filterOptionsAccount,
+      cleanThird,
+      readonly,
+      optionsNature,
+      findItem
     }
   }
 })
