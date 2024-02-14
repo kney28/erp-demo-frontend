@@ -11,6 +11,7 @@ const routes = [
       { path: '/configuration/neighborhoods', name: 'neighborhoods', component: () => import('pages/configuration/NeighborhoodsPage.vue') },
       { path: '/configuration/validities', name: 'validities', component: () => import('pages/configuration/ValidityPage.vue') },
       { path: '/configuration/companies', name: 'companies', component: () => import('pages/configuration/CompanyPage.vue') },
+      { path: '/configuration/consecutivosinvigencias', name: 'consecutivosinvigencias', component: () => import('pages/configuration/ConsecutivosinvigenciasPage.vue') },
       { path: '/changePasswords', name: 'changePasswords', component: () => import('pages/ChangePasswordPage.vue') },
       { path: '/logsAudits', name: 'logsAudits', component: () => import('pages/LogAuditPage.vue') },
       { path: '/accountingSettings', name: 'accountingSettings', component: () => import('pages/AccountingSettingsPage.vue') },

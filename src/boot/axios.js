@@ -43,11 +43,7 @@ export default boot(({ app, store, router }) => {
   }, (error) => {
     Loading.hide()
     const errors = Object.entries(error.response.data)
-    if (error.response.status === 401) errors[0][1] = 'Acceso no autorizado, por favor validar credenciales.'
-    router.push({ name: 'login' })
-    if (error.response.status === 500) errors[0][1] = 'Error de servidor, por favor intente de nuevo.'
-    router.push({ name: 'index' })
-    Swal.fire({
+    const propSwal = {
       customClass: {
         container: 'my-swal'
       },
@@ -59,8 +55,17 @@ export default boot(({ app, store, router }) => {
       confirmButtonText:
         '<i class="fa fa-thumbs-up"></i> Aceptar',
       confirmButtonAriaLabel: 'Thumbs up, great!'
-    })
-    return Promise.reject(error)
+    }
+    if (error.response.status === 401) {
+      errors[0][1] = 'Acceso no autorizado, por favor validar credenciales.'
+      router.push({ name: 'login' })
+      Swal.fire(propSwal)
+    } else if (error.response.status === 500) {
+      errors[0][1] = 'Error de servidor, por favor intente de nuevo.'
+      // router.push({ name: 'index' })
+      Swal.fire(propSwal)
+    }
+    return Promise.reject(errors[0][1])
   })
 
   app.config.globalProperties.$axios = axios
