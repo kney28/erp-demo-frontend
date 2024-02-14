@@ -5,11 +5,12 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', name: 'index', component: () => import('pages/IndexPage.vue') },
-      { path: '/users', name: 'users', component: () => import('pages/UsersPage.vue') },
-      { path: '/profiles', name: 'profiles', component: () => import('pages/ProfilePage.vue') },
-      { path: '/neighborhoods', name: 'neighborhoods', component: () => import('pages/NeighborhoodsPage.vue') },
+      { path: '/configuration/profiles', name: 'profiles', component: () => import('pages/configuration/ProfilePage.vue') },
+      { path: '/configuration/users', name: 'users', component: () => import('pages/configuration/UsersPage.vue') },
+      { path: '/configuration/erp_moduless', name: 'erp_modules', component: () => import('pages/configuration/Erp_modulessPage.vue') },
+      { path: '/configuration/neighborhoods', name: 'neighborhoods', component: () => import('pages/configuration/NeighborhoodsPage.vue') },
       { path: '/configuration/validities', name: 'validities', component: () => import('pages/configuration/ValidityPage.vue') },
-      { path: '/companies', name: 'companies', component: () => import('pages/CompanyPage.vue') },
+      { path: '/configuration/companies', name: 'companies', component: () => import('pages/configuration/CompanyPage.vue') },
       { path: '/changePasswords', name: 'changePasswords', component: () => import('pages/ChangePasswordPage.vue') },
       { path: '/logsAudits', name: 'logsAudits', component: () => import('pages/LogAuditPage.vue') },
       { path: '/accountingSettings', name: 'accountingSettings', component: () => import('pages/AccountingSettingsPage.vue') },
@@ -39,7 +40,6 @@ const routes = [
       { path: '/hospitalization/locations', name: 'locations', component: () => import('pages/hospitalization/LocationsPage.vue') },
 
       { path: '/configuration/holidays', name: 'holidays', component: () => import('pages/configuration/HolidayssPage.vue') },
-      { path: '/configuration/permissionss', name: 'permissionss', component: () => import('pages/configuration/PermissionssPage.vue') },
 
       { path: '/admissions/headquarters', name: 'headquarters', component: () => import('pages/admissions/HeadquarterssPage.vue') },
       { path: '/admissions/healthproviders', name: 'healthproviders', component: () => import('pages/admissions/HealthproviderssPage.vue') },
@@ -116,9 +116,9 @@ const routes = [
       { path: '/treasury/tsnotcons', name: 'tsnotcons', component: () => import('pages/treasury/TsnotconsPage.vue') },
       { path: '/treasury/tsboxess', name: 'tsboxess', component: () => import('pages/treasury/TsboxessPage.vue') },
       { path: '/treasury/tsbankss', name: 'tsbankss', component: () => import('pages/treasury/TsbankssPage.vue') },
-      { path: '/treasury/tsconpays', name: 'tsconpays', component: () => import('pages/treasury/TsconpaysPage.vue') },
+      { path: '/treasury/tsconpays', name: 'tsconpays', component: () => import('pages/treasury/TsconpaysPage.vue') }
 
-      { path: '/budget/preconfigenerals', name: 'preconfigenerals', component: () => import('pages/budget/PreconfigeneralsPage.vue') }
+      // { path: '/budget/preconfigenerals', name: 'preconfigenerals', component: () => import('pages/budget/PreconfigeneralsPage.vue') }
     ]
   },
   { path: '/login', name: 'login', component: () => import('src/pages/LoginPage2.vue') },

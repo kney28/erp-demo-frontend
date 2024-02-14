@@ -96,6 +96,12 @@ module.exports = configure(function (ctx) {
     devServer: {
       // https: true
       open: true // opens browser window automatically
+      /*
+      headers: {
+        'access-control-allow-origin': '*',
+        'access-control-allow-methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS'
+      }
+      */
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework

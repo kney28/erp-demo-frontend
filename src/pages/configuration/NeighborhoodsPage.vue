@@ -4,9 +4,9 @@
       <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
         <div>
           <q-space />
-          <q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Usuarios" :rows="dataProfiles" :filter="filter" :columns="columns" row-key="name" >
+          <q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Usuarios" :rows="dataNeighborhoods" :filter="filter" :columns="columns" row-key="name" >
             <template v-slot:top-left>
-              <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
+              <q-btn unelevated rounded icon="sync" color="positive" @click="sync" label="Sincronizar"/>
               <q-space />
             </template>
             <template v-slot:top-right>
@@ -24,15 +24,25 @@
                 <q-td key="description" :props="props">
                   {{ props.row.description }}
                 </q-td>
-                <q-td key="status" :props="props">
-                    {{ states[props.row.status] }}
+                <q-td key="municipality" :props="props">
+                  {{ props.row.municipality.description }}
                 </q-td>
+                <q-td key="status" :props="props">
+                  <template v-if="(props.row.status === states[1])">
+                    {{ 'Activo' }}
+                  </template>
+                  <template v-if="(props.row.status === states[2])">
+                    {{ 'Inactivo' }}
+                  </template>
+                </q-td>
+                <!--
                 <q-td key="edit" :props="props">
                   <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
                 </q-td>
                 <q-td key="delete" :props="props">
                   <q-btn round size="xs" color="negative" icon="delete_forever" v-on:click="onDelete(props.row)" />
                 </q-td>
+                -->
               </q-tr>
             </template>
           </q-table>
@@ -43,7 +53,7 @@
       </q-inner-loading>
     </div>
     <q-dialog v-model="dialog" persistent>
-    <q-card style="width: 700px; max-width: 80vw;">
+    <q-card style="width: 800px; max-width: 80vw;">
       <q-linear-progress :value="10" color="blue" />
 
       <q-card-section class="row items-center">
@@ -62,22 +72,40 @@
       <q-card-section>
         <q-form ref="myForm" @submit.prevent="">
           <div class="row justify-around">
-            <div class="col-md-4">
+            <div class="col-md-3">
               <q-input
                 white
                 color="blue"
                 v-model="code"
                 label="Código *"
+                stack-label
                 lazy-rules
-                :rules="[ val => !!val || 'El campo es obligatorio']"
+                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
               />
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <q-input
                 white
                 color="blue"
                 v-model="description"
                 label="Descripción *"
+                stack-label
+                lazy-rules
+                :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
+              />
+            </div>
+            <div class="col-md-3">
+              <q-select
+                white
+                color="blue"
+                v-model="municipality"
+                label="Municipio *"
+                @filter="filterFnMunicipalities"
+                :options="filterOptionsMunicipalities"
+                option-value="id"
+                option-label="description"
+                emit-value
+                map-options
                 lazy-rules
                 :rules="[ val => !!val || 'El campo es obligatorio']"
               />
@@ -88,11 +116,10 @@
             <div class="col-md-3">
             </div>
             <div class="col-md-3">
-              <q-toggle v-model="active" label="Estado"/>
+              <q-toggle v-model="active" label="Estado barrio"/>
             </div>
             <div class="col-md-3">
-          </div>
-
+            </div>
           </div>
         </q-form>
       </q-card-section>
@@ -125,21 +152,25 @@
 import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-import { ACTIVE, INACTIVE, STATUS } from '../constants/Constants'
+import { STATUSNB } from 'src/constants/Constants'
+
 export default defineComponent({
-  name: 'ProfilePage',
+  name: 'NeighborhoodsPage',
   setup () {
-    const path = '/profiles'
-    const dialog = ref(false)
-    const visible = ref(false)
-    const id = ref(null)
-    const states = ref(STATUS)
-    const filter = ref(null)
-    const dataProfiles = ref([])
+    const path = '/configuration/neighborhoods'
     const description = ref(null)
     const code = ref(null)
-    const role = ref(null)
-    const active = ref(false)
+    const municipality = ref(null)
+    const status = ref(null)
+    const states = ref(STATUSNB)
+    const dialog = ref(false)
+    const visible = ref(false)
+    const active = ref(null)
+    const id = ref(null)
+    const filter = ref(null)
+    const dataNeighborhoods = ref([])
+    const dataMunicipalities = ref([])
+    const filterOptionsMunicipalities = ref(dataMunicipalities)
     const myForm = ref(null)
     const $q = useQuasar()
     const pagination = ref({
@@ -150,32 +181,50 @@ export default defineComponent({
     const columns = ref([
       { name: 'code', align: 'center', label: 'Código', field: 'code', sortable: true },
       { name: 'description', align: 'center', label: 'Descripción', field: 'description', sortable: true },
-      { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
-      { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
-      { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
+      { name: 'municipality', align: 'center', label: 'Municipio', field: 'municipality', sortable: true },
+      { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true }
+      // { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
+      // { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
 
     onMounted(() => {
-      getProfiles()
+      getNeighborhoods()
+      getMunicipalities()
     })
 
-    const getProfiles = async () => {
+    const getNeighborhoods = async () => {
       visible.value = true
       const { data } = await api.get(path)
-      dataProfiles.value = data
+      dataNeighborhoods.value = data
+      visible.value = false
+    }
+
+    const getMunicipalities = async () => {
+      visible.value = true
+      const { data } = await api.get('/configuration/municipalities')
+      dataMunicipalities.value = data
       visible.value = false
     }
 
     const creating = () => {
       onReset()
       dialog.value = true
+      active.value = true
+    }
+
+    const sync = () => {
+      visible.value = true
+      alert('Sincronizando...')
+      visible.value = false
     }
 
     const onReset = () => {
-      description.value = null
-      code.value = null
-      isEditing.value = false
       active.value = false
+      isEditing.value = false
+      code.value = null
+      description.value = null
+      municipality.value = null
+      status.value = null
     }
 
     const onSubmit = () => {
@@ -184,10 +233,11 @@ export default defineComponent({
           api.post(path, {
             code: code.value,
             description: description.value,
-            status: active.value ? ACTIVE : INACTIVE
+            municipality: municipality.value,
+            status: active.value ? STATUSNB[1] : STATUSNB[2]
           }).then(() => {
             dialog.value = false
-            getProfiles()
+            getNeighborhoods()
           })
         }
       })
@@ -200,7 +250,8 @@ export default defineComponent({
       id.value = row.id
       code.value = row.code
       description.value = row.description
-      if (row.status === ACTIVE) {
+      municipality.value = row.municipality
+      if (row.status === STATUSNB[1]) {
         active.value = true
       }
     }
@@ -211,10 +262,11 @@ export default defineComponent({
           api.patch(path + '/' + id.value, {
             code: code.value,
             description: description.value,
-            status: active.value ? ACTIVE : INACTIVE
+            municipality: municipality.value.id ? municipality.value.id : municipality.value,
+            status: active.value ? STATUSNB[1] : STATUSNB[2]
           }).then(() => {
             dialog.value = false
-            getProfiles()
+            getNeighborhoods()
           })
         }
       })
@@ -223,7 +275,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar el perfil: ' + row.description + '?',
+        message: '¿Está seguro que desea eliminar el barrio: ' + row.description + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -235,24 +287,36 @@ export default defineComponent({
       }).onOk(() => {
         api.delete(path + '/' + row.id).then(response => {
           dialog.value = false
-          getProfiles()
+          getNeighborhoods()
         })
+      })
+    }
+
+    const filterFnMunicipalities = (val, update) => {
+      if (val === '') {
+        update(() => {
+          filterOptionsMunicipalities.value = dataMunicipalities.value
+        })
+        return
+      }
+
+      update(() => {
+        const needle = val.toLowerCase()
+        filterOptionsMunicipalities.value = dataMunicipalities.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
       })
     }
 
     return {
       dialog,
-      dataProfiles,
+      dataNeighborhoods,
+      dataMunicipalities,
       isEditing,
-      role,
-      active,
       myForm,
       pagination,
       creating,
       columns,
       visible,
       filter,
-      code,
       onReset,
       onSubmit,
       editing,
@@ -260,7 +324,14 @@ export default defineComponent({
       id,
       onDelete,
       description,
-      states
+      code,
+      municipality,
+      status,
+      active,
+      filterOptionsMunicipalities,
+      filterFnMunicipalities,
+      states,
+      sync
     }
   }
 })

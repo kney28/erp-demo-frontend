@@ -118,7 +118,7 @@
           <q-toolbar>
               <div v-if="logo" style="text-align: center;">
                 <q-img
-                  :src="logo"
+                  :src="$q.cookies.get('logo')"
                   width="60px"
                 />
               </div>
@@ -163,9 +163,9 @@
                   icon="engineering"
                   label="Maestros">
                   <q-item
-                    @click="setTabSelected('/profiles', 'Perfiles')"
+                    @click="setTabSelected('/configuration/profiles', 'Perfiles')"
                     active-class="tab-active"
-                    to="/profiles"
+                    to="/configuration/profiles"
                     exact
                     class="q-ma-sm navigation-item"
                     clickable
@@ -180,8 +180,8 @@
                     </q-item-section>
                   </q-item>
                   <q-item
-                    @click="setTabSelected('/users', 'Usuarios')"
-                    to="/users"
+                    @click="setTabSelected('/configuration/users', 'Usuarios')"
+                    to="/configuration/users"
                     active-class="tab-active"
                     exact
                     class="q-ma-sm navigation-item"
@@ -197,9 +197,9 @@
                     </q-item-section>
                   </q-item>
                   <q-item
-                    @click="setTabSelected('/neighborhoods', 'Barrios')"
+                    @click="setTabSelected('/configuration/neighborhoods', 'Barrios')"
                     active-class="tab-active"
-                    to="/neighborhoods"
+                    to="/configuration/neighborhoods"
                     exact
                     class="q-ma-sm navigation-item"
                     clickable
@@ -231,6 +231,23 @@
                     </q-item-section>
                   </q-item>
                   <q-item
+                    @click="setTabSelected('/configuration/companies', 'Compañia')"
+                    active-class="tab-active"
+                    to="/configuration/companies"
+                    exact
+                    class="q-ma-sm navigation-item"
+                    clickable
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="store" />
+                    </q-item-section>
+
+                    <q-item-section>
+                      Compañia
+                    </q-item-section>
+                  </q-item>
+                  <q-item
                     @click="setTabSelected('/configuration/validities', 'Vigencias')"
                     active-class="tab-active"
                     to="/configuration/validities"
@@ -245,40 +262,6 @@
 
                     <q-item-section>
                       Vigencias
-                    </q-item-section>
-                  </q-item>
-                  <q-item
-                    @click="setTabSelected('/configuration/permissionss', 'Permisos')"
-                    active-class="tab-active"
-                    to="/configuration/permissionss"
-                    exact
-                    class="q-ma-sm navigation-item"
-                    clickable
-                    v-ripple
-                  >
-                    <q-item-section avatar>
-                      <q-icon name="key" />
-                    </q-item-section>
-
-                    <q-item-section>
-                      Permisos
-                    </q-item-section>
-                  </q-item>
-                  <q-item
-                    @click="setTabSelected('/companies', 'Compañia')"
-                    active-class="tab-active"
-                    to="/companies"
-                    exact
-                    class="q-ma-sm navigation-item"
-                    clickable
-                    v-ripple
-                  >
-                    <q-item-section avatar>
-                      <q-icon name="store" />
-                    </q-item-section>
-
-                    <q-item-section>
-                      Compañia
                     </q-item-section>
                   </q-item>
                   <q-item
@@ -2354,7 +2337,7 @@ export default defineComponent({
     const $q = useQuasar()
     const router = useRouter()
     const tabsDefinition = ref([])
-    const logo = $q.cookies.get('logo')
+    const logo = $q.cookies.get('logo') !== 'null' ? $q.cookies.get('logo') + `?t=${(new Date()).getTime()}` : null
     const companyName = $q.cookies.get('companyName')
     const userName = $q.cookies.get('userName')
     const role = $q.cookies.get('role')

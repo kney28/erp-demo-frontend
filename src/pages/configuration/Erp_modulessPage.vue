@@ -4,7 +4,7 @@
 <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
 <div>
 <q-space />
-<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Moderatingcopaysdet" :rows="dataModeratingcopaysdets" :filter="filter" :columns="columns" row-key="name" >
+<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Erp_modules" :rows="dataErpModuless" :filter="filter" :columns="columns" row-key="name" >
 <template v-slot:top-left>
 <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
 <q-space />
@@ -21,24 +21,15 @@
 <q-td key="code" :props="props">
 {{ props.row.code }}
 </q-td>
-<q-td key="moderatingcopays" :props="props">
-{{ props.row.moderatingcopays }}
+<q-td key="module" :props="props">
+{{ props.row.module }}
 </q-td>
-<q-td key="type" :props="props">
-{{ props.row.type }}
+<q-td key="menu" :props="props">
+{{ props.row.menu }}
 </q-td>
-<q-td key="percentage" :props="props">
-{{ props.row.percentage }}
+<q-td key="option" :props="props">
+{{ props.row.option }}
 </q-td>
-<q-td key="capevent" :props="props">
-{{ props.row.capevent }}
-</q-td>
-<q-td key="annualcap" :props="props">
-{{ props.row.annualcap }}
-</q-td>
-<!--The next column is ENUM, please complete the code necessary
-<q-td key="status" :props="props">
-{{ props.row.status }}</q-td>-->
 <q-td key="edit" :props="props">
 <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
 </q-td>
@@ -85,8 +76,8 @@ lazy-rules
 <q-input
 white
 color="blue"
-v-model="moderatingcopays"
-label="moderatingcopays *"
+v-model="module"
+label="module *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
@@ -95,8 +86,8 @@ lazy-rules
 <q-input
 white
 color="blue"
-v-model="type"
-label="type *"
+v-model="menu"
+label="menu *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
@@ -105,43 +96,12 @@ lazy-rules
 <q-input
 white
 color="blue"
-v-model="percentage"
-label="percentage *"
+v-model="option"
+label="option *"
 lazy-rules
 :rules="[ val => !!val || 'El campo es obligatorio']"
 />
 </div>
-<div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="capevent"
-label="capevent *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
-</div>
-<div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="annualcap"
-label="annualcap *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
-</div>
-<!--The next column is ENUM, please complete the code necessary
-//<div class="col-md-4">
-//<q-input
-//white
-//color="blue"
-//v-model="status"
-//label="status *"
-//lazy-rules
-//:rules="[ val => !!val || 'El campo es obligatorio']"
-///>
-//</div>-->
 </div>
 </q-form>
 </q-card-section>
@@ -172,20 +132,18 @@ import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
 export default defineComponent({
-  name: 'ModeratingcopaysdetsPage',
+  name: 'Erp_modulessPage',
   setup () {
-    const path = '/moderatingcopaysdets'
+    const path = '/configuration/erp_moduless'
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)
     const filter = ref(null)
-    const dataModeratingcopaysdets = ref([])
+    const dataErpModuless = ref([])
     const code = ref(null)
-    const moderatingcopays = ref(null)
-    const type = ref(null)
-    const percentage = ref(null)
-    const capevent = ref(null)
-    const annualcap = ref(null)
+    const module = ref(null)
+    const menu = ref(null)
+    const option = ref(null)
     const role = ref(null)
     const active = ref(false)
     const myForm = ref(null)
@@ -197,22 +155,19 @@ export default defineComponent({
     const isEditing = ref(false)
     const columns = ref([
       { name: 'code', align: 'center', label: 'code', field: 'code', sortable: true },
-      { name: 'moderatingcopays', align: 'center', label: 'moderatingcopays', field: 'moderatingcopays', sortable: true },
-      { name: 'type', align: 'center', label: 'type', field: 'type', sortable: true },
-      { name: 'percentage', align: 'center', label: 'percentage', field: 'percentage', sortable: true },
-      { name: 'capevent', align: 'center', label: 'capevent', field: 'capevent', sortable: true },
-      { name: 'annualcap', align: 'center', label: 'annualcap', field: 'annualcap', sortable: true },
-      { name: 'status', align: 'center', label: 'status', field: 'status', sortable: true },
+      { name: 'module', align: 'center', label: 'module', field: 'module', sortable: true },
+      { name: 'menu', align: 'center', label: 'menu', field: 'menu', sortable: true },
+      { name: 'option', align: 'center', label: 'option', field: 'option', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
     onMounted(() => {
-      getModeratingcopaysdets()
+      getErpModuless()
     })
-    const getModeratingcopaysdets = async () => {
+    const getErpModuless = async () => {
       visible.value = true
       const { data } = await api.get(path)
-      dataModeratingcopaysdets.value = data
+      dataErpModuless.value = data
       visible.value = false
     }
     const creating = () => {
@@ -221,11 +176,9 @@ export default defineComponent({
     }
     const onReset = () => {
       code.value = null
-      moderatingcopays.value = null
-      type.value = null
-      percentage.value = null
-      capevent.value = null
-      annualcap.value = null
+      module.value = null
+      menu.value = null
+      option.value = null
       isEditing.value = false
       active.value = false
     }
@@ -234,14 +187,12 @@ export default defineComponent({
         if (success) {
           api.post(path, {
             code: code.value,
-            moderatingcopays: moderatingcopays.value,
-            type: type.value,
-            percentage: percentage.value,
-            capevent: capevent.value,
-            annualcap: annualcap.value
+            module: module.value,
+            menu: menu.value,
+            option: option.value
           }).then(() => {
             dialog.value = false
-            getModeratingcopaysdets()
+            getErpModuless()
           })
         }
       })
@@ -252,25 +203,21 @@ export default defineComponent({
       isEditing.value = true
       id.value = row.id
       code.value = row.code
-      moderatingcopays.value = row.moderatingcopays
-      type.value = row.type
-      percentage.value = row.percentage
-      capevent.value = row.capevent
-      annualcap.value = row.annualcap
+      module.value = row.module
+      menu.value = row.menu
+      option.value = row.option
     }
     const onEditing = () => {
       myForm.value.validate().then(async success => {
         if (success) {
           api.patch(path + '/' + id.value, {
             code: code.value,
-            moderatingcopays: moderatingcopays.value,
-            type: type.value,
-            percentage: percentage.value,
-            capevent: capevent.value,
-            annualcap: annualcap.value
+            module: module.value,
+            menu: menu.value,
+            option: option.value
           }).then(() => {
             dialog.value = false
-            getModeratingcopaysdets()
+            getErpModuless()
           })
         }
       })
@@ -278,7 +225,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmaci�n',
-        message: '�Est� seguro que desea eliminar la moderatingcopaysdet: ' + row.id + '?',
+        message: '�Est� seguro que desea eliminar la erp_modules: ' + row.id + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -290,13 +237,13 @@ export default defineComponent({
       }).onOk(() => {
         api.delete(path + '/' + row.id).then(response => {
           dialog.value = false
-          getModeratingcopaysdets()
+          getErpModuless()
         })
       })
     }
     return {
       dialog,
-      dataModeratingcopaysdets,
+      dataErpModuless,
       isEditing,
       role,
       active,
@@ -307,11 +254,9 @@ export default defineComponent({
       visible,
       filter,
       code,
-      moderatingcopays,
-      type,
-      percentage,
-      capevent,
-      annualcap,
+      module,
+      menu,
+      option,
       onReset,
       onSubmit,
       editing,

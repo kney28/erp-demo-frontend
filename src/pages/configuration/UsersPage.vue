@@ -28,7 +28,7 @@
                   {{ (props.row.active) ? 'Activo' : 'Inactivo' }}
                 </q-td>
                 <q-td key="role" :props="props">
-                  {{ props.row.role.description }}
+                  {{ props.row.role.code }}
                 </q-td>
                 <q-td key="edit" :props="props">
                   <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
@@ -84,7 +84,7 @@
                 @filter="filterFnProfiles"
                 :options="filterOptionsProfiles"
                 option-value="id"
-                option-label="description"
+                option-label="code"
                 emit-value
                 map-options
                 lazy-rules
@@ -162,15 +162,20 @@
             </div>
           </div>
 
-          <div class="row justify-around">
+          <div v-if="isEditing" class="row justify-around">
             <div class="col-md-5">
               <q-toggle v-model="active" label="Estado usuario"/>
             </div>
-            <div v-if="isEditing" class="col-md-5">
+            <div class="col-md-5">
               <q-toggle v-model="changePassword" label="Cambiar Contraseña"/>
             </div>
-            <div v-else class="col-md-5">
+          </div>
+          <div v-else class="row justify-around">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+              <q-toggle v-model="active" label="Estado usuario"/>
             </div>
+            <div class="col-md-4"></div>
           </div>
         </q-form>
       </q-card-section>
@@ -253,7 +258,7 @@ export default defineComponent({
 
     const getProfiles = async () => {
       visible.value = true
-      const { data } = await api.get('/profiles')
+      const { data } = await api.get('/configuration/profiles')
       dataProfiles.value = data
       visible.value = false
     }
@@ -301,7 +306,8 @@ export default defineComponent({
       username.value = row.username
       name.value = row.name
       role.value = row.role
-      password.value = row.password
+      password.value = null
+      newPassword.value = null
       active.value = row.active
     }
 
