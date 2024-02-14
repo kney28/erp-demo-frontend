@@ -1,89 +1,91 @@
 <template>
-<q-page class="q-pa-md q-gutter-sm">
-<div>
-<transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
-<div>
-<q-space />
-<q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination" title="Accbalmov" :rows="dataAccbalmovs" :filter="filter" :columns="columns" row-key="name" >
-<template v-slot:top-left>
-<q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar"/>
-<q-space />
-</template>
-<template v-slot:top-right>
-<q-input dense debounce="300" v-model="filter" placeholder="Buscar">
-<template v-slot:append>
-<q-icon name="search" />
-</template>
-</q-input>
-</template>
-<template v-slot:body="props">
-<q-tr :props="props">
+  <q-page class="q-pa-md q-gutter-sm">
+    <div>
+      <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
+        <div>
+          <q-space />
+          <q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination"
+            title="Accbalmov" :rows="dataAccbalmovs" :filter="filter" :columns="columns" row-key="name">
+            <template v-slot:top-left>
+              <q-btn unelevated rounded icon="add" color="primary" @click="creating('add')" label="Agregar movimiento" />
+              <q-btn class="q-ml-sm" unelevated rounded icon="remove" color="primary" @click="creating('rev')" label="Reversar movimiento" />
+              <q-space />
+            </template>
+            <template v-slot:top-right>
+              <q-input dense debounce="300" v-model="filter" placeholder="Buscar">
+                <template v-slot:append>
+                  <q-icon name="search" />
+                </template>
+              </q-input>
+            </template>
+            <template v-slot:body="props">
+              <q-tr :props="props">
 
-<!--The next column is ENUM, please complete the code necessary
+                <!--The next column is ENUM, please complete the code necessary
 <q-td key="month" :props="props">
 {{ props.row.month }}</q-td>-->
                 <q-td key="month" :props="props">
-                  {{ MESES[props.row.month - 1 ].description }}
+                  {{ MESES[props.row.month - 1].description }}
                 </q-td>
-<q-td key="idledgeraccount" :props="props">
-{{ props.row.idledgeraccount.description }}
-</q-td>
-<q-td key="idthird" :props="props">
-{{ props.row.idthird.fullname }}
-</q-td>
-<q-td key="idcostcenter" :props="props">
-{{ props.row.idcostcenter.description }}
-</q-td>
-<q-td key="debit" :props="props">
-{{ props.row.debit }}
-</q-td>
-<q-td key="credit" :props="props">
-{{ props.row.credit }}
-</q-td>
-<!--The next column is ENUM, please complete the code necessary
+                <q-td key="idledgeraccount" :props="props">
+                  {{ props.row.idledgeraccount.description }}
+                </q-td>
+                <q-td key="idthird" :props="props">
+                  {{ props.row.idthird.fullname }}
+                </q-td>
+                <q-td key="idcostcenter" :props="props">
+                  {{ props.row.idcostcenter.description }}
+                </q-td>
+                <q-td key="debit" :props="props">
+                  {{ props.row.debit }}
+                </q-td>
+                <q-td key="credit" :props="props">
+                  {{ props.row.credit }}
+                </q-td>
+                <!--The next column is ENUM, please complete the code necessary
 <q-td key="status" :props="props">
 {{ props.row.status }}</q-td>-->
-<q-td key="status" :props="props">
+                <q-td key="status" :props="props">
                   {{ states[props.row.status - 1].description }}
                 </q-td>
-<q-td key="edit" :props="props">
-<q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
-</q-td>
-<q-td key="delete" :props="props">
-<q-btn round size="xs" color="negative" icon="delete_forever" v-on:click="onDelete(props.row)" />
-</q-td>
-</q-tr>
-</template>
-</q-table>
-</div>
-</transition>
-<q-inner-loading :showing="visible">
-<q-spinner-pie color="primary" size="70px"/>
-</q-inner-loading>
-</div>
-<q-dialog v-model="dialog" persistent>
-<q-card style="width: 700px; max-width: 80vw;">
-<q-linear-progress :value="10" color="blue" />
-<q-card-section class="row items-center">
-<div class="text-h6"> </div>
-<q-space />
-<q-btn icon="close" flat round dense v-close-popup />
-</q-card-section>
-<q-banner class="bg-grey-3">
-<template v-slot:avatar>
-<q-icon name="warning" color="warning" />
-</template>
-Los campos marcados con (*) son obligatorios
-</q-banner>
-<q-card-section>
-<q-form ref="myForm" @submit.prevent="">
-<div class="row justify-around">
-  <div class="col-md-4">
+                <q-td key="edit" :props="props">
+                  <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
+                </q-td>
+                <q-td key="delete" :props="props">
+                  <q-btn round size="xs" color="negative" icon="delete_forever" v-on:click="onDelete(props.row)" />
+                </q-td>
+              </q-tr>
+            </template>
+          </q-table>
+        </div>
+      </transition>
+      <q-inner-loading :showing="visible">
+        <q-spinner-pie color="primary" size="70px" />
+      </q-inner-loading>
+    </div>
+    <q-dialog v-model="dialog" persistent>
+      <q-card style="width: 700px; max-width: 80vw;">
+        <q-linear-progress :value="10" color="blue" />
+        <q-card-section class="row items-center">
+          <div class="text-h6"> </div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
+        <q-banner class="bg-grey-3">
+          <template v-slot:avatar>
+            <q-icon name="warning" color="warning" />
+          </template>
+          Los campos marcados con (*) son obligatorios
+        </q-banner>
+        <q-card-section>
+          <q-form ref="myForm" @submit.prevent="">
+            <div class="row justify-around">
+              <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                 <q-select white color="blue" v-model="month" label="Mes *" option-label="description" option-value="id"
                   :options="MESES" emit-value map-options lazy-rules
                   :rules="[val => !!val || 'El campo es obligatorio']" />
               </div>
-<!--The next column is ENUM, please complete the code necessary
+              <!--The next column is ENUM, please complete the code necessary
 //<div class="col-md-4">
 //<q-input
 //white
@@ -94,78 +96,34 @@ Los campos marcados con (*) son obligatorios
 //:rules="[ val => !!val || 'El campo es obligatorio']"
 ///>
 //</div>-->
-              <div class="col-md-4">
-                <q-select
-                white
-                color="blue"
-                v-model="idledgeraccount"
-                label="Cuenta *"
-                @filter="filterFnAccountCatalog"
-                :options="filterOptionsAccountCatalog"
-                option-value="id"
-                option-label="description"
-                emit-value
-                map-options
-                lazy-rules
-                :rules="[ val => !!val || 'El campo es obligatorio']"
-                />
+              <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                <q-select white color="blue" v-model="idledgeraccount" label="Cuenta *" @filter="filterFnAccountCatalog"
+                  :options="filterOptionsAccountCatalog" option-value="id" :option-label="e => `${e.code} - ${e.description}`" emit-value
+                  map-options lazy-rules :rules="[val => !!val || 'El campo es obligatorio']" />
               </div>
 
-              <div class="col-md-4">
-                <q-select
-                white
-                color="blue"
-                v-model="idthird"
-                label="Tercero *"
-                @filter="filterFnAccountCenter"
-                :options="filterOptionsAccountThirPerson"
-                option-value="id"
-                option-label="fullname"
-                emit-value
-                map-options
-                lazy-rules
-                :rules="[ val => !!val || 'El campo es obligatorio']"
-                />
+              <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                <q-select white color="blue" v-model="idthird" label="Tercero *" @filter="filterFnAccountCenter"
+                  :options="filterOptionsAccountThirPerson" option-value="id" :option-label="e => `${e.document} - ${e.fullname}`" emit-value
+                  map-options lazy-rules :rules="[val => !!val || 'El campo es obligatorio']" />
               </div>
 
-              <div class="col-md-4">
-                <q-select
-                white
-                color="blue"
-                v-model="idcostcenter"
-                label="Centro de costo *"
-                @filter="filterFnAccountCenter"
-                :options="filterOptionsAccountCenter"
-                option-value="id"
-                option-label="description"
-                emit-value
-                map-options
-                lazy-rules
-                :rules="[ val => !!val || 'El campo es obligatorio']"
-                />
+              <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                <q-select white color="blue" v-model="idcostcenter" label="Centro de costo *"
+                  @filter="filterFnAccountCenter" :options="filterOptionsAccountCenter" option-value="id"
+                  :option-label="e => `${e.code} - ${e.description}`" emit-value map-options lazy-rules
+                  :rules="[val => !!val || 'El campo es obligatorio']" />
               </div>
 
-<div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="debit"
-label="debit *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
-</div>
-<div class="col-md-4">
-<q-input
-white
-color="blue"
-v-model="credit"
-label="credit *"
-lazy-rules
-:rules="[ val => !!val || 'El campo es obligatorio']"
-/>
-</div>
-<!--The next column is ENUM, please complete the code necessary
+              <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                <q-input white type="number" color="blue" v-model="debit" label="Débito *" lazy-rules
+                  :rules="[val => !!val || 'El campo es obligatorio']" />
+              </div>
+              <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                <q-input white type="number" color="blue" v-model="credit" label="Crédito *" lazy-rules
+                  :rules="[val => !!val || 'El campo es obligatorio']" />
+              </div>
+              <!--The next column is ENUM, please complete the code necessary
 //<div class="col-md-4">
 //<q-input
 //white
@@ -176,33 +134,33 @@ lazy-rules
 //:rules="[ val => !!val || 'El campo es obligatorio']"
 ///>
 //</div>-->
-              <div class="col-md-3">
-                <q-toggle v-model="active" label="Estado"/>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+                <q-toggle v-model="active" label="Estado" />
               </div>
-</div>
-</q-form>
-</q-card-section>
-<div class="row justify-between">
-<q-card-actions align="left" class="bg-white text-teal">
-</q-card-actions>
-<q-card-actions align="right" class="bg-white text-teal">
-<div v-if="!isEditing">
-<q-btn round icon="save" @click.prevent="onSubmit" color="primary"/>
-<q-tooltip>Guardar datos</q-tooltip>
-</div>
-<div v-else>
-<q-btn round icon="save" @click.prevent="onEditing" color="primary"/>
-<q-tooltip>Editar datos</q-tooltip>
-</div> &nbsp;
-<div>
-<q-btn round icon="cancel" v-close-popup color="negative"/>
-<q-tooltip>Cancelar</q-tooltip>
-</div>
-</q-card-actions>
-</div>
-</q-card>
-</q-dialog>
-</q-page>
+            </div>
+          </q-form>
+        </q-card-section>
+        <div class="row justify-between">
+          <q-card-actions align="left" class="bg-white text-teal">
+          </q-card-actions>
+          <q-card-actions align="right" class="bg-white text-teal">
+            <div v-if="!isEditing">
+              <q-btn round icon="save" @click.prevent="onSubmit" color="primary" />
+              <q-tooltip>Guardar datos</q-tooltip>
+            </div>
+            <div v-else>
+              <q-btn round icon="save" @click.prevent="onEditing" color="primary" />
+              <q-tooltip>Editar datos</q-tooltip>
+            </div> &nbsp;
+            <div>
+              <q-btn round icon="cancel" v-close-popup color="negative" />
+              <q-tooltip>Cancelar</q-tooltip>
+            </div>
+          </q-card-actions>
+        </div>
+      </q-card>
+    </q-dialog>
+  </q-page>
 </template>
 <script>
 import { defineComponent, ref, onMounted } from 'vue'
@@ -213,6 +171,7 @@ export default defineComponent({
   name: 'AccbalmovsPage',
   setup () {
     const path = '/accbalmovs'
+    const movement = ref(null)
     const dialog = ref(false)
     const visible = ref(false)
     const id = ref(null)
@@ -268,6 +227,7 @@ export default defineComponent({
       const { data } = await api.get(path)
       dataAccbalmovs.value = data
       visible.value = false
+      console.log(data)
     }
     const getStatus = async () => {
       visible.value = true
@@ -299,8 +259,9 @@ export default defineComponent({
       dataAccountThirPerson.value = data
       visible.value = false
     }
-    const creating = () => {
+    const creating = (val) => {
       onReset()
+      movement.value = val
       dialog.value = true
     }
     const onReset = () => {
@@ -313,21 +274,59 @@ export default defineComponent({
       active.value = false
       month.value = null
     }
+    const addMovement = () => {
+      return dataAccbalmovs.value.find(item =>
+        item.month === month.value &&
+        item.idledgeraccount.id === idledgeraccount.value &&
+        item.idthird.id === idthird.value &&
+        item.idcostcenter.id === idcostcenter.value
+      )
+    }
+
     const onSubmit = () => {
       myForm.value.validate().then(async success => {
         if (success) {
-          api.post(path, {
-            idledgeraccount: idledgeraccount.value,
-            idthird: idthird.value,
-            idcostcenter: idcostcenter.value,
-            debit: debit.value,
-            credit: credit.value,
-            month: month.value,
-            status: active.value ? ACTIVE : INACTIVE
-          }).then(() => {
-            dialog.value = false
-            getAccbalmovs()
-          })
+          const result = addMovement()
+          if (result !== undefined && movement.value === 'add') {
+            api.patch(path + '/' + result.id, {
+              debit: result.debit + parseInt(debit.value),
+              credit: result.credit + parseInt(credit.value)
+            }).then(() => {
+              dialog.value = false
+              getAccbalmovs()
+            })
+          }
+          if (result !== undefined && movement.value === 'rev') {
+            api.patch(path + '/' + result.id, {
+              debit: result.debit - parseInt(debit.value),
+              credit: result.credit - parseInt(credit.value)
+            }).then(() => {
+              dialog.value = false
+              getAccbalmovs()
+            })
+          }
+          if (result === undefined && movement.value === 'add') {
+            api.post(path, {
+              idledgeraccount: idledgeraccount.value,
+              idthird: idthird.value,
+              idcostcenter: idcostcenter.value,
+              debit: debit.value,
+              credit: credit.value,
+              month: month.value,
+              status: active.value ? ACTIVE : INACTIVE
+            }).then(() => {
+              dialog.value = false
+              getAccbalmovs()
+            })
+          }
+          if (result === undefined && movement.value === 'rev') {
+            $q.dialog({
+              title: '...Ups!',
+              message: 'No existe una cuenta con esos datos',
+              cancel: false,
+              persistent: false
+            })
+          }
         }
       })
     }
@@ -458,7 +457,9 @@ export default defineComponent({
       filterOptionsAccountCenter,
       dataAccountThirPerson,
       filterFnAccountThirPerson,
-      filterOptionsAccountThirPerson
+      filterOptionsAccountThirPerson,
+      addMovement,
+      movement
     }
   }
 })

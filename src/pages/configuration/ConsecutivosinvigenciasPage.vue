@@ -5,9 +5,10 @@
         <div>
           <q-space />
           <q-table dense :rows-per-page-options="[10, 15, 20, 25, 50, 0]" v-model:pagination="pagination"
-            title="Accountingterms" :rows="dataAccountingtermss" :filter="filter" :columns="columns" row-key="name">
+            title="Consecutivosinvigencia" :rows="dataConsecutivosinvigencias" :filter="filter" :columns="columns"
+            row-key="name">
             <template v-slot:top-left>
-              <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar" />
+              <q-btn unelevated rounded icon="add" color="primary" @click="creating" label="Agregar" :disable="lock"/>
               <q-space />
             </template>
             <template v-slot:top-right>
@@ -19,19 +20,27 @@
             </template>
             <template v-slot:body="props">
               <q-tr :props="props">
-
-                <q-td key="validity" :props="props">
-                  {{ props.row.validity.year }}
+                <q-td key="code" :props="props">
+                  {{ props.row.code }}
                 </q-td>
-
-                <q-td key="inuse" :props="props">
-                  {{ uso[props.row.inuse - 1].description }}
+                <q-td key="proceso" :props="props">
+                  {{ props.row.proceso }}
                 </q-td>
-
-                <q-td key="status" :props="props">
-                  {{ states[props.row.status - 1].description }}
+                <q-td key="opcion" :props="props">
+                  {{ props.row.opcion }}
                 </q-td>
-
+                <q-td key="numeracionInicial" :props="props">
+                  {{ props.row.numeracionInicial }}
+                </q-td>
+                <q-td key="numeracionFinal" :props="props">
+                  {{ props.row.numeracionFinal }}
+                </q-td>
+                <q-td key="numeracionActual" :props="props">
+                  {{ props.row.numeracionActual }}
+                </q-td>
+                <q-td key="estado" :props="props">
+                  {{ props.row.estado }}
+                </q-td>
                 <q-td key="edit" :props="props">
                   <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
                 </q-td>
@@ -64,25 +73,34 @@
         <q-card-section>
           <q-form ref="myForm" @submit.prevent="">
             <div class="row justify-around">
-
               <div class="col-md-4">
-                <q-select white color="blue" v-model="validity" label="Vigencia *" @filter="filterFnValidity"
-                  :options="filterOptionsValidity" option-value="id" option-label="year" emit-value map-options lazy-rules
-                  :readonly="readonly.validity"
-                  :rules="[val => findValid(val) ? 'Esta vigencia se encuentra en uso' : true ]" />
+                <q-input white color="blue" v-model="code" label="code *" lazy-rules
+                  :rules="[val => !!val || 'El campo es obligatorio']" />
               </div>
-
               <div class="col-md-4">
-                <q-select white color="blue" v-model="inuse" label="En uso *" option-label="description" option-value="id"
-                  :options="uso" emit-value map-options lazy-rules :rules="[val => !!val || 'El campo es obligatorio']" />
+                <q-input white color="blue" v-model="proceso" label="proceso *" lazy-rules
+                  :rules="[val => !!val || 'El campo es obligatorio']" />
               </div>
-
               <div class="col-md-4">
-                <q-select white color="blue" v-model="status" label="Estado *" option-label="description"
-                  option-value="id" :options="states" emit-value map-options lazy-rules :readonly="readonly.status"
-                  :rules="[val => findStaus(val) ? 'Ya existe un registro con esta opción, por favor selecciona otra' : true]" />
+                <q-input white color="blue" v-model="opcion" label="opcion *" lazy-rules
+                  :rules="[val => !!val || 'El campo es obligatorio']" />
               </div>
-
+              <div class="col-md-4">
+                <q-input white color="blue" v-model="numeracionInicial" label="numeracionInicial *" lazy-rules
+                  :rules="[val => !!val || 'El campo es obligatorio']" />
+              </div>
+              <div class="col-md-4">
+                <q-input white color="blue" v-model="numeracionFinal" label="numeracionFinal *" lazy-rules
+                  :rules="[val => !!val || 'El campo es obligatorio']" />
+              </div>
+              <div class="col-md-4">
+                <q-input white color="blue" v-model="numeracionActual" label="numeracionActual *" lazy-rules
+                  :rules="[val => !!val || 'El campo es obligatorio']" />
+              </div>
+              <div class="col-md-4">
+                <q-input white color="blue" v-model="estado" label="estado *" lazy-rules
+                  :rules="[val => !!val || 'El campo es obligatorio']" />
+              </div>
             </div>
           </q-form>
         </q-card-section>
@@ -106,38 +124,37 @@
         </div>
       </q-card>
     </q-dialog>
+    <ConsecutivoSinVigencia entity="types_seat" @locked="(e) => lock = e" />
   </q-page>
 </template>
 <script>
-import { defineComponent, ref, onMounted, reactive } from 'vue'
+import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
-import { ACCOUNTINGVALIDITYSTATUS, LISINUSOCOUNTING } from '../../constants/Constants'
+import ConsecutivoSinVigencia from '../../components/ConsecutivoSinVigencia.vue'
 
 export default defineComponent({
-  name: 'AccountingtermssPage',
+  name: 'ConsecutivosinvigenciasPage',
+  components: {
+    ConsecutivoSinVigencia
+  },
   setup () {
-    const path = '/accountingtermss'
+    const path = '/consecutivosinvigencias'
     const dialog = ref(false)
+    const lock = ref(false)
     const visible = ref(false)
-    const readonly = reactive({
-      validity: false,
-      status: false
-    })
     const id = ref(null)
     const filter = ref(null)
-    const dataAccountingtermss = ref([])
-    const code = ref(null)
-    const idvalididy = ref(null)
+    const dataConsecutivosinvigencias = ref([])
+    const code = ref('probando esto')
+    const proceso = ref(null)
+    const opcion = ref(null)
+    const numeracionInicial = ref(null)
+    const numeracionFinal = ref(null)
+    const numeracionActual = ref(null)
+    const estado = ref(null)
     const role = ref(null)
     const active = ref(false)
-    const validity = ref(null)
-    const states = ref(ACCOUNTINGVALIDITYSTATUS)
-    const status = ref(null)
-    const inuse = ref(null)
-    const uso = ref(LISINUSOCOUNTING)
-    const dataValidity = ref([])
-    const filterOptionsValidity = ref(dataValidity)
     const myForm = ref(null)
     const $q = useQuasar()
     const pagination = ref({
@@ -146,50 +163,24 @@ export default defineComponent({
     })
     const isEditing = ref(false)
     const columns = ref([
-      { name: 'validity', align: 'center', label: 'Vigencia', field: 'validity', sortable: true },
-      { name: 'inuse', align: 'center', label: 'En uso', field: 'inuse', sortable: true },
-      { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
+      { name: 'code', align: 'center', label: 'code', field: 'code', sortable: true },
+      { name: 'proceso', align: 'center', label: 'proceso', field: 'proceso', sortable: true },
+      { name: 'opcion', align: 'center', label: 'opcion', field: 'opcion', sortable: true },
+      { name: 'numeracionInicial', align: 'center', label: 'numeracionInicial', field: 'numeracionInicial', sortable: true },
+      { name: 'numeracionFinal', align: 'center', label: 'numeracionFinal', field: 'numeracionFinal', sortable: true },
+      { name: 'numeracionActual', align: 'center', label: 'numeracionActual', field: 'numeracionActual', sortable: true },
+      { name: 'estado', align: 'center', label: 'estado', field: 'estado', sortable: true },
       { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
       { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
     onMounted(() => {
-      getAccountingtermss()
-      // getStates()
-      // getInusos()
-      getValidity()
+      // getConsecutivosinvigencias()
     })
-    const getAccountingtermss = async () => {
+    const getConsecutivosinvigencias = async () => {
       visible.value = true
       const { data } = await api.get(path)
-      dataAccountingtermss.value = data
+      dataConsecutivosinvigencias.value = data
       visible.value = false
-      console.log(data)
-    }
-    const getValidity = async () => {
-      visible.value = true
-      const { data } = await api.get('/configuration/validity')
-      dataValidity.value = data
-      visible.value = false
-    }
-    const findValid = (val) => {
-      const result = dataAccountingtermss.value.find((item) =>
-        item.validity.id === parseInt(val)
-      )
-      if (result !== undefined) {
-        return true
-      } else {
-        return false
-      }
-    }
-    const findStaus = (val) => {
-      const result = dataAccountingtermss.value.find((item) =>
-        item.status === 2 && parseInt(val) === 2
-      )
-      if (result !== undefined) {
-        return true
-      } else {
-        return false
-      }
     }
     const creating = () => {
       onReset()
@@ -197,26 +188,29 @@ export default defineComponent({
     }
     const onReset = () => {
       code.value = null
-      idvalididy.value = null
-      readonly.validity = false
-      readonly.status = false
+      proceso.value = null
+      opcion.value = null
+      numeracionInicial.value = null
+      numeracionFinal.value = null
+      numeracionActual.value = null
+      estado.value = null
       isEditing.value = false
       active.value = false
-      validity.value = null
-      status.value = 1
-      inuse.value = 2
     }
     const onSubmit = () => {
       myForm.value.validate().then(async success => {
         if (success) {
           api.post(path, {
             code: code.value,
-            status: status.value,
-            validity: validity.value,
-            inuse: inuse.value
+            proceso: proceso.value,
+            opcion: opcion.value,
+            numeracionInicial: numeracionInicial.value,
+            numeracionFinal: numeracionFinal.value,
+            numeracionActual: numeracionActual.value,
+            estado: estado.value
           }).then(() => {
             dialog.value = false
-            getAccountingtermss()
+            getConsecutivosinvigencias()
           })
         }
       })
@@ -225,29 +219,29 @@ export default defineComponent({
       onReset()
       dialog.value = true
       isEditing.value = true
-      readonly.validity = true
       id.value = row.id
       code.value = row.code
-      validity.value = row.validity
-      status.value = row.status
-      inuse.value = row.inuse
-      if (row.inuse === 1) {
-        readonly.status = true
-      } else {
-        readonly.status = false
-      }
+      proceso.value = row.proceso
+      opcion.value = row.opcion
+      numeracionInicial.value = row.numeracionInicial
+      numeracionFinal.value = row.numeracionFinal
+      numeracionActual.value = row.numeracionActual
+      estado.value = row.estado
     }
     const onEditing = () => {
       myForm.value.validate().then(async success => {
         if (success) {
           api.patch(path + '/' + id.value, {
             code: code.value,
-            validity: validity.value,
-            inuse: inuse.value,
-            status: status.value
+            proceso: proceso.value,
+            opcion: opcion.value,
+            numeracionInicial: numeracionInicial.value,
+            numeracionFinal: numeracionFinal.value,
+            numeracionActual: numeracionActual.value,
+            estado: estado.value
           }).then(() => {
             dialog.value = false
-            getAccountingtermss()
+            getConsecutivosinvigencias()
           })
         }
       })
@@ -255,7 +249,7 @@ export default defineComponent({
     const onDelete = (row) => {
       $q.dialog({
         title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar la vigencia contable : ' + row.validity.year + '?',
+        message: '¿Está seguro que desea eliminar la consecutivosinvigencia: ' + row.id + '?',
         ok: {
           label: 'Si',
           color: 'positive'
@@ -267,27 +261,14 @@ export default defineComponent({
       }).onOk(() => {
         api.delete(path + '/' + row.id).then(response => {
           dialog.value = false
-          getAccountingtermss()
+          getConsecutivosinvigencias()
         })
       })
     }
-
-    const filterFnValidity = (val, update) => {
-      if (val === '') {
-        update(() => {
-          filterOptionsValidity.value = dataValidity.value
-        })
-        return
-      }
-      update(() => {
-        const needle = val.toLowerCase()
-        filterOptionsValidity.value = dataValidity.value.filter(v => v.description.toLowerCase().indexOf(needle) > -1)
-      })
-    }
-
     return {
       dialog,
-      dataAccountingtermss,
+      lock,
+      dataConsecutivosinvigencias,
       isEditing,
       role,
       active,
@@ -298,26 +279,19 @@ export default defineComponent({
       visible,
       filter,
       code,
-      validity,
+      proceso,
+      opcion,
+      numeracionInicial,
+      numeracionFinal,
+      numeracionActual,
+      estado,
       onReset,
       onSubmit,
       editing,
       onEditing,
       id,
-      onDelete,
-      states,
-      status,
-      inuse,
-      uso,
-      dataValidity,
-      filterFnValidity,
-      filterOptionsValidity,
-      findValid,
-      findStaus,
-      readonly
+      onDelete
     }
   }
-
 })
-
 </script>

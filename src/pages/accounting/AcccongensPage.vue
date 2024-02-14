@@ -36,7 +36,7 @@
                 <q-td key="rounding" :props="props">
                   {{ redondeo[props.row.rounding - 1].description }}</q-td>
                 <q-td key="seattypeclosure" :props="props">
-                  {{ props.row.seattypeclosure.description }}
+                  <!--{{ props.row.seattypeclosure.description }}-->
                 </q-td>
                 <q-td key="lostcount" :props="props">
                   {{ props.row.lostcount.description }}
