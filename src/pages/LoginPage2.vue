@@ -107,9 +107,11 @@
                 @keydown.enter.prevent="login"
               />
             </div>
+            <!--
             <div class="text-right font-poppins-bold q-mt-sm" style="color: #2fc1ff; font-size: 12px;">
               Recuperar contraseña
             </div>
+            -->
             <div>
               <q-btn
                 label="Iniciar sesión"
@@ -141,6 +143,7 @@ import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { api } from 'boot/axios'
 import { useQuasar } from 'quasar'
+// import { GlobalFuntions } from 'src/boot/globalFunction'
 
 export default defineComponent({
   name: 'LoginPage',
@@ -151,10 +154,11 @@ export default defineComponent({
     const password = ref(null)
     const auth = useAuthStore()
     const rows = ref([])
-    const { token, userName, companyName, logo, role } = storeToRefs(auth)
+    const { token, userName, companyName, logo, rol, permissions } = storeToRefs(auth)
 
     onMounted(() => {
       getCompany()
+      // console.log('Prueba permiso: ', GlobalFuntions.can('CONFIGURACION-MAESTRAS-PERFIL', 'add', permissions, role))
     })
 
     const getCompany = async () => {
@@ -187,7 +191,10 @@ export default defineComponent({
           $q.cookies.set('userName', data.usuario.name.toUpperCase())
           userName.value = data.usuario.name.toUpperCase()
           $q.cookies.set('role', data.usuario.role.code)
-          role.value = data.usuario.role.code
+          $q.cookies.set('rol', data.usuario.role)
+          rol.value = data.usuario.role
+          $q.cookies.set('permissions', data.usuario.permissions)
+          permissions.value = data.usuario.permissions
           $router.push({ name: 'index' })
         }
       }).catch(e => {

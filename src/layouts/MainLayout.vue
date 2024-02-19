@@ -2346,6 +2346,7 @@ import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from 'src/stores/auth'
 import { storeToRefs } from 'pinia'
+import { can } from 'src/boot/globalFunction'
 
 export default defineComponent({
   name: 'MainLayout',
@@ -2360,7 +2361,7 @@ export default defineComponent({
     const role = $q.cookies.get('role')
 
     const auth = useAuthStore()
-    const { token } = storeToRefs(auth)
+    const { token, permissions, rol } = storeToRefs(auth)
 
     const logout = () => {
       $q.dialog({
@@ -2376,8 +2377,13 @@ export default defineComponent({
         }
       }).onOk(() => {
         token.value = null
+        permissions.value = null
+        rol.value = null
         $q.cookies.remove('token')
         $q.cookies.remove('userName')
+        $q.cookies.remove('rol')
+        $q.cookies.remove('role')
+        $q.cookies.remove('permissions')
         router.push({ name: 'login' })
       })
     }
@@ -2402,7 +2408,8 @@ export default defineComponent({
       userName,
       role,
       companyName,
-      logo
+      logo,
+      can
     }
   }
 })
