@@ -62,7 +62,7 @@
                   <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" v-if="can('CONFIGURACION-MAESTRAS-PERFIL', 'modify')" />
                 </q-td>
                 <q-td key="delete" :props="props">
-                  <q-btn round size="xs" color="negative" icon="delete_forever" v-on:click="onDelete(props.row)" />
+                  <q-btn round size="xs" color="negative" icon="delete_forever" v-on:click="onDelete(props.row)" v-if="can('CONFIGURACION-MAESTRAS-PERFIL', 'remove')"/>
                 </q-td>
               </q-tr>
               <q-tr v-show="props.expand" :props="props">
