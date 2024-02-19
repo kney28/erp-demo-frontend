@@ -4,12 +4,15 @@ export const useAuthStore = defineStore('home', {
   state: () => ({
     token: null,
     userName: null,
-    role: null,
+    rol: null,
     companyName: null,
-    logo: null
+    logo: null,
+    permissions: null
   }),
 
   getters: {
-    getToken: (state) => state.token
+    getToken: (state) => state.token,
+    getPermissions: (state) => state.permissions,
+    getRol: (state) => state.rol
   }
 })

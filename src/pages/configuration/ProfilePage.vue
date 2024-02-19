@@ -14,7 +14,7 @@
             :columns="columns"
             row-key="id"
           >
-            <template v-slot:top-left>
+            <template v-slot:top-left v-if="can('CONFIGURACION-MAESTRAS-PERFIL', 'add')">
               <q-btn
                 unelevated
                 rounded
@@ -59,10 +59,10 @@
                     {{ states[props.row.status] }}
                 </q-td>
                 <q-td key="edit" :props="props">
-                  <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" />
+                  <q-btn round size="xs" color="primary" icon="border_color" v-on:click="editing(props.row)" v-if="can('CONFIGURACION-MAESTRAS-PERFIL', 'modify')" />
                 </q-td>
                 <q-td key="delete" :props="props">
-                  <q-btn round size="xs" color="negative" icon="delete_forever" v-on:click="onDelete(props.row)" />
+                  <q-btn round size="xs" color="negative" icon="delete_forever" v-on:click="onDelete(props.row)" v-if="can('CONFIGURACION-MAESTRAS-PERFIL', 'remove')"/>
                 </q-td>
               </q-tr>
               <q-tr v-show="props.expand" :props="props">
@@ -99,6 +99,7 @@
                           <q-checkbox
                             v-model:model-value="props.row.add"
                             @click="onEditingPermission(props.row, props.row.id)"
+                            :disable="!can('CONFIGURACION-MAESTRAS-PERFIL', 'modify')"
                           />
                           {{ props.row.add ? 'SI' : 'NO' }}
                         </q-td>
@@ -106,6 +107,7 @@
                           <q-checkbox
                             v-model:model-value="props.row.modify"
                             @click="onEditingPermission(props.row, props.row.id)"
+                            :disable="!can('CONFIGURACION-MAESTRAS-PERFIL', 'modify')"
                           />
                           {{ props.row.modify ? 'SI' : 'NO' }}
                         </q-td>
@@ -113,6 +115,7 @@
                           <q-checkbox
                             v-model:model-value="props.row.record"
                             @click="onEditingPermission(props.row, props.row.id)"
+                            :disable="!can('CONFIGURACION-MAESTRAS-PERFIL', 'modify')"
                           />
                           {{ props.row.record ? 'SI' : 'NO' }}
                         </q-td>
@@ -120,6 +123,7 @@
                           <q-checkbox
                             v-model:model-value="props.row.query"
                             @click="onEditingPermission(props.row, props.row.id)"
+                            :disable="!can('CONFIGURACION-MAESTRAS-PERFIL', 'modify')"
                           />
                           {{ props.row.query ? 'SI' : 'NO' }}
                         </q-td>
@@ -127,6 +131,7 @@
                           <q-checkbox
                             v-model:model-value="props.row.remove"
                             @click="onEditingPermission(props.row, props.row.id)"
+                            :disable="!can('CONFIGURACION-MAESTRAS-PERFIL', 'modify')"
                           />
                           {{ props.row.remove ? 'SI' : 'NO' }}
                         </q-td>
@@ -134,6 +139,7 @@
                           <q-checkbox
                             v-model:model-value="props.row.print"
                             @click="onEditingPermission(props.row, props.row.id)"
+                            :disable="!can('CONFIGURACION-MAESTRAS-PERFIL', 'modify')"
                           />
                           {{ props.row.print ? 'SI' : 'NO' }}
                         </q-td>
@@ -141,6 +147,7 @@
                           <q-checkbox
                             v-model:model-value="props.row.confirm"
                             @click="onEditingPermission(props.row, props.row.id)"
+                            :disable="!can('CONFIGURACION-MAESTRAS-PERFIL', 'modify')"
                           />
                           {{ props.row.confirm ? 'SI' : 'NO' }}
                         </q-td>
@@ -148,6 +155,7 @@
                           <q-checkbox
                             v-model:model-value="props.row.process"
                             @click="onEditingPermission(props.row, props.row.id)"
+                            :disable="!can('CONFIGURACION-MAESTRAS-PERFIL', 'modify')"
                           />
                           {{ props.row.process ? 'SI' : 'NO' }}
                         </q-td>
@@ -155,6 +163,7 @@
                           <q-checkbox
                             v-model:model-value="props.row.run"
                             @click="onEditingPermission(props.row, props.row.id)"
+                            :disable="!can('CONFIGURACION-MAESTRAS-PERFIL', 'modify')"
                           />
                           {{ props.row.run ? 'SI' : 'NO' }}
                         </q-td>
@@ -162,6 +171,7 @@
                           <q-checkbox
                             v-model:model-value="props.row.override"
                             @click="onEditingPermission(props.row, props.row.id)"
+                            :disable="!can('CONFIGURACION-MAESTRAS-PERFIL', 'modify')"
                           />
                           {{ props.row.override ? 'SI' : 'NO' }}
                         </q-td>
@@ -271,6 +281,7 @@ import { defineComponent, ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'boot/axios'
 import { ACTIVE, INACTIVE, STATUS } from 'src/constants/Constants'
+import { can } from 'src/boot/globalFunction'
 export default defineComponent({
   name: 'ProfilePage',
   setup () {
@@ -306,10 +317,12 @@ export default defineComponent({
       },
       { name: 'code', align: 'center', label: 'Perfil', field: 'code', sortable: true },
       { name: 'description', align: 'center', label: 'Descripción', field: 'description', sortable: true },
-      { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true },
-      { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
-      { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
+      { name: 'status', align: 'center', label: 'Estado', field: 'status', sortable: true }
+      // { name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true },
+      // { name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }
     ])
+    if (can('CONFIGURACION-MAESTRAS-PERFIL', 'modify')) { columns.value.push({ name: 'edit', align: 'center', label: 'Editar', field: 'edit', sortable: true }) }
+    if (can('CONFIGURACION-MAESTRAS-PERFIL', 'remove')) { columns.value.push({ name: 'delete', align: 'center', label: 'Eliminar', field: 'delete', sortable: true }) }
     const subColumns = ref([
       { name: 'code', align: 'center', label: 'Permiso', field: 'code', sortable: true },
       { name: 'option', align: 'center', label: 'Opción', field: 'option', sortable: true },
@@ -331,9 +344,22 @@ export default defineComponent({
 
     const getProfiles = async () => {
       visible.value = true
-      const { data } = await api.get(path)
-      dataProfiles.value = data
-      getPermissionss()
+      await api.get(path).then((resp) => {
+        if (resp.data && !resp.data.error) {
+          dataProfiles.value = resp.data
+          getPermissionss()
+        }
+      }).catch((e) => {
+        // console.log(e)
+        $q.dialog({
+          title: 'Error',
+          message: e,
+          ok: {
+            label: 'Aceptar',
+            color: 'positive'
+          }
+        })
+      })
       visible.value = false
     }
 
@@ -357,18 +383,20 @@ export default defineComponent({
     }
 
     const onSubmit = () => {
-      myForm.value.validate().then(async success => {
-        if (success) {
-          api.post(path, {
-            code: code.value,
-            description: description.value,
-            status: active.value ? ACTIVE : INACTIVE
-          }).then(() => {
-            dialog.value = false
-            getProfiles()
-          })
-        }
-      })
+      if (can('CONFIGURACION-MAESTRAS-PERFIL', 'add')) {
+        myForm.value.validate().then(async success => {
+          if (success) {
+            api.post(path, {
+              code: code.value,
+              description: description.value,
+              status: active.value ? ACTIVE : INACTIVE
+            }).then(() => {
+              dialog.value = false
+              getProfiles()
+            })
+          }
+        })
+      }
     }
 
     const editing = (row) => {
@@ -384,59 +412,65 @@ export default defineComponent({
     }
 
     const onEditing = () => {
-      myForm.value.validate().then(async success => {
-        if (success) {
-          api.patch(path + '/' + id.value, {
-            code: code.value,
-            description: description.value,
-            status: active.value ? ACTIVE : INACTIVE
-          }).then(() => {
-            dialog.value = false
-            getProfiles()
-          })
-        }
-      })
+      if (can('CONFIGURACION-MAESTRAS-PERFIL', 'modify')) {
+        myForm.value.validate().then(async success => {
+          if (success) {
+            api.patch(path + '/' + id.value, {
+              code: code.value,
+              description: description.value,
+              status: active.value ? ACTIVE : INACTIVE
+            }).then(() => {
+              dialog.value = false
+              getProfiles()
+            })
+          }
+        })
+      }
     }
 
-    const onEditingPermission = (permission, idElement) => {
-      api.patch('configuration/permissionss/' + idElement, {
-        // code: permission.code,
-        // profile: permission.profile,
-        // option: permission.option,
-        add: permission.add,
-        modify: permission.modify,
-        record: permission.record,
-        query: permission.query,
-        remove: permission.remove,
-        print: permission.print,
-        confirm: permission.confirm,
-        process: permission.process,
-        run: permission.run,
-        override: permission.override
-      }).then(() => {
-        dialog.value = false
-        getPermissionss()
-      })
+    const onEditingPermission = async (permission, idElement) => {
+      if (can('CONFIGURACION-MAESTRAS-PERFIL', 'modify')) {
+        await api.patch('configuration/permissionss/' + idElement, {
+          // code: permission.code,
+          // profile: permission.profile,
+          // option: permission.option,
+          add: permission.add,
+          modify: permission.modify,
+          record: permission.record,
+          query: permission.query,
+          remove: permission.remove,
+          print: permission.print,
+          confirm: permission.confirm,
+          process: permission.process,
+          run: permission.run,
+          override: permission.override
+        }).then(() => {
+          getPermissionss()
+        })
+      }
+      dialog.value = false
     }
 
     const onDelete = (row) => {
-      $q.dialog({
-        title: 'Confirmación',
-        message: '¿Está seguro que desea eliminar el perfil: ' + row.code + '?',
-        ok: {
-          label: 'Si',
-          color: 'positive'
-        },
-        cancel: {
-          label: 'No',
-          color: 'negative'
-        }
-      }).onOk(() => {
-        api.delete(path + '/' + row.id).then(response => {
-          dialog.value = false
-          getProfiles()
+      if (can('CONFIGURACION-MAESTRAS-PERFIL', 'remove')) {
+        $q.dialog({
+          title: 'Confirmación',
+          message: '¿Está seguro que desea eliminar el perfil: ' + row.code + '?',
+          ok: {
+            label: 'Si',
+            color: 'positive'
+          },
+          cancel: {
+            label: 'No',
+            color: 'negative'
+          }
+        }).onOk(() => {
+          api.delete(path + '/' + row.id).then(response => {
+            dialog.value = false
+            getProfiles()
+          })
         })
-      })
+      }
     }
 
     return {
@@ -462,7 +496,8 @@ export default defineComponent({
       id,
       onDelete,
       description,
-      states
+      states,
+      can
     }
   }
 })

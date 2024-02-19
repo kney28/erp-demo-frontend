@@ -32,6 +32,8 @@ export default route(function ({ store, ssrContext }) {
     const auth = useAuthStore(store)
     if (!auth.token) {
       auth.token = Cookies.get('token')
+      auth.rol = Cookies.get('rol')
+      auth.permissions = Cookies.get('permissions')
     }
     if (to.name !== 'login' && !auth.token) next({ name: 'login' })
     else next()
