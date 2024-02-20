@@ -155,13 +155,17 @@
               <q-expansion-item
                 expand-separator
                 icon="settings"
-                label="Configuración">
+                label="Configuración"
+                v-if="canModule('CONFIGURACION')"
+              >
                 <q-expansion-item
                   :header-inset-level="0.5"
                   :content-inset-level="1"
                   expand-separator
                   icon="engineering"
-                  label="Maestros">
+                  label="Maestros"
+                  v-if="canMenu('CONFIGURACION', 'MAESTRAS')"
+                >
                   <q-item
                     @click="setTabSelected('/configuration/profiles', 'Perfiles')"
                     active-class="tab-active"
@@ -170,6 +174,7 @@
                     class="q-ma-sm navigation-item"
                     clickable
                     v-ripple
+                    v-if="can('CONFIGURACION-MAESTRAS-PERFIL', 'modify')"
                   >
                     <q-item-section avatar>
                       <q-icon name="account_circle" />
@@ -2346,7 +2351,7 @@ import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from 'src/stores/auth'
 import { storeToRefs } from 'pinia'
-import { can } from 'src/boot/globalFunction'
+import { can, canModule, canMenu } from 'src/boot/globalFunction'
 
 export default defineComponent({
   name: 'MainLayout',
@@ -2409,7 +2414,9 @@ export default defineComponent({
       role,
       companyName,
       logo,
-      can
+      can,
+      canModule,
+      canMenu
     }
   }
 })
