@@ -41,3 +41,41 @@ export const can = (permission, operation) => {
   // console.log(user);
   return resp
 }
+
+export const canModule = (module) => {
+  const auth = useAuthStore()
+  let resp = false
+  // console.log('auth.permissions: ', auth.permissions)
+  if (auth.permissions) {
+    const permisos = auth.permissions.filter(function (n) {
+      return n.option.module === module && n.query
+    })
+    // console.log('permisos A: ', permisos)
+    if (permisos.length > 0) {
+      resp = true
+    }
+  }
+  // const user = this.cls.get('user');
+  // console.log(user);
+  // console.log('resp: ', resp)
+  return resp
+}
+
+export const canMenu = (module, menu) => {
+  const auth = useAuthStore()
+  let resp = false
+  console.log('auth.permissions: ', auth.permissions)
+  if (auth.permissions) {
+    const permisos = auth.permissions.filter(function (n) {
+      return n.option.module === module && n.option.menu === menu && n.query
+    })
+    console.log('permisos A: ', permisos)
+    if (permisos.length > 0) {
+      resp = true
+    }
+  }
+  // const user = this.cls.get('user');
+  // console.log(user);
+  console.log('resp: ', resp)
+  return resp
+}
