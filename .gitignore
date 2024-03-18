@@ -51,5 +51,5 @@ yarn.lock
 /src/pages/YearSeatClosurePage.vue
 /src/pages/YearClosurePage.vue
 /src/pages/medical-appointments
-/src/pages/hospitalization
+# /src/pages/hospitalization
 /src/pages/inventory
