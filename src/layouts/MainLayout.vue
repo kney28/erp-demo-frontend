@@ -511,7 +511,7 @@
                     </q-item-section>
                   </q-item>
 
-                  <q-item
+                  <!-- <q-item
                     @click="setTabSelected('/openingBalances', 'Saldos iniciales')"
                     active-class="tab-active"
                     to="/openingBalances"
@@ -743,7 +743,7 @@
                     <q-item-section>
                       Saldo inicial Subdetalle
                     </q-item-section>
-                  </q-item>
+                  </q-item> -->
                 </q-expansion-item>
                 <q-expansion-item
                   expand-separator
@@ -751,7 +751,7 @@
                   :header-inset-level="0.5"
                   :content-inset-level="1"
                   label="Procedimientos">
-                    <q-item
+                    <!-- <q-item
                       @click="setTabSelected('/accountingEntries', 'Asientos contables')"
                       active-class="tab-active"
                       to="/accountingEntries"
@@ -839,7 +839,7 @@
                       <q-item-section>
                         Cierre anual
                       </q-item-section>
-                    </q-item>
+                    </q-item> -->
 
                 </q-expansion-item>
 
@@ -918,7 +918,7 @@
                   </q-item>
                 </q-expansion-item>
 
-                <q-expansion-item
+                <!-- <q-expansion-item
                   expand-separator
                   icon="account_tree"
                   :header-inset-level="0.5"
@@ -1014,7 +1014,7 @@
                       </q-item-section>
                     </q-item>
 
-                </q-expansion-item>
+                </q-expansion-item> -->
 
                 <q-expansion-item
                   expand-separator
@@ -1241,7 +1241,7 @@
                 </q-expansion-item>
               </q-expansion-item>
 
-              <q-expansion-item
+              <!-- <q-expansion-item
                 expand-separator
                 icon="medical_services"
                 label="Citas médicas">
@@ -1301,7 +1301,7 @@
                   :content-inset-level="1"
                   label="Reportes">
                 </q-expansion-item>
-              </q-expansion-item>
+              </q-expansion-item> -->
 
               <q-expansion-item
                 expand-separator
@@ -1731,7 +1731,7 @@
                   </q-item>
                 </q-expansion-item>
 
-                <q-expansion-item
+                <!-- <q-expansion-item
                   expand-separator
                   icon="account_tree"
                   :header-inset-level="0.5"
@@ -1827,7 +1827,7 @@
                       </q-item-section>
                     </q-item>
 
-                </q-expansion-item>
+                </q-expansion-item> -->
 
                 <q-expansion-item
                   expand-separator
@@ -1838,7 +1838,7 @@
                 </q-expansion-item>
               </q-expansion-item>
 
-              <q-expansion-item
+              <!-- <q-expansion-item
                 expand-separator
                 icon="medication_liquid"
                 label="Hospitalización">
@@ -1931,15 +1931,15 @@
                   :content-inset-level="1"
                   label="Reportes">
                 </q-expansion-item>
-              </q-expansion-item>
+              </q-expansion-item> -->
 
-              <q-expansion-item
+              <!-- <q-expansion-item
                 expand-separator
                 icon="calculate"
                 label="Nómina">
-              </q-expansion-item>
+              </q-expansion-item> -->
 
-              <q-expansion-item
+              <!-- <q-expansion-item
                 expand-separator
                 icon="shopping_cart"
                 label="Presupuesto">
@@ -1966,7 +1966,7 @@
                     </q-item-section>
                   </q-item>
                 </q-expansion-item>
-              </q-expansion-item>
+              </q-expansion-item> -->
 
               <q-expansion-item
                 expand-separator
@@ -2084,7 +2084,7 @@
                 </q-expansion-item>
               </q-expansion-item>
 
-              <q-expansion-item
+              <!-- <q-expansion-item
                 expand-separator
                 icon="inventory"
                 label="Inventarios">
@@ -2194,7 +2194,7 @@
                   :content-inset-level="1"
                   label="Reportes">
                 </q-expansion-item>
-              </q-expansion-item>
+              </q-expansion-item> -->
 
               <q-expansion-item
                 expand-separator

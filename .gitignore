@@ -31,3 +31,25 @@ yarn.lock
 
 # Env
 .env
+
+# pages
+/src/pages/OpeningBalancePage.vue
+/src/pages/accounting/Accbeginningbalancesdet2sPage.vue
+/src/pages/accounting/Accbeginningbalancesdet3sPage.vue
+/src/pages/accounting/AccbeginningbalancesdetsPage.vue
+/src/pages/accounting/AccbeginningbalancessPage.vue
+/src/pages/accounting/AccountingentriessPage.vue
+/src/pages/accounting/AccountingentriesdetsPage.vue
+/src/pages/accounting/AccentsubdetsPage.vue
+/src/pages/accounting/AccmonclosPage.vue
+/src/pages/accounting/AccannualclosingentrysPage.vue
+/src/pages/accounting/AccmontopesPage.vue
+/src/pages/accounting/AccannclosPage.vue
+/src/pages/AccountingEntriesPage.vue
+/src/pages/MonthlyClosurePage.vue
+/src/pages/MonthlyOpeningPage.vue
+/src/pages/YearSeatClosurePage.vue
+/src/pages/YearClosurePage.vue
+/src/pages/medical-appointments
+/src/pages/hospitalization
+/src/pages/inventory
