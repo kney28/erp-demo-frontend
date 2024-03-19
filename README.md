@@ -4,7 +4,7 @@
 
   <p align="center">Frontend contruido con:</p>
   
-<p aling="center">
+<p align="center">
     <a href="https://vuejs.org/"><img alt="Vue framework" src="https://img.shields.io/badge/Vue_3-07B284?style=for-the-badge"></a>
     <a href="https://quasar.dev/"><img alt="Quasar framework" src="https://img.shields.io/badge/Quasar-029DC4?style=for-the-badge"></a>
 </p>
